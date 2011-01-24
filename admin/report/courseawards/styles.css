@@ -1,0 +1,32 @@
+#courseawards table {
+    border: 1px solid #000;
+}
+#courseawards th {
+    border: 1px solid #000;
+    text-align: center;
+    padding: 0.25em 2em;
+}
+#courseawards td {
+    border: 1px solid #bbb;
+    /*border-collapse: collapse;*/
+    /*border-spacing: 1;*/
+    text-align: center;
+    padding: 0 1em;
+}
+#courseawards table img {
+    /*padding-left: 0.5em;*/
+    vertical-align: text-bottom;
+}
+#courseawards table + p {
+    padding-top: 1em;
+}
+#courseawards tr.deleted, #courseawards tr.deleted a {
+    color: #777;
+    font-style: italic;
+}
+#courseawards span.deleted {
+    color: #f99;
+}
+#courseawards th.delete {
+    color: #f00;
+}
