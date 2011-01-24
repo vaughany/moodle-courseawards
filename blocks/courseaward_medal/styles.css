@@ -1,0 +1,14 @@
+.block_courseaward_medal div.center {
+    text-align: center !important;
+}
+.awardtitle {
+    font-weight: bold;
+    font-size: 120%;
+}
+.block_courseaward_medal ul {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    list-style-type: none;
+}
