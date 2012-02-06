@@ -1,6 +1,4 @@
 <?php
-
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -17,11 +15,13 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version integer for vote block
+ * Course Award Vote block version details
  *
- * @package    block_courseaward_vote
+ * @package    block
+ * @subpackage courseaward_vote
  * @copyright  2011 onwards Paul Vaughan, paulvaughan@southdevon.ac.uk
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$plugin->version = 2011011200;
+$plugin->version   = 2012020601;                // The current plugin version (Date: YYYYMMDDXX)
+$plugin->requires  = 2010112400;                // Requires this Moodle version

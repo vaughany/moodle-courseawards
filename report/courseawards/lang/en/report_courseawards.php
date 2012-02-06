@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,9 +17,19 @@
 /**
  * Language strings for the Course Awards admin report
  *
- * @package    report_courseawards
+ * @package    report
+ * @package    courseawards
  * @copyright  2011 onwards Paul Vaughan, paulvaughan@southdevon.ac.uk
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+$string['pluginname'] = 'Course Awards';
+
+
+
+/**
+ * older strings below this point
+ * move above when guaranteed needed
  */
 
 // admin panel string

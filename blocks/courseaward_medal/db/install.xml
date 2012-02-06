@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="blocks/courseaward_medal/db" VERSION="2011011200" COMMENT="XMLDB file for Moodle blocks/courseaward_medal"
+<XMLDB PATH="blocks/courseaward_medal/db" VERSION="2012020601" COMMENT="XMLDB file for Moodle blocks/courseaward_medal"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >

@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -16,9 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Vote block
+ * Course Award Vote block
  *
- * @package    block_courseaward_vote
+ * @package    block
+ * @subpackage courseaward_vote
  * @copyright  2011 onwards Paul Vaughan, paulvaughan@southdevon.ac.uk
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -98,8 +98,8 @@ class block_courseaward_vote extends block_base {
             // END debugging
 
             $build .= "\n".'<div class="center clear">';
-            $build .= '<a href="'.$CFG->wwwroot.'/admin/report/courseawards/report.php?q=v&c='.$COURSE->id.'&s=c">'.get_string('admin-reportcourse', 'block_courseaward_vote').'</a><br />'."\n";
-            $build .= '<a href="'.$CFG->wwwroot.'/admin/report/courseawards/index.php">'.get_string('admin-reportall', 'block_courseaward_vote').'</a>'."\n";
+            $build .= '<a href="'.$CFG->wwwroot.'/report/courseawards/report.php?q=v&c='.$COURSE->id.'&s=c">'.get_string('admin-reportcourse', 'block_courseaward_vote').'</a><br />'."\n";
+            $build .= '<a href="'.$CFG->wwwroot.'/report/courseawards/index.php">'.get_string('admin-reportall', 'block_courseaward_vote').'</a>'."\n";
             $build .='</div>';
 
             // get the notes. 'true' means show deleted (different colour)

@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,7 +17,8 @@
 /**
  * Capability definitions for the vote block
  *
- * @package    block_courseaward_vote
+ * @package    block
+ * @subpackage courseaward_vote
  * @copyright  2011 onwards Paul Vaughan, paulvaughan@southdevon.ac.uk
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -30,10 +30,10 @@ $block_courseaward_vote_capabilities = array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
         'legacy' => array(
-            'student' => CAP_ALLOW
-            //'teacher' => CAP_PREVENT,
-            //'editingteacher' => CAP_PREVENT,
-            //'admin' => CAP_PREVENT
+            'student'           => CAP_ALLOW
+            //'teacher'           => CAP_PREVENT,
+            //'editingteacher'    => CAP_PREVENT,
+            //'admin'             => CAP_PREVENT
         )
     ),
 
@@ -43,12 +43,10 @@ $block_courseaward_vote_capabilities = array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
         'legacy' => array(
-            //'student' => CAP_PREVENT,
-            //'teacher' => CAP_PREVENT,
-            //'editingteacher' => CAP_PREVENT,
-            'admin' => CAP_ALLOW
+            //'student'           => CAP_PREVENT,
+            //'teacher'           => CAP_PREVENT,
+            //'editingteacher'    => CAP_PREVENT,
+            'admin'             => CAP_ALLOW
         )
     )
 )
-
-?>

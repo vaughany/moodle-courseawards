@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -16,20 +15,22 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Administrative actions for the Course Awards admin report
+ * Administrative actions for the Course Awards report
  *
- * @package    report_courseawards
+ * @package    report
+ * @subpackage courseawards
  * @copyright  2011 onwards Paul Vaughan, paulvaughan@southdevon.ac.uk
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// all fairly essential ;)
-require_once('../../../config.php');
+require_once('../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
-admin_externalpage_setup('reportcourseawards');
+
+//admin_externalpage_setup('reportcourseawards');
+admin_externalpage_setup('reportcourseawards', '', null, '', array('pagelayout'=>'report'));
 
 // check for an appropriate capability
-require_capability('moodle/site:viewreports', get_context_instance(CONTEXT_SYSTEM));
+//require_capability('moodle/site:viewreports', get_context_instance(CONTEXT_SYSTEM));
 
 // we need this to decide what we're going to do
 $qid    = required_param('q', PARAM_ALPHA);

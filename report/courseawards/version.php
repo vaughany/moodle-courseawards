@@ -15,20 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Settings for the Course Awards admin report
+ * Version info for Course Awards report
  *
  * @package    report
- * @package    courseawards
+ * @subpackage courseawards
  * @copyright  2011 onwards Paul Vaughan, paulvaughan@southdevon.ac.uk
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
 
-$ADMIN->add('reports',
-    new admin_externalpage('reportcourseawards',
-        get_string('courseawards', 'report_courseawards'),
-        $CFG->wwwroot.'/'.$CFG->admin.'/report/courseawards/index.php',
-        'moodle/site:viewreports'
-    )
-);
+$plugin->version   = 2012020601;                // The current plugin version (Date: YYYYMMDDXX)
+$plugin->requires  = 2010112400;                // Requires this Moodle version
+$plugin->component = 'report_courseawards';     // Full name of the plugin (used for diagnostics)
