@@ -23,15 +23,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$block_courseaward_medal_capabilities = array(
+//$block_courseaward_medal_capabilities = array(
+$capabilities = array(
     // 'admin' capability is assigned to the admin role as default
     'block/courseaward_medal:admin' => array(
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
         'legacy' => array(
-            'admin' => CAP_ALLOW
+            'manager' => CAP_ALLOW
         )
     )
 
-)
+);

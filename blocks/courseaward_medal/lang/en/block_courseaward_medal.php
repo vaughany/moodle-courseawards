@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,7 +17,8 @@
 /**
  * Language strings for medal block
  *
- * @package    block_courseaward_medal
+ * @package    block
+ * @subpackage courseaward_medal
  * @copyright  2011 onwards Paul Vaughan, paulvaughan@southdevon.ac.uk
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

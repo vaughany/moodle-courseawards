@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,7 +17,8 @@
 /**
  * Language strings for the vote block
  *
- * @package    block_courseaward_vote
+ * @package    block
+ * @subpackage courseaward_vote
  * @copyright  2011 onwards Paul Vaughan, paulvaughan@southdevon.ac.uk
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -42,7 +42,8 @@ $string['scoreavgaltnonstudent'] = 'No votes yet.';
 // user strings
 $string['user-title'] = 'Vote for this course!';
 $string['user-clicktovotetextbox'] = 'Type a brief note about your course (optional):';
-$string['user-clicktovote'] = 'Click on a <strong>star</strong> to vote for this course. Choose from <span class="ina">Inadequate</span>, <span class="sat">Satisfactory</span>, <span class="goo">Good</span>, <span class="out">Outstanding</span>:';
+//$string['user-clicktovote'] = 'Click on a <strong>star</strong> to vote for this course. Choose from <span class="ina">Inadequate</span>, <span class="sat">Satisfactory</span>, <span class="goo">Good</span>, <span class="out">Outstanding</span>:';
+$string['user-clicktovote'] = 'Click on a <strong>star</strong> to vote for this course. Choose from: <br /><span class="smaller">(hover over each star for an explanation)</span>:';
 $string['user-alreadyvoted'] = 'You have already voted for this course. Your vote was:';
 $string['user-clicktounvote'] = 'Remove vote?';
 

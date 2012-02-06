@@ -25,24 +25,23 @@
 
 class block_courseaward_medal extends block_base {
 
-    function init() {
+    public function init() {
         $this->title = get_string('pluginname', 'block_courseaward_medal');
     }
 
-    function instance_allow_multiple() {
+    public function instance_allow_multiple() {
         return false;
-    }
-    function has_config() {
-        return false;
-    }
-    function applicable_formats() {
-        // production:
-//        return array('course-view' => true);
-        // development:
-        return array('all' => true);
     }
 
-    function get_content() {
+    public function has_config() {
+        return false;
+    }
+
+    public function applicable_formats() {
+        return array('course-view' => true);
+    }
+
+    public function get_content() {
         global $CFG, $COURSE, $USER;
 
         $build = ''; // build the output into this variable
@@ -52,36 +51,36 @@ class block_courseaward_medal extends block_base {
         require_once($CFG->dirroot.'/blocks/courseaward_medal/libmedal.php');
 
         // show the medal awarded, if there is one.
-        if(has_medal($COURSE->id)) {
-            $build .= '<div class="center bgborder"><img src="'.get_medal_img(get_medal($COURSE->id)).'" /></div>'."\n";
-            $build .= '<div class="center awardtitle">'.get_string('medal-'.get_medal($COURSE->id), 'block_courseaward_medal').'</div>'."\n";
-            // end testing
-        } else {
-            /**
-             * We can add a string if there is no medal to display ("No medal yet" or similar) but then it is obvious that there are medals to be won,
-             * and this course doesn't have one. The next line is commented out so that no block appears at all, except for admins.
-             */
-            //$build .= '<div class="center">'.get_string('user-nomedals', 'block_courseaward_medal').'</div>'."\n";
+        if (has_medal($COURSE->id)) {
+            $build .= '<div class="center bgborder"><img src="'.get_medal_img(get_medal($COURSE->id)).
+                '" /></div>'."\n";
+            $build .= '<div class="center awardtitle">'.get_string('medal-'.get_medal($COURSE->id),
+                'block_courseaward_medal').'</div>'."\n";
         }
 
-        if(has_capability('block/courseaward_medal:admin', get_context_instance(CONTEXT_COURSE, $COURSE->id))) {
+        if (has_capability('block/courseaward_medal:admin', get_context_instance(CONTEXT_COURSE, $COURSE->id))) {
             /**
              * user has the 'admin' capability and can assign/remove medals
              */
-            if(has_medal($COURSE->id)) {
+            if (has_medal($COURSE->id)) {
                 /**
                  * if the course has a medal, provide options to delete it
                  */
-                $build .= "\n".'<div class="center smaller cleartop"><a href="'.$pathtoblock.'admin_unmedal.php?cid='.$COURSE->id.'">'.get_string('admin-medaldel', 'block_courseaward_medal').'</a></div>';
+                $build .= "\n".'<div class="center smaller cleartop"><a href="'.$pathtoblock.'admin_unmedal.php?cid='.
+                    $COURSE->id.'">'.get_string('admin-medaldel', 'block_courseaward_medal').'</a></div>';
             } else {
                 /**
                  * if the course doesn't have a medal, provide options to set one
                  */
                 $build .= "\n".'<div class="center smaller">';
-                $build .= '<a href="'.$pathtoblock.'admin_medal.php?cid='.$COURSE->id.'&medal=gold">'.get_string('admin-medaladdgold', 'block_courseaward_medal').'</a><br />'."\n";
-                $build .= '<a href="'.$pathtoblock.'admin_medal.php?cid='.$COURSE->id.'&medal=silver">'.get_string('admin-medaladdsilver', 'block_courseaward_medal').'</a><br />'."\n";
-                $build .= '<a href="'.$pathtoblock.'admin_medal.php?cid='.$COURSE->id.'&medal=bronze">'.get_string('admin-medaladdbronze', 'block_courseaward_medal').'</a><br />'."\n";
-                $build .= '<a href="'.$pathtoblock.'admin_medal.php?cid='.$COURSE->id.'&medal=achievement">'.get_string('admin-medaladdachievement', 'block_courseaward_medal').'</a>';
+                $build .= '<a href="'.$pathtoblock.'admin_medal.php?cid='.$COURSE->id.'&medal=gold">'.
+                    get_string('admin-medaladdgold', 'block_courseaward_medal').'</a><br />'."\n";
+                $build .= '<a href="'.$pathtoblock.'admin_medal.php?cid='.$COURSE->id.'&medal=silver">'.
+                    get_string('admin-medaladdsilver', 'block_courseaward_medal').'</a><br />'."\n";
+                $build .= '<a href="'.$pathtoblock.'admin_medal.php?cid='.$COURSE->id.'&medal=bronze">'.
+                    get_string('admin-medaladdbronze', 'block_courseaward_medal').'</a><br />'."\n";
+                $build .= '<a href="'.$pathtoblock.'admin_medal.php?cid='.$COURSE->id.'&medal=achievement">'.
+                    get_string('admin-medaladdachievement', 'block_courseaward_medal').'</a>';
                 $build .= '</div>';
             }
             $build .= get_course_medal_history($COURSE->id);

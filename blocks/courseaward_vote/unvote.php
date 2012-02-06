@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,15 +17,18 @@
 /**
  * Removes a vote [and note] (sets it to deleted)
  *
- * @package    block_courseaward_vote
+ * @package    block
+ * @subpackage courseaward_vote
  * @copyright  2011 onwards Paul Vaughan, paulvaughan@southdevon.ac.uk
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once('../../config.php');
 
+defined('MOODLE_INTERNAL') || die;
+
 if (!$course = $DB->get_record('course', array('id'=>required_param('cid', PARAM_INT)))) {
-    error(get_string('error-courseidnotset', 'block_courseaward_vote'));
+    print_error(get_string('error-courseidnotset', 'block_courseaward_vote'));
 }
 
 // require a login AND a course login, all the better to prevent fraud.
@@ -35,19 +37,19 @@ require_course_login($course);
 
 require_once($CFG->dirroot.'/blocks/courseaward_vote/libvote.php');
 
-// not sure we need to validate this, but going to anyway.
+// validate the user id.
 if (!$USER->id) {
-    error(get_string('error-useridnotset', 'block_courseaward_vote'));
+    print_error(get_string('error-useridnotset', 'block_courseaward_vote'));
 }
 
 // check to see if enough time has passed
-if(!can_change_vote($USER->id, $course->id)) {
-    error(get_string('error-cantunvoteyet', 'block_courseaward_vote'));
+if (!can_change_vote($USER->id, $course->id)) {
+    print_error(get_string('error-cantunvoteyet', 'block_courseaward_vote'));
 }
 
 // get the id of the vote we're deleting
 if (!$vote_id = get_vote_id($USER->id, $course->id)) {
-    error(get_string('error-novoteid', 'block_courseaward_vote'));
+    print_error(get_string('error-novoteid', 'block_courseaward_vote'));
 }
 
 // create the data object
@@ -57,8 +59,9 @@ $dbupdate->date_modified    = time();
 $dbupdate->deleted          = 1;
 $dbupdate->deleted_user_id  = $USER->id;
 
-if(!update_record('block_courseaward_vote', $dbupdate)) {
-    error(get_string('error-dbupdate', 'block_courseaward_vote'));
+// update it
+if (!$DB->update_record('block_courseaward_vote', $dbupdate)) {
+    print_error(get_string('error-dbupdate', 'block_courseaward_vote'));
 } else {
     redirect($CFG->wwwroot.'/course/view.php?id='.$course->id);
 }

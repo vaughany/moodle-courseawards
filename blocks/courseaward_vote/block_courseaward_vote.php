@@ -27,47 +27,37 @@
 define('DEBUG', false);
 
 class block_courseaward_vote extends block_base {
-    function init() {
-        $this->title   = get_string('pluginname', 'block_courseaward_vote');
+
+    public function init() {
+        $this->title = get_string('pluginname', 'block_courseaward_vote');
     }
 
     // specialization is always called immediately after init
-    function specialization() {
-        global $CFG;
-        /**
-         * Get and check the configuration settings and supply defaults if they're not present.
-         * Remember this MAY be the first time these variables have ever been accessed.
-         * This code is an exact duplicate (sadly) of code in config_global.html
-         */
-        if(!isset($CFG->block_courseaward_vote_note) || empty($CFG->block_courseaward_vote_note)) {
-            set_config('block_courseaward_vote_note', 'true');
-        }
-        if(!isset($CFG->block_courseaward_vote_wait) || empty($CFG->block_courseaward_vote_wait)) {
-            set_config('block_courseaward_vote_wait', '86400');
-        }
+    public function specialization() {
+        // not needed
     }
 
-    function instance_allow_multiple() {
+    public function instance_allow_multiple() {
         return false;
     }
-    function has_config() {
+
+    public function has_config() {
         return true;
     }
-    function config_save($data) {
+
+    /*public function config_save($data) {
         // Default behavior: save all variables as $CFG properties
         foreach ($data as $name => $value) {
             set_config($name, $value);
         }
         return true;
-    }
-    function applicable_formats() {
-        // production:
-//        return array('course-view' => true);
-        // development:
-        return array('all' => true);
+    }*/
+
+    public function applicable_formats() {
+        return array('course-view' => true);
     }
 
-    function get_content() {
+    public function get_content() {
         global $CFG, $COURSE, $USER;
 
         $build = "\n"; // build the output into this variable
@@ -84,22 +74,23 @@ class block_courseaward_vote extends block_base {
         // add in the vote functions
         require_once($CFG->dirroot.'/blocks/courseaward_vote/libvote.php');
 
-        //if(has_capability('moodle/site:doanything', get_context_instance(CONTEXT_COURSE, $COURSE->id))) {
-        if(has_capability('block/courseaward_vote:admin', get_context_instance(CONTEXT_COURSE, $COURSE->id))) {
+        if (has_capability('block/courseaward_vote:admin', get_context_instance(CONTEXT_COURSE, $COURSE->id))) {
             /**
              * user has the 'admin' capability and can do pretty much anything
              * note that this is 'block/courseaward_vote:admin' and not 'moodle/site:doanything'
              */
 
             // debugging
-            if(DEBUG) {
+            if (DEBUG) {
                 $build .= '<p style="color:#f00;font-weight:bold;text-align:center;">CAPABILITY IS ADMIN</p>'."\n";
             }
             // END debugging
 
             $build .= "\n".'<div class="center clear">';
-            $build .= '<a href="'.$CFG->wwwroot.'/report/courseawards/report.php?q=v&c='.$COURSE->id.'&s=c">'.get_string('admin-reportcourse', 'block_courseaward_vote').'</a><br />'."\n";
-            $build .= '<a href="'.$CFG->wwwroot.'/report/courseawards/index.php">'.get_string('admin-reportall', 'block_courseaward_vote').'</a>'."\n";
+            $build .= '<a href="'.$CFG->wwwroot.'/report/courseawards/report.php?q=v&c='.$COURSE->id.'&s=c">'.
+                get_string('admin-reportcourse', 'block_courseaward_vote').'</a><br />'."\n";
+            $build .= '<a href="'.$CFG->wwwroot.'/report/courseawards/index.php">'.
+                get_string('admin-reportall', 'block_courseaward_vote').'</a>'."\n";
             $build .='</div>';
 
             // get the notes. 'true' means show deleted (different colour)
@@ -108,33 +99,35 @@ class block_courseaward_vote extends block_base {
             // show the stars gained in summary
             $build .= get_votes_summary($COURSE->id, true);
 
-        } else if(has_capability('block/courseaward_vote:vote', get_context_instance(CONTEXT_COURSE, $COURSE->id))) {
+        } else if (has_capability('block/courseaward_vote:vote', get_context_instance(CONTEXT_COURSE, $COURSE->id))) {
             /**
              * user has the 'vote' capability so can vote on the block
              */
 
             // debugging
-            if(DEBUG) {
+            if (DEBUG) {
                 $build .= '<p style="color:#f00;font-weight:bold;text-align:center;">CAPABILITY IS VOTE</p>'."\n";
             }
             // END debugging
 
-            if(has_voted($USER->id, $COURSE->id)) {
+            if (has_voted($USER->id, $COURSE->id)) {
                 // if the user has already voted
                 $voted = get_vote($USER->id, $COURSE->id);
                 $build .= '<div class="center">'.get_string('user-alreadyvoted', 'block_courseaward_vote').'</div>'."\n";
                 $build .= '<div class="center bgborder">'."\n";
-                $build .= '<div class="clear"><img src="'.$pathtoblock.'img/'.$voted.'.png" width="'.$imgw.'" height="'.$imgh.'" alt="'.$alttxt[$voted].'" />'."\n";
+                $build .= '<div class="clear"><img src="'.$pathtoblock.'img/'.$voted.'.png" width="'.
+                    $imgw.'" height="'.$imgh.'" alt="'.$alttxt[$voted].'" />'."\n";
                 $build .= '<br />&ldquo;'.$alttxt[$voted].'&rdquo;</div>'."\n";
 
                 // if the user left a note
-                if($got_note = get_vote_note($USER->id, $COURSE->id)) {
+                if ($got_note = get_vote_note($USER->id, $COURSE->id)) {
                     $build .= '<div class="clear">You noted: &ldquo;'.$got_note.'&rdquo;</div>'."\n";
                 }
 
                 // if the user has waited (the agreed delay)...
-                if(can_change_vote($USER->id, $COURSE->id)) {
-                    $build .= '<span class="smaller">(<a href="'.$pathtoblock.'unvote.php?cid='.$COURSE->id.'">'.get_string('user-clicktounvote', 'block_courseaward_vote').'</a>)</span>'."\n";
+                if (can_change_vote($USER->id, $COURSE->id)) {
+                    $build .= '<span class="smaller">(<a href="'.$pathtoblock.'unvote.php?cid='.$COURSE->id.'">'.
+                        get_string('user-clicktounvote', 'block_courseaward_vote').'</a>)</span>'."\n";
                 } else {
                     $build .= '<span class="smaller">('.get_string('error-cantunvoteyet', 'block_courseaward_vote').')</span>'."\n";
                 }
@@ -142,18 +135,21 @@ class block_courseaward_vote extends block_base {
 
             } else {
                 // User has not voted before (or has voted, then deleted it after the delay) so present the voting options
-                if($CFG->block_courseaward_vote_note == 'false') {
+                if (get_config('courseaward_vote', 'note') == false) {
                     /**
                      * voting option style 1: no text box, clicky stars only.
                      */
                     $build .= "\n".'<div class="center clear">'.get_string('user-clicktovote', 'block_courseaward_vote').'</div>';
                     $build .= "\n".'<div class="center clear">';
                     for ($j=0; $j<>4; $j++) {
-                        $build .= '<a href="'.$pathtoblock.'vote.php?cid='.$COURSE->id.'&vote='.$j.'" onmouseover="return overlib(\''.$alttxt[$j].'\', AUTOSTATUS, WRAP);" onmouseout="nd();">';
-                        $build .= '<img src="'.$pathtoblock.'img/'.$j.'.png" width="'.$imgw.'" height="'.$imgh.'" alt="'.$alttxt[$j].'" style="border: 0;" /></a>'."\n";
+                        $build .= '<a href="'.$pathtoblock.'vote.php?cid='.$COURSE->id.'&vote='.$j.
+                            '" title="'.$alttxt[$j].'">';
+                        $build .= '<img src="'.$pathtoblock.'img/'.$j.'.png" width="'.$imgw.'" height="'.$imgh.
+                            '" alt="'.$alttxt[$j].'" style="border: 0;" /></a>'."\n";
                     }
                     $build .='</div>'."\n";
-                } else if ($CFG->block_courseaward_vote_note == 'true') {
+
+                } else if (get_config('courseaward_vote', 'note') == true) {
                     /**
                      * voting option style 2: text box and clicky stars
                      */
@@ -165,7 +161,8 @@ class block_courseaward_vote extends block_base {
                     $build .= '<div class="center">'.get_string('user-clicktovote', 'block_courseaward_vote').'</div>'."\n";
                     $build .= '<div id="vote_images" class="center cleartop clear">'."\n";
                     for ($j=0; $j<>4; $j++) {
-                        $build .= '<input type="image" name="vote'.$j.'" value="'.$j.'" src="'.$pathtoblock.'img/'.$j.'.png" width="'.$imgw.'" height="'.$imgh.'" alt="'.$alttxt[$j].'" style="border: 0;" onmouseover="return overlib(\''.$alttxt[$j].'\', AUTOSTATUS, WRAP);" onmouseout="nd();" />'."\n";
+                        $build .= '<input type="image" name="vote'.$j.'" value="'.$j.'" src="'.$pathtoblock.'img/'.$j.'.png" width="'.
+                            $imgw.'" height="'.$imgh.'" style="border: 0;" title="'.$alttxt[$j].'" />'."\n";
                     }
                     $build .='</div></form>'."\n";
                 }
@@ -177,7 +174,7 @@ class block_courseaward_vote extends block_base {
              */
 
             // debugging
-            if(DEBUG) {
+            if (DEBUG) {
                 $build .= '<p style="color:#f00;font-weight:bold;text-align:center;">NO CAPABILITIES (DEFAULT)</p>'."\n";
             }
             // END debugging

@@ -38,7 +38,7 @@ $qid    = required_param('q', PARAM_ALPHA);
 /**
  * Run code based on the $qid received from index.php
  */
-if(strtolower($qid) == 'delvote') {
+if (strtolower($qid) == 'delvote') {
     /**
      * Deletes votes from the admin interface.
      */
@@ -54,7 +54,7 @@ if(strtolower($qid) == 'delvote') {
     $dbupdate->deleted          = 1;
     $dbupdate->deleted_user_id  = $USER->id;
 
-    if(!$DB->update_record('block_courseaward_vote', $dbupdate)) {
+    if (!$DB->update_record('block_courseaward_vote', $dbupdate)) {
         print_error(get_string('error-dbupdate', 'block_courseaward_vote'));
     } else {
         if (isset($user) && !empty($user)) {
@@ -66,30 +66,32 @@ if(strtolower($qid) == 'delvote') {
         }
     }
 
-} else if(strtolower($qid) == 'backup') {
+} else if (strtolower($qid) == 'backup') {
     /**
      * Backs up the course awards tables.
      */
 
     // check for mysqli, die if not.
-    if($CFG->dbtype != 'mysqli') {
+    if ($CFG->dbtype != 'mysqli') {
         print_error(get_string('error_notmysql', 'report_courseawards'));
     }
 
     // send plain text headers
     header('Content-type: text/plain');
 
-    //$command = 'mysqldump --opt -h '.$CFG->dbhost.' -u '.$CFG->dbuser.' -p '.$CFG->dbpass.' '.$CFG->dbname.' | gzip > $backupFile';
-    $command = 'mysqldump -h '.$CFG->dbhost.' -u '.$CFG->dbuser.' --password='.$CFG->dbpass.' --skip-opt --no-create-info '.$CFG->dbname.' --tables '.$CFG->prefix.'block_courseaward_medal '.$CFG->prefix.'block_courseaward_vote';
+    //$command = 'mysqldump --opt -h '.$CFG->dbhost.' -u '.$CFG->dbuser.' -p '.
+        $CFG->dbpass.' '.$CFG->dbname.' | gzip > $backupFile';
+    $command = 'mysqldump -h '.$CFG->dbhost.' -u '.$CFG->dbuser.' --password='.$CFG->dbpass.' --skip-opt --no-create-info '.
+        $CFG->dbname.' --tables '.$CFG->prefix.'block_courseaward_medal '.$CFG->prefix.'block_courseaward_vote';
     //echo 'cmd: '.$command."<br />\n";
     system($command, $ret);
 
-} else if(strtolower($qid) == 'medalremove') {
+} else if (strtolower($qid) == 'medalremove') {
     /**
      * Removes all live medals, adds to medal history
      */
 
-    if($res = $DB->get_records('block_courseaward_medal', array('deleted'=>0), '', 'id', '', '')) {
+    if ($res = $DB->get_records('block_courseaward_medal', array('deleted'=>0), '', 'id', '', '')) {
         foreach ($res as $row) {
             $now = time();
             $dbupdate = new object();
@@ -98,7 +100,7 @@ if(strtolower($qid) == 'delvote') {
             $dbupdate->deleted          = 1;
             $dbupdate->deleted_user_id  = $USER->id;
 
-            if(!$DB->update_record('block_courseaward_medal', $dbupdate)) {
+            if (!$DB->update_record('block_courseaward_medal', $dbupdate)) {
                 print_error(get_string('error-dbupdate', 'block_courseaward_vote'));
             }
         }
@@ -107,23 +109,23 @@ if(strtolower($qid) == 'delvote') {
         print_error(get_string('error_nomedals', 'report_courseawards'));
     }
 
-} else if(strtolower($qid) == 'medaldelete') {
+} else if (strtolower($qid) == 'medaldelete') {
     /**
      * Deletes all removed medals, forever
      */
 
-    if(!$DB->delete_records('block_courseaward_medal', array('deleted'=>1))) {
+    if (!$DB->delete_records('block_courseaward_medal', array('deleted'=>1))) {
         print_error(get_string('error_noremovedmedals', 'block_courseaward_vote'));
     } else {
         redirect($CFG->wwwroot.'/admin/report/courseawards/');
     }
 
-} else if(strtolower($qid) == 'noteswipe') {
+} else if (strtolower($qid) == 'noteswipe') {
     /**
      * Wipes out all notes
      */
 
-    if($res = $DB->get_records_select('block_courseaward_vote', 'deleted = 0 AND note <> \'\'', array(''), '', 'id', '', '')) {
+    if ($res = $DB->get_records_select('block_courseaward_vote', 'deleted = 0 AND note <> \'\'', array(''), '', 'id', '', '')) {
         foreach ($res as $row) {
             $now = time();
             $dbupdate = new object();
@@ -131,7 +133,7 @@ if(strtolower($qid) == 'delvote') {
             $dbupdate->date_modified    = $now;
             $dbupdate->note             = '';
 
-            if(!$DB->update_record('block_courseaward_vote', $dbupdate)) {
+            if (!$DB->update_record('block_courseaward_vote', $dbupdate)) {
                 print_error(get_string('error-dbupdate', 'block_courseaward_vote'));
             }
         }
@@ -139,12 +141,12 @@ if(strtolower($qid) == 'delvote') {
     } else {
         print_error(get_string('error_nonotes', 'report_courseawards'));
     }
-} else if(strtolower($qid) == 'voteremove') {
+} else if (strtolower($qid) == 'voteremove') {
     /**
      * Removes all live votes (and assoc. notes), adds to vote history
      */
 
-    if($res = $DB->get_records('block_courseaward_vote', array('deleted'=>0), '', 'id', '', '')) {
+    if ($res = $DB->get_records('block_courseaward_vote', array('deleted'=>0), '', 'id', '', '')) {
         foreach ($res as $row) {
             $now = time();
             $dbupdate = new object();
@@ -153,7 +155,7 @@ if(strtolower($qid) == 'delvote') {
             $dbupdate->deleted          = 1;
             $dbupdate->deleted_user_id  = $USER->id;
 
-            if(!$DB->update_record('block_courseaward_vote', $dbupdate)) {
+            if (!$DB->update_record('block_courseaward_vote', $dbupdate)) {
                 print_error(get_string('error-dbupdate', 'block_courseaward_vote'));
             }
         }
@@ -162,12 +164,12 @@ if(strtolower($qid) == 'delvote') {
         print_error(get_string('error_novotes', 'report_courseawards'));
     }
 
-} else if(strtolower($qid) == 'votedelete') {
+} else if (strtolower($qid) == 'votedelete') {
     /**
      * Deletes all votes and notes, forever
      */
 
-    if(!$DB->delete_records('block_courseaward_vote', array('deleted'=>1))) {
+    if (!$DB->delete_records('block_courseaward_vote', array('deleted'=>1))) {
         print_error(get_string('error_noremovedmedals', 'block_courseaward_vote'));
     } else {
         redirect($CFG->wwwroot.'/admin/report/courseawards/');

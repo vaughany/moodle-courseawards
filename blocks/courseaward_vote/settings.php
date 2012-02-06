@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,24 +17,13 @@
 /**
  * Configuration page for the vote block
  *
- * @package    block_courseaward_vote
+ * @package    block
+ * @subpackage courseaward_vote
  * @copyright  2011 onwards Paul Vaughan, paulvaughan@southdevon.ac.uk
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die; // how often throughout the code do we need this line?
-
-/**
- * Get and check the configuration settings and supply defaults if they're not present.
- * Remember this MAY be the first time these variables have ever been accessed.
- * This code is an exact duplicate (sadly) of code in specialization() block_courseaward_vote.php
- */
-if(!isset($CFG->block_courseaward_vote_note) || empty($CFG->block_courseaward_vote_note)) {
-    set_config('block_courseaward_vote_note', 'true');
-}
-if(!isset($CFG->block_courseaward_vote_wait) || empty($CFG->block_courseaward_vote_wait)) {
-    set_config('block_courseaward_vote_wait', '86400');
-}
+defined('MOODLE_INTERNAL') || die;
 
 if ($ADMIN->fulltree) {
 
@@ -64,22 +52,24 @@ if ($ADMIN->fulltree) {
         '7776000'     => '3 months',
         '15552000'    => '6 months',
         '31536000'    => '1 year',
-        '99999999999' => 'Never'  // ...actually 3,170.9 years
+        '99999999999' => 'Never'    // ...actually 3,170.9 years
     );
 
-    $settings->add(new admin_setting_configselect('block_courseaward_vote_wait',
+    $settings->add(new admin_setting_configselect(
+        'courseaward_vote/wait',
         get_string('config_time', 'block_courseaward_vote'),
         get_string('config_time_long', 'block_courseaward_vote'),
-        '86400',
+        86400,
         $delay)
     );
 
-    $settings->add(new admin_setting_configcheckbox('block_courseaward_vote_note',
+    $settings->add(new admin_setting_configcheckbox(
+        'courseaward_vote/note',
         get_string('config_collect_notes', 'block_courseaward_vote'),
         get_string('config_note_true', 'block_courseaward_vote'),
-        'true',
-        'true',
-        'false')
+        true,
+        true,
+        false)
     );
 
 }

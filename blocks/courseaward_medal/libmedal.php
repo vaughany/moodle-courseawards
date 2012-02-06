@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,7 +17,8 @@
 /**
  * Functions for use with the medal block
  *
- * @package    block_courseaward_medal
+ * @package    block
+ * @subpackage courseaward_medal
  * @copyright  2011 onwards Paul Vaughan, paulvaughan@southdevon.ac.uk
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -39,10 +39,12 @@ function has_medal($course) {
         'deleted'=>0
     ));
 }
+
 function get_medal($course) {
     if (empty($course)) {
         return false;
     }
+
     global $DB;
     $res = $DB->get_record('block_courseaward_medal', array(
         'course_id'=>$course,
@@ -58,7 +60,7 @@ function get_medal_img($medal) {
     global $CFG;
     $imgpath = $CFG->wwwroot.'/blocks/courseaward_medal/img/';
 
-    if(empty($medal)) {
+    if (empty($medal)) {
         return false;
     }
 
@@ -94,9 +96,10 @@ function get_course_medal_history($cid) {
         'medal, date_added'
     ));
 
-    if($res) {
+    if ($res) {
         $build = '<div class="center smaller cleartop">
-        <a href="javascript:hideshow(document.getElementById(\'courseaward_medal_history\'))">'.get_string('admin-history', 'block_courseaward_medal').'</a>
+        <a href="javascript:hideshow(document.getElementById(\'courseaward_medal_history\'))">'.
+            get_string('admin-history', 'block_courseaward_medal').'</a>
         </div>
         <script type="text/javascript">
             function hideshow(which){
@@ -111,7 +114,8 @@ function get_course_medal_history($cid) {
         <div id="courseaward_medal_history" class="cleartop" style="display: none;"><ul>'."\n";
         foreach ($res as $row) {
             if (!empty($row->medal)) {
-                $build .= '<li><strong>'.date('M jS Y', $row->date_added).':</strong><br />'.ucfirst(strtolower($row->medal)).' awarded</li>'."\n";
+                $build .= '<li><strong>'.date('M jS Y', $row->date_added).':</strong><br />'.
+                    ucfirst(strtolower($row->medal)).' awarded</li>'."\n";
             }
         }
         $build .= '</ul></div>'."\n";

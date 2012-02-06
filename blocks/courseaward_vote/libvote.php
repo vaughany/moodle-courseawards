@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,7 +17,8 @@
 /**
  * Functions for running the vote block
  *
- * @package    block_courseaward_vote
+ * @package    block
+ * @subpackage courseaward_vote
  * @copyright  2011 onwards Paul Vaughan, paulvaughan@southdevon.ac.uk
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -31,7 +31,7 @@ defined('MOODLE_INTERNAL') || die;
 function get_course_score_average($course) {
     global $COURSE, $DB;
     $res = $DB->get_records_select('block_courseaward_vote', 'deleted = \'0\' and course_id = \''.$course.'\'', array('id, vote'));
-    if($res) {
+    if ($res) {
         $votes_tot = 0;
         foreach ($res as $row) {
             $votes_tot += $row->vote;
@@ -43,7 +43,7 @@ function get_course_score_average($course) {
         'deleted'=>0
     ));
 
-    if($votes_no) {
+    if ($votes_no) {
         $votes_avg = $votes_tot / $votes_no;
         $votes_avg = substr($votes_avg, 0, 4); // change the 4 for a 5 for more sig figs!
 
@@ -57,10 +57,10 @@ function get_course_score_average($course) {
         $build .= $votes_avg.get_string('scoreavg3', 'block_courseaward_vote');
         $build .= number_format(($votes_avg/3)*100).get_string('scoreavg4', 'block_courseaward_vote');
     } else {
-        if(!has_capability('block/courseaward_vote:vote', get_context_instance(CONTEXT_COURSE, $COURSE->id))) {
-            $build = get_string('scoreavgaltnonstudent', 'block_courseaward_vote');
-        } else {
+        if (!has_capability('block/courseaward_vote:vote', get_context_instance(CONTEXT_COURSE, $COURSE->id))) {
             $build = get_string('scoreavgalt', 'block_courseaward_vote');
+        } else {
+            $build = get_string('scoreavgaltnonstudent', 'block_courseaward_vote');
         }
     }
 
@@ -93,7 +93,7 @@ function get_vote($user, $course) {
  */
 function get_vote_id($user, $course) {
     global $DB;
-    $res = $DB->get_record('block_courseaward_vote', 'user_id', $user, 'course_id', $course, 'deleted', '0', 'id');
+    $res = $DB->get_record('block_courseaward_vote', array('user_id'=>$user, 'course_id'=>$course, 'deleted'=>0), 'id');
     return $res->id;
 }
 
@@ -101,12 +101,12 @@ function get_vote_id($user, $course) {
  * check to see if the user can change their vote
  */
 function can_change_vote($user, $course) {
-    global $CFG, $DB;
+    global $DB;
     $res = $DB->get_record('block_courseaward_vote', array('user_id'=>$user, 'course_id'=>$course, 'deleted'=>0), 'date_added');
     $date_vote = $res->date_added;
     $date_diff = time() - $date_vote;
 
-    if($date_diff < $CFG->block_courseaward_vote_wait) {
+    if ($date_diff < get_config('courseaward_vote', 'wait')) {
         return false;
     } else {
         return true;
@@ -119,7 +119,7 @@ function can_change_vote($user, $course) {
 function get_vote_note($user, $course) {
     global $DB;
     $res = $DB->get_record('block_courseaward_vote', array('user_id'=>$user, 'course_id'=>$course, 'deleted'=>0), 'note');
-    if(isset($res->note)) {
+    if (isset($res->note)) {
         return $res->note;
     } else {
         return false;
@@ -137,10 +137,12 @@ function get_notes($cid, $deleted = false) {
     } else {
         $del = '';
     }
-    $res = $DB->get_records_select('block_courseaward_vote', $del.'course_id = \''.$cid.'\' AND note <> \'\'', array('id ASC', 'id, note, deleted'));
-    if($res) {
+    $res = $DB->get_records_select('block_courseaward_vote', $del.'course_id = \''.$cid.'\' AND note <> \'\'',
+        array('id ASC', 'id, note, deleted'));
+    if ($res) {
         $build = '<div class="center smaller clear">
-        <a href="javascript:hideshow(document.getElementById(\'courseaward_vote_feedback\'))">'.get_string('note_get', 'block_courseaward_vote').'</a>
+        <a href="javascript:hideshow(document.getElementById(\'courseaward_vote_feedback\'))">'.
+            get_string('note_get', 'block_courseaward_vote').'</a>
         </div>
         <script type="text/javascript">
             function hideshow(which){
@@ -180,9 +182,10 @@ function get_notes($cid, $deleted = false) {
 function get_votes_summary($cid, $deleted = false) {
     global $CFG, $DB;
     $res = $DB->get_records_select('block_courseaward_vote', 'course_id = \''.$cid.'\' AND deleted = 0', array('id ASC', 'id, vote'));
-    if($res) {
+    if ($res) {
         $build = '<div class="center smaller clear">
-        <a href="javascript:hideshow(document.getElementById(\'courseaward_vote_summary\'))">'.get_string('admin-votesummary', 'block_courseaward_vote').'</a>
+        <a href="javascript:hideshow(document.getElementById(\'courseaward_vote_summary\'))">'.
+            get_string('admin-votesummary', 'block_courseaward_vote').'</a>
         </div>
         <script type="text/javascript">
             function hideshow(which){

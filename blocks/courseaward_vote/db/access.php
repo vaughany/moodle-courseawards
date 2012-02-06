@@ -23,7 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$block_courseaward_vote_capabilities = array(
+//$block_courseaward_vote_capabilities = array(
+$capabilities = array(
     // 'vote' capability is assigned to the student role as default
     'block/courseaward_vote:vote' => array(
         'riskbitmask' => '',
@@ -46,7 +47,7 @@ $block_courseaward_vote_capabilities = array(
             //'student'           => CAP_PREVENT,
             //'teacher'           => CAP_PREVENT,
             //'editingteacher'    => CAP_PREVENT,
-            'admin'             => CAP_ALLOW
+            'manager'             => CAP_ALLOW
         )
     )
-)
+);

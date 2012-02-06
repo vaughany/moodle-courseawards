@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,29 +17,30 @@
 /**
  * Removes a medal
  *
- * @package    block_courseaward_medal
+ * @package    block
+ * @subpackage courseaward_medal
  * @copyright  2011 onwards Paul Vaughan, paulvaughan@southdevon.ac.uk
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
-
 require_once('../../config.php');
+
+defined('MOODLE_INTERNAL') || die;
 
 if (!$course = $DB->get_record('course', array('id'=>required_param('cid', PARAM_INT)))) {
     error(get_string('error-courseidnotset', 'block_courseaward_vote'));
 }
 
-// require a login AND a course login, all the better to prevent fraud.
+// require a login, all the better to prevent fraud.
 require_login($course);
 
-// not sure we need to validate this, but going to anyway.
+// validate the user id.
 if (!$USER->id) {
     error(get_string('error-useridnotset', 'block_courseaward_vote'));
 }
 
 // check to see if this user has the 'admin' capability
-if(!has_capability('block/courseaward_medal:admin', get_context_instance(CONTEXT_COURSE, $COURSE->id))) {
+if (!has_capability('block/courseaward_medal:admin', get_context_instance(CONTEXT_COURSE, $COURSE->id))) {
     error(get_string('error-notadmin', 'block_courseaward_medal'));
 }
 
@@ -59,7 +59,8 @@ $dbupdate->deleted          = 1;
 $dbinsert->date_modified    = time();
 $dbupdate->deleted_user_id  = $USER->id;
 
-if(!$DB->update_record('block_courseaward_medal', $dbupdate)) {
+// update it
+if (!$DB->update_record('block_courseaward_medal', $dbupdate)) {
     error(get_string('error-dbupdate', 'block_courseaward_medal'));
 } else {
     redirect($CFG->wwwroot.'/course/view.php?id='.$COURSE->id);

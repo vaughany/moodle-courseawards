@@ -17,7 +17,8 @@
 /**
  * Adds a vote and optionally a note
  *
- * @package    block_courseaward_vote
+ * @package    block
+ * @subpackage courseaward_vote
  * @copyright  2011 onwards Paul Vaughan, paulvaughan@southdevon.ac.uk
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,15 +26,18 @@
 require_once('../../config.php');
 
 if (!$course = $DB->get_record('course', array('id'=>required_param('cid', PARAM_INT)))) {
-    error(get_string('error-courseidnotset', 'block_courseaward_vote'));
+    print_error(get_string('error-courseidnotset', 'block_courseaward_vote'));
 }
 
 // require a login AND a course login, all the better to prevent fraud.
 require_login($course);
 require_course_login($course);
 
-// logging goodness
-// logging removed due to it not really fitting in with the way Moodle expecs log info to be passed - not from a block, apparently.
+/**
+ * logging goodness
+ * logging removed due to it not really fitting in with the way Moodle expects
+ * log info to be passed - not from a block, apparently.
+ */
 //add_to_log($course->id, 'courseaward', 'add vote', '', 'Voted using the Course Award block', 0, $USER->id);
 
 /**
@@ -41,7 +45,7 @@ require_course_login($course);
  * righteous pain in the bum, we have to look for the image's name field with _x and _y on the end (click coordinates)
  * instead of just the image's name on it's own (which is how firefox works).
  */
-if($CFG->block_courseaward_vote_note == true) {
+if (get_config('courseaward_vote', 'note') == true) {
     // we're collecting notes so we need to optionally check some things
     if (optional_param('vote0_x', '', PARAM_INT) && optional_param('vote0_y', '', PARAM_INT)) {
         $vote = 0;
@@ -52,7 +56,7 @@ if($CFG->block_courseaward_vote_note == true) {
     } else if (optional_param('vote3_x', '', PARAM_INT) && optional_param('vote3_y', '', PARAM_INT)) {
         $vote = 3;
     } else {
-        error(get_string('error-iefixfail', 'block_courseaward_vote'));
+        print_error(get_string('error-iefixfail', 'block_courseaward_vote'));
     }
 } else {
     // we're not collecting notes
@@ -64,11 +68,12 @@ $note = optional_param('note', '', PARAM_NOTAGS);
 
 // validate the $vote variable
 if ($vote < 0 || $vote > 3) {
-    error(get_string('error-voteoutofrange', 'block_courseaward_vote'));
+    print_error(get_string('error-voteoutofrange', 'block_courseaward_vote'));
 }
-// not sure we need to validate this, but going to anyway.
+
+// validate the user id.
 if (!$USER->id) {
-    error(get_string('error-useridnotset', 'block_courseaward_vote'));
+    print_error(get_string('error-useridnotset', 'block_courseaward_vote'));
 }
 
 // create the data object;
@@ -81,8 +86,9 @@ $dbinsert->date_added       = $now;
 $dbinsert->date_modified    = $now;
 $dbinsert->note             = $note;
 
-if(!$DB->insert_record('block_courseaward_vote', $dbinsert)) {
-    error(get_string('error-dbinsert', 'block_courseaward_vote'));
+// insert it
+if (!$DB->insert_record('block_courseaward_vote', $dbinsert)) {
+    print_error(get_string('error-dbinsert', 'block_courseaward_vote'));
 } else {
     redirect($CFG->wwwroot.'/course/view.php?id='.$COURSE->id);
 }

@@ -71,7 +71,7 @@ function get_course_shortname($id) {
 }
 function get_chart($chart, $votes, $title='Graphical breakdown of votes', $big=false) {
     $title = str_replace(' ', '+', $title);
-    if($big == true) {
+    if ($big == true) {
         $size = '650x450&chts=000000,24';
     } else {
         $size = '400x175';
@@ -83,44 +83,45 @@ function get_chart($chart, $votes, $title='Graphical breakdown of votes', $big=f
     $colours    = '';
     $labels     = '';
     $legend     = '';
-    if(isset($chart[3])) {
+    if (isset($chart[3])) {
         $data       .= $chart[3].',';   // data separated by commas
         $colours    .= '00cc00|';       // colours separated by pipes
         $labels     .= get_string('outstanding', 'report_courseawards').'|';  // labels separated by pipes
         $legend     .= $chart[3].' ('.number_format(($chart[3]/$votes)*100, $nfdec).'%)|';   // legend separated by pipes
     }
-    if(isset($chart[2])) {
+    if (isset($chart[2])) {
         $data       .= $chart[2].',';
         $colours    .= 'eeee00|';
         $labels     .= get_string('good', 'report_courseawards').'|';
         $legend     .= $chart[2].' ('.number_format(($chart[2]/$votes)*100, $nfdec).'%)|';
     }
-    if(isset($chart[1])) {
+    if (isset($chart[1])) {
         $data       .= $chart[1].',';
         $colours    .= 'ff9600|';
         $labels     .= get_string('satisfactory', 'report_courseawards').'|';
         $legend     .= $chart[1].' ('.number_format(($chart[1]/$votes)*100, $nfdec).'%)|';
     }
-    if(isset($chart[0])) {
+    if (isset($chart[0])) {
         $data       .= $chart[0];
         $colours    .= 'dd0000';
         $labels     .= get_string('inadequate', 'report_courseawards');
         $legend     .= $chart[0].' ('.number_format(($chart[0]/$votes)*100, $nfdec).'%)';
     }
-    if(substr($data, -1) == ',') {
+    if (substr($data, -1) == ',') {
         $data = substr($data, 0, strlen($data)-1);
     }
-    if(substr($colours, -1) == '|') {
+    if (substr($colours, -1) == '|') {
         $colours = substr($colours, 0, strlen($colours)-1);
     }
-    if(substr($labels, -1) == '|') {
+    if (substr($labels, -1) == '|') {
         $labels = substr($labels, 0, strlen($labels)-1);
     }
-    if(substr($legend, -1) == '|') {
+    if (substr($legend, -1) == '|') {
         $legend = substr($legend, 0, strlen($legend)-1);
     }
 
-    $url = 'http://chart.apis.google.com/chart?cht=p&chs='.$size.'&chco='.$colours.'&chl='.$labels.'&chd=t:'.$data.'&chtt='.$title.'&chdl='.$legend.'&chp=4.71&chf=bg,lg,270,ffffff,0,eeeeee,1&chma=10,10,10,10|90,0&chof=png';
+    $url = 'http://chart.apis.google.com/chart?cht=p&chs='.$size.'&chco='.$colours.'&chl='.$labels.'&chd=t:'.
+        $data.'&chtt='.$title.'&chdl='.$legend.'&chp=4.71&chf=bg,lg,270,ffffff,0,eeeeee,1&chma=10,10,10,10|90,0&chof=png';
     return $url;
 }
 
@@ -137,7 +138,7 @@ $build .= "\n".'<div id="courseawards">'."\n";
 /**
  * Define the SQL query per character fed into this script
  */
-if(strtolower($qid) == 'c') {
+if (strtolower($qid) == 'c') {
     /**
      * This query does all per-course queries: score, votes, notes and even a basic list.
      */
@@ -225,7 +226,7 @@ if(strtolower($qid) == 'c') {
         $query .= "ORDER BY shortname ASC, voteavg DESC";
         $title = get_string('coursereport_list', 'report_courseawards');
     }
-    if($limit > 0) {
+    if ($limit > 0) {
         $query .= " LIMIT ".$limit.";";
     } else {
         $query .= ";";
@@ -233,7 +234,7 @@ if(strtolower($qid) == 'c') {
 
     // run the query, stop everything if no rows returned...
     $res = $DB->get_records_sql($query);
-    if(!$res) {
+    if (!$res) {
         $build .= '<p>'.get_string('noresults', 'report_courseawards').'</p>'."\n";
         die($build);
     }
@@ -242,10 +243,11 @@ if(strtolower($qid) == 'c') {
 
     // do the heading
     $csv .= '"'.$title.' ('.get_string('asof', 'report_courseawards').$now.')"'."\n";
-    //$build_heading = $OUTPUT->heading($title.' ('.get_string('asof', 'report_courseawards').$now.')', 'center', 2, 'main', true);
     $build_heading = $OUTPUT->heading($title.' ('.get_string('asof', 'report_courseawards').$now.')');
+
     // brief note about what the sort arrow means
-    $build .= '<p>'.get_string('sortimg1', 'report_courseawards').'<img src="'.SORT_IMG.'" />'.get_string('sortimg2', 'report_courseawards').'</p>'."\n";
+    $build .= '<p>'.get_string('sortimg1', 'report_courseawards').'<img src="'.SORT_IMG.'" />'.
+        get_string('sortimg2', 'report_courseawards').'</p>'."\n";
 
     //start building the data
     $csv .= '"'.get_string('course', 'report_courseawards').'","'.get_string('score_csv', 'report_courseawards').'","'.
@@ -254,9 +256,11 @@ if(strtolower($qid) == 'c') {
         get_string('notes_csv', 'report_courseawards').'","'.get_string('deleted_csv', 'report_courseawards').
         get_string('notes_csv', 'report_courseawards').'","'.get_string('medals', 'report_courseawards').'"'."\n";
     $build .= '<table>'."\n".'    <tr>'."\n";
+
     if (SCV == false) {
         $build .= '        <th>'.get_string('position', 'report_courseawards').'</th>'."\n";
     }
+
     // sort out the 'course' column
     if ($sort == 'a') {
         $build .= '        <th>'.get_string('course', 'report_courseawards').'<img src="'.SORT_IMG.'" /></th>'."\n";
@@ -290,7 +294,7 @@ if(strtolower($qid) == 'c') {
     $build .= '    </tr>'."\n";
 
     // cyclicly get the results
-    foreach($res as $row) {
+    foreach ($res as $row) {
         /**
          * CSV data first
          */
@@ -366,7 +370,7 @@ if(strtolower($qid) == 'c') {
             $build .= ' ('.$row->notecountdeleted.get_string('deleted', 'report_courseawards').')';
         }
         $build .= '</a></td>'."\n";
-        if(!empty($row->medal)) {
+        if (!empty($row->medal)) {
             $build .= '        <td><a href="report.php?q=v&c='.$row->course_id.'">'.ucfirst($row->medal).'</a></td>'."\n";
         } else {
             $build .= '        <td>-</td>'."\n";
@@ -377,7 +381,7 @@ if(strtolower($qid) == 'c') {
     // end table and print 'get csv file' link
     $build .= '</table>'."\n";
 
-} else if(strtolower($qid) == 'u') {
+} else if (strtolower($qid) == 'u') {
     /**
      * This section does all user queries: most votes, highest votes, lowest votes, most notes, deleted the most...
      * sort can be most [v]otes, [h]ighest votes, [l]owest votes, most [n]otes, most [d]eleted or [a]lphabetical list
@@ -468,7 +472,7 @@ if(strtolower($qid) == 'c') {
         $query .= "ORDER BY lastname ASC, firstname ASC, voteavg DESC";
         $title = get_string('userreport_list', 'report_courseawards');
     }
-    if($limit > 0) {
+    if ($limit > 0) {
         $query .= " LIMIT ".$limit.";";
     } else {
         $query .= ";";
@@ -476,7 +480,7 @@ if(strtolower($qid) == 'c') {
 
     // run the query, stop everything if no rows returned...
     $res = $DB->get_records_sql($query);
-    if(!$res) {
+    if (!$res) {
         $build .= '<p>'.get_string('noresults', 'report_courseawards').'</p>'."\n";
         die($build);
     }
@@ -485,7 +489,8 @@ if(strtolower($qid) == 'c') {
 
     $csv .= '"'.$title.' ('.get_string('asof', 'report_courseawards').$now.')"'."\n";
     $build_heading = $OUTPUT->heading($title.' ('.get_string('asof', 'report_courseawards').$now.')');
-    $build .= '<p>'.get_string('sortimg1', 'report_courseawards').'<img src="'.SORT_IMG.'" />'.get_string('sortimg2', 'report_courseawards').'</p>'."\n";
+    $build .= '<p>'.get_string('sortimg1', 'report_courseawards').'<img src="'.SORT_IMG.'" />'.
+        get_string('sortimg2', 'report_courseawards').'</p>'."\n";
 
     //start building the data
     $csv .= '"'.get_string('user', 'report_courseawards').'","'.get_string('score_csv', 'report_courseawards').'","'.
@@ -501,30 +506,34 @@ if(strtolower($qid) == 'c') {
     if ($sort == 'a') {
         $build .= '        <th>'.get_string('user', 'report_courseawards').'<img src="'.SORT_IMG.'" /></th>'."\n";
     } else {
-        $build .= '        <th><a href="report.php?q=u&l='.$limit.'&s=a">'.get_string('user', 'report_courseawards').'</a></th>'."\n";
+        $build .= '        <th><a href="report.php?q=u&l='.$limit.'&s=a">'.
+            get_string('user', 'report_courseawards').'</a></th>'."\n";
     }
     // sort out the 'highest/lowest score' column
     if ($sort == 'h' || $sort == 'l') {
         $build .= '        <th>'.get_string('score', 'report_courseawards').'<img src="'.SORT_IMG.'" /></th>'."\n";
     } else {
-        $build .= '        <th><a href="report.php?q=u&l='.$limit.'&s=h">'.get_string('score', 'report_courseawards').'</a></th>'."\n";
+        $build .= '        <th><a href="report.php?q=u&l='.$limit.'&s=h">'.
+            get_string('score', 'report_courseawards').'</a></th>'."\n";
     }
     // sort out the 'votes/deleted votes' column
     if ($sort == 'v' || $sort == 'd') {
         $build .= '        <th>'.get_string('votes', 'report_courseawards').'<img src="'.SORT_IMG.'" /></th>'."\n";
     } else {
-        $build .= '        <th><a href="report.php?q=u&l='.$limit.'&s=v">'.get_string('votes', 'report_courseawards').'</a></th>'."\n";
+        $build .= '        <th><a href="report.php?q=u&l='.$limit.'&s=v">'.
+            get_string('votes', 'report_courseawards').'</a></th>'."\n";
     }
     // sort out the 'notes' column
     if ($sort == 'n') {
         $build .= '        <th>'.get_string('notes', 'report_courseawards').'<img src="'.SORT_IMG.'" /></th>'."\n";
     } else {
-        $build .= '        <th><a href="report.php?q=u&l='.$limit.'&s=n">'.get_string('notes', 'report_courseawards').'</a></th>'."\n";
+        $build .= '        <th><a href="report.php?q=u&l='.$limit.'&s=n">'.
+            get_string('notes', 'report_courseawards').'</a></th>'."\n";
     }
     $build .= '    </tr>'."\n";
 
     // cyclicly get the results
-    foreach($res as $row) {
+    foreach ($res as $row) {
         /**
          * CSV data first
          */
@@ -603,7 +612,7 @@ if(strtolower($qid) == 'c') {
     // end table
     $build .= '</table>'."\n";
 
-} else if(strtolower($qid) == 'v') {
+} else if (strtolower($qid) == 'v') {
     /**
      * This section shows detail about all the votes and notes, as well as deleted votes and notes,
      * attributed to a course or an individual.
@@ -613,13 +622,17 @@ if(strtolower($qid) == 'c') {
     if ($user = optional_param('u', '', PARAM_INT)) {
         define('TYPE', 'user');
         $data = $DB->get_record('user', array('id'=>$user));
-        $build_heading = $OUTPUT->heading(get_string('vnreport_title', 'report_courseawards').$data->firstname.' '.$data->lastname.' ('.get_string('asof', 'report_courseawards').$now.')');
-        $csv .= '"'.get_string('vnreport_title', 'report_courseawards').$data->firstname.' '.$data->lastname.' ('.get_string('asof', 'report_courseawards').$now.')"'."\n";
+        $build_heading = $OUTPUT->heading(get_string('vnreport_title', 'report_courseawards').$data->firstname.' '.
+            $data->lastname.' ('.get_string('asof', 'report_courseawards').$now.')');
+        $csv .= '"'.get_string('vnreport_title', 'report_courseawards').$data->firstname.' '.$data->lastname.' ('.
+            get_string('asof', 'report_courseawards').$now.')"'."\n";
     } else if ($course = optional_param('c', '', PARAM_INT)) {
         define('TYPE', 'course');
         $data = $DB->get_record('course', array('id'=>$course));
-        $build_heading = $OUTPUT->heading(get_string('vnreport_title', 'report_courseawards').$data->fullname.' ('.$data->shortname.') ('.get_string('asof', 'report_courseawards').$now.')');
-        $csv .= '"'.get_string('vnreport_title', 'report_courseawards').$data->fullname.' ('.$data->shortname.') ('.get_string('asof', 'report_courseawards').$now.')"'."\n";
+        $build_heading = $OUTPUT->heading(get_string('vnreport_title', 'report_courseawards').$data->fullname.' ('.
+            $data->shortname.') ('.get_string('asof', 'report_courseawards').$now.')');
+        $csv .= '"'.get_string('vnreport_title', 'report_courseawards').$data->fullname.' ('.$data->shortname.') ('.
+            get_string('asof', 'report_courseawards').$now.')"'."\n";
     } else {
         error(get_string('vnreport_errortype', 'report_courseawards'));
     }
@@ -631,11 +644,11 @@ if(strtolower($qid) == 'c') {
     $query =   "SELECT vote, COUNT(vote) AS votecount, (
                     SELECT COUNT(vote)
                     FROM ".PREFIX.TBL_VOTE." ";
-                    if (TYPE == 'user') {
-                        $query .= "WHERE ".PREFIX.TBL_VOTE.".user_id = '".$user."' ";
-                    } else if (TYPE == 'course') {
-                        $query .= "WHERE ".PREFIX.TBL_VOTE.".course_id = '".$course."' ";
-                    }
+    if (TYPE == 'user') {
+        $query .= "WHERE ".PREFIX.TBL_VOTE.".user_id = '".$user."' ";
+    } else if (TYPE == 'course') {
+        $query .= "WHERE ".PREFIX.TBL_VOTE.".course_id = '".$course."' ";
+    }
     $query .=      "AND deleted = 0 )
                 AS total
                 FROM ".PREFIX.TBL_VOTE."
@@ -648,24 +661,29 @@ if(strtolower($qid) == 'c') {
     $query .= "GROUP BY vote ORDER BY vote DESC;";
 
     $res = $DB->get_records_sql($query);
-    if($res) {
+    if ($res) {
 
         $build .= '<h3>'.get_string('vnreport_summary', 'report_courseawards').'</h3>'."\n";
         $build .= '<table>'."\n";
-        $build .= '    <tr><th>'.get_string('vnreport_vote', 'report_courseawards').'</th><th>'.get_string('vnreport_votecast', 'report_courseawards').'</th><th>'.get_string('vnreport_percentage', 'report_courseawards').'</th></tr>'."\n";
+        $build .= '    <tr><th>'.get_string('vnreport_vote', 'report_courseawards').'</th><th>'.
+            get_string('vnreport_votecast', 'report_courseawards').'</th><th>'.
+            get_string('vnreport_percentage', 'report_courseawards').'</th></tr>'."\n";
 
         $score  = 0;
         $chart  = array();
         $votes  = 0;
-        foreach($res as $row) {
-            $build .= '    <tr><td><img src="'.PATH_VOTE.'img/'.$row->vote.'.png" /></td><td>'.$row->votecount.'</td><td>'.number_format(($row->votecount/$row->total)*100, 1).'%</td></tr>'."\n";
+        foreach ($res as $row) {
+            $build .= '    <tr><td><img src="'.PATH_VOTE.'img/'.$row->vote.'.png" /></td><td>'.$row->votecount.
+                '</td><td>'.number_format(($row->votecount/$row->total)*100, 1).'%</td></tr>'."\n";
             $score += ($row->vote * $row->votecount)/$row->total;
             $chart[$row->vote] = $row->votecount;
             $votes += $row->votecount; // for use by the chart function
         }
         $build .= '</table>'."\n";
 
-        $build .= '<p>'.get_string('vnreport_coursescore', 'report_courseawards').number_format($score, 2).get_string('vnreport_orpercentage', 'report_courseawards').number_format(($score/3)*100, 1).get_string('vnreport_percent', 'report_courseawards').'</p>'."\n";
+        $build .= '<p>'.get_string('vnreport_coursescore', 'report_courseawards').number_format($score, 2).
+            get_string('vnreport_orpercentage', 'report_courseawards').number_format(($score/3)*100, 1).
+            get_string('vnreport_percent', 'report_courseawards').'</p>'."\n";
 
         if (TYPE == 'user') {
             $url_sm = get_chart($chart, $votes, $data->firstname.' '.$data->lastname, false);
@@ -674,7 +692,8 @@ if(strtolower($qid) == 'c') {
             $url_sm = get_chart($chart, $votes, $data->fullname.'|('.$data->shortname.')', false);
             $url_lg = get_chart($chart, $votes, $data->fullname.'|('.$data->shortname.')', true);
         }
-        $build .= '<p><a href="'.$url_lg.'"><img style="border: 1px solid #bbb" src="'.$url_sm.'" title="'.get_string('vnreport_bigchart', 'report_courseawards').'" /></a></p>'."\n";
+        $build .= '<p><a href="'.$url_lg.'"><img style="border: 1px solid #bbb" src="'.$url_sm.'" title="'.
+            get_string('vnreport_bigchart', 'report_courseawards').'" /></a></p>'."\n";
     }
 
     // put the medal on-screen if one exists
@@ -682,8 +701,10 @@ if(strtolower($qid) == 'c') {
         // course has a medal.
         $awarded = get_medal($course);
         $build .= '<h3>'.get_string('vnreport_medalawarded', 'report_courseawards').'</h3>'."\n";
-        $build .= '<p>'.get_string('vnreport_courseawarded', 'report_courseawards').'&ldquo;<strong>'.ucfirst($awarded).'</strong>&rdquo;:</p>'."\n";
-        $build .= '<p><img src="'.get_medal_img($awarded).'" alt="'.ucfirst($awarded).'" title="'.ucfirst($awarded).'" /></p>'."\n";
+        $build .= '<p>'.get_string('vnreport_courseawarded', 'report_courseawards').'&ldquo;<strong>'.
+            ucfirst($awarded).'</strong>&rdquo;:</p>'."\n";
+        $build .= '<p><img src="'.get_medal_img($awarded).'" alt="'.ucfirst($awarded).'" title="'.
+            ucfirst($awarded).'" /></p>'."\n";
     }
 
     // end of summary section
@@ -709,7 +730,7 @@ if(strtolower($qid) == 'c') {
 
     // run the query, stop everything if no rows returned...
     $res = $DB->get_records_sql($query);
-    if(!$res) {
+    if (!$res) {
         $build .= '<p>'.get_string('novotesnotes', 'report_courseawards').'</p>'."\n";
     } else {
 
@@ -733,7 +754,7 @@ if(strtolower($qid) == 'c') {
         $build .= '    </tr>'."\n";
 
         // cyclicly put the results on the screen
-        foreach($res as $row) {
+        foreach ($res as $row) {
             /**
              * CSV data first
              */
@@ -769,15 +790,19 @@ if(strtolower($qid) == 'c') {
                 $build .= '    <tr>'."\n";
             }
             $build .= '        <td>'.++$position.'</td>'."\n";
-            $build .= '        <td>'.get_string('vnreport_added', 'report_courseawards').date($now_fmt, $row->date_added);
+            $build .= '        <td>'.get_string('vnreport_added', 'report_courseawards').
+                date($now_fmt, $row->date_added);
             if ($row->deleted == 1) {
-                $build .= '<br /><span class="deleted">'.get_string('vnreport_deleted', 'report_courseawards').date($now_fmt, $row->date_modified).'</span>';
+                $build .= '<br /><span class="deleted">'.get_string('vnreport_deleted', 'report_courseawards').
+                    date($now_fmt, $row->date_modified).'</span>';
             }
             $build .= '</td>'."\n";
             if (TYPE == 'course') {
-                $build .= '        <td><a href="'.PATH_USER.$row->user_id.'">'.$row->firstname.' '.$row->lastname.'</a></td>'."\n";
+                $build .= '        <td><a href="'.PATH_USER.$row->user_id.'">'.$row->firstname.' '.
+                    $row->lastname.'</a></td>'."\n";
             } else if (TYPE == 'user') {
-                $build .= '        <td><a href="'.PATH_COURSE.$row->course_id.'">'.$row->fullname.' ('.$row->shortname.')</a></td>'."\n";
+                $build .= '        <td><a href="'.PATH_COURSE.$row->course_id.'">'.$row->fullname.' ('.
+                    $row->shortname.')</a></td>'."\n";
             }
             $build .= '        <td><img src="'.PATH_VOTE.'img/'.$row->vote.'.png" /></td>'."\n";
             if (!empty($row->note)) {
@@ -802,7 +827,7 @@ if(strtolower($qid) == 'c') {
     // end table
     $build .= '</table>'."\n";
 
-} else if(strtolower($qid) == 'm') {
+} else if (strtolower($qid) == 'm') {
     /**
      * This section shows the medals which have been awarded
      */
@@ -814,17 +839,18 @@ if(strtolower($qid) == 'c') {
     $medal  = optional_param('m', '', PARAM_ALPHA);
 
     // build the query
-    $query =   "SELECT ".PREFIX.TBL_MEDAL.".id AS mid, user_id, course_id, medal, date_added, date_modified, ".PREFIX.TBL_MEDAL.".deleted AS deleted, shortname, fullname, firstname, lastname
+    $query =   "SELECT ".PREFIX.TBL_MEDAL.".id AS mid, user_id, course_id, medal, date_added, date_modified, ".
+                PREFIX.TBL_MEDAL.".deleted AS deleted, shortname, fullname, firstname, lastname
                 FROM ".PREFIX.TBL_MEDAL.", ".PREFIX."course, ".PREFIX."user
                 WHERE ".PREFIX.TBL_MEDAL.".course_id = ".PREFIX."course.id
                 AND ".PREFIX.TBL_MEDAL.".user_id = ".PREFIX."user.id ";
-    if($medal == 'g') {
+    if ($medal == 'g') {
         $query .= "AND medal = 'gold' ";
-    } else if($medal == 's') {
+    } else if ($medal == 's') {
         $query .= "AND medal = 'silver' ";
-    } else if($medal == 'b') {
+    } else if ($medal == 'b') {
         $query .= "AND medal = 'bronze' ";
-    } else if($medal == 'a') {
+    } else if ($medal == 'a') {
         $query .= "AND medal = 'achievement' ";
     }
 
@@ -833,7 +859,7 @@ if(strtolower($qid) == 'c') {
     } else if ($sort == 'c') {
         $query .= "ORDER BY fullname ASC ";
     }
-    if($limit > 0) {
+    if ($limit > 0) {
         $query .= " LIMIT ".$limit.";";
     } else {
         $query .= ";";
@@ -841,36 +867,41 @@ if(strtolower($qid) == 'c') {
 
     // run the query, stop everything if no rows returned...
     $res = $DB->get_records_sql($query);
-    if(!$res) {
+    if (!$res) {
         $build .= '<p>'.get_string('noresults', 'report_courseawards').'</p>'."\n";
         die($build);
     }
 
     $save_csv = true;
 
-    if($medal == 'g') {
+    if ($medal == 'g') {
         $title = get_string('medalsreport_gold', 'report_courseawards');
-    } else if($medal == 's') {
+    } else if ($medal == 's') {
         $title = get_string('medalsreport_silver', 'report_courseawards');
-    } else if($medal == 'b') {
+    } else if ($medal == 'b') {
         $title = get_string('medalsreport_bronze', 'report_courseawards');
-    } else if($medal == 'a') {
+    } else if ($medal == 'a') {
         $title = get_string('medalsreport_achievement', 'report_courseawards');
     } else {
         $title = get_string('medalsreport_medals', 'report_courseawards');
     }
-    $build_heading = $OUTPUT->heading($title.get_string('medalsreport_awarded', 'report_courseawards').' ('.get_string('asof', 'report_courseawards').$now.')');
-    $csv .= '"'.$title.get_string('medalsreport_awarded', 'report_courseawards').'('.get_string('asof', 'report_courseawards').$now.')"'."\n";
+    $build_heading = $OUTPUT->heading($title.get_string('medalsreport_awarded', 'report_courseawards').' ('.
+        get_string('asof', 'report_courseawards').$now.')');
+    $csv .= '"'.$title.get_string('medalsreport_awarded', 'report_courseawards').'('.
+        get_string('asof', 'report_courseawards').$now.')"'."\n";
 
     if (isset($medal) && !empty($medal)) {
         $build .= '<p style="text-align: center;"><img src="'.get_medal_img($medal).'" /></p>';
     }
 
-    $build .= '<p>'.get_string('sortimg1', 'report_courseawards').'<img src="'.SORT_IMG.'" />'.get_string('sortimg2', 'report_courseawards').'</p>'."\n";
+    $build .= '<p>'.get_string('sortimg1', 'report_courseawards').'<img src="'.SORT_IMG.'" />'.
+        get_string('sortimg2', 'report_courseawards').'</p>'."\n";
     $build .= '<p>'.get_string('vnreport_greytext', 'report_courseawards').'</p>'."\n";
 
-    $csv .= '"'.get_string('course', 'report_courseawards').'","'.get_string('date', 'report_courseawards').'","'.
-        get_string('medalawarded_csv', 'report_courseawards').'","'.get_string('medalawardedby_csv', 'report_courseawards').'","'.
+    $csv .= '"'.get_string('course', 'report_courseawards').'","'.
+        get_string('date', 'report_courseawards').'","'.
+        get_string('medalawarded_csv', 'report_courseawards').'","'.
+        get_string('medalawardedby_csv', 'report_courseawards').'","'.
         get_string('deleted_csv', 'report_courseawards').'"'."\n";
 
     //start building the table
@@ -880,20 +911,23 @@ if(strtolower($qid) == 'c') {
     if ($sort == 'c') {
         $build .= '        <th>'.get_string('course', 'report_courseawards').'<img src="'.SORT_IMG.'" /></th>'."\n";
     } else {
-        $build .= '        <th><a href="report.php?q=m&l='.$limit.'&s=c&m='.$medal.'">'.get_string('course', 'report_courseawards').'</a></th>'."\n";
+        $build .= '        <th><a href="report.php?q=m&l='.$limit.'&s=c&m='.$medal.'">'.
+            get_string('course', 'report_courseawards').'</a></th>'."\n";
     }
     // sort out the 'date ' column
     if ($sort == 'd') {
-        $build .= '        <th>'.get_string('medalsreport_dateachieved', 'report_courseawards').'<img src="'.SORT_IMG.'" /></th>'."\n";
+        $build .= '        <th>'.get_string('medalsreport_dateachieved', 'report_courseawards').'<img src="'.
+            SORT_IMG.'" /></th>'."\n";
     } else {
-        $build .= '        <th><a href="report.php?q=m&l='.$limit.'&s=d&m='.$medal.'">'.get_string('medalsreport_dateachieved', 'report_courseawards').'</a></th>'."\n";
+        $build .= '        <th><a href="report.php?q=m&l='.$limit.'&s=d&m='.$medal.'">'.
+            get_string('medalsreport_dateachieved', 'report_courseawards').'</a></th>'."\n";
     }
     $build .= '        <th>'.get_string('medalawarded_csv', 'report_courseawards').'</th>'."\n";
     $build .= '        <th>'.get_string('medalawardedby_csv', 'report_courseawards').'</th>'."\n";
     $build .= '    </tr>'."\n";
 
     // cyclicly put the results on the screen
-    foreach($res as $row) {
+    foreach ($res as $row) {
         /**
          * CSV data first
          */
@@ -924,13 +958,15 @@ if(strtolower($qid) == 'c') {
         $build .= '        <td><a href="'.PATH_COURSE.$row->course_id.'">'.$row->fullname.' ('.$row->shortname.')</a></td>'."\n";
         $build .= '        <td>'.date($now_fmt, $row->date_added);
         if ($row->deleted == 1) {
-            $build .= '<br /><span class="deleted">'.get_string('debugdeleted', 'report_courseawards').date($now_fmt, $row->date_modified).'</span>';
+            $build .= '<br /><span class="deleted">'.get_string('debugdeleted', 'report_courseawards').
+                date($now_fmt, $row->date_modified).'</span>';
         }
         $build .= '</td>'."\n";
         $build .= '        <td>'.ucfirst($row->medal).'</td>'."\n";
         $build .= '        <td><a href="'.PATH_USER.$row->user_id.'">'.$row->firstname.' '.$row->lastname.'</a>';
         if ($row->deleted == 1) {
-            $build .= '<br /><span class="deleted">'.get_string('medalsreport_del', 'report_courseawards').$row->firstname.' '.$row->lastname.'</span>';
+            $build .= '<br /><span class="deleted">'.get_string('medalsreport_del', 'report_courseawards').
+                $row->firstname.' '.$row->lastname.'</span>';
         }
         $build .= '</td>'."\n";
 
@@ -949,7 +985,7 @@ if(strtolower($qid) == 'c') {
  * sort out the output, whatever that's going to be
  */
 
-if($save_csv) {
+if ($save_csv) {
     // write the csv file to disk
     $fh = fopen(FILE_CSV, 'w');
     if (!$fh) {
