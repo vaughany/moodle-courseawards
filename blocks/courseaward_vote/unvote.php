@@ -27,11 +27,11 @@ require_once(dirname(__FILE__).'/../../config.php');
 
 defined('MOODLE_INTERNAL') || die;
 
-require_login($course);
-
 if (!$course = $DB->get_record('course', array('id'=>required_param('cid', PARAM_INT)))) {
     print_error(get_string('error-courseidnotset', 'block_courseaward_vote'));
 }
+
+require_login($course);
 
 require_once($CFG->dirroot.'/blocks/courseaward_vote/libvote.php');
 
