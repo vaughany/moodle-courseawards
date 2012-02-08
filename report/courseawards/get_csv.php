@@ -23,20 +23,19 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// all fairly essential ;)
-require_once('../../../config.php');
+require_once(dirname(__FILE__).'/../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
-admin_externalpage_setup('reportcourseawards');
 
-// check for an appropriate capability
+admin_externalpage_setup('reportcourseawards', '', null, '', array('pagelayout'=>'report'));
+
 require_capability('moodle/site:viewreports', get_context_instance(CONTEXT_SYSTEM));
 
 // define the location and name of the saved CSV file - do this in report.php too.
 define('FILE_CSV', $CFG->dataroot.'/temp/courseawards-report.csv');
 
 header('Content-Description: File Transfer');
-header('Content-Type: application/octet-stream'); // open or download
-//header("Content-Type: application/force-download"); // download ONLY
+header('Content-Type: application/octet-stream');       // open or download
+//header("Content-Type: application/force-download");     // download ONLY
 header('Content-Disposition: attachment; filename='.basename(FILE_CSV));
 header('Content-Transfer-Encoding: binary');
 header('Expires: 0');

@@ -44,10 +44,9 @@ class block_courseaward_medal extends block_base {
     public function get_content() {
         global $CFG, $COURSE, $USER;
 
-        $build = ''; // build the output into this variable
+        $build = '';
         $pathtoblock = $CFG->wwwroot.'/blocks/courseaward_medal/';
 
-        // add in the functions
         require_once($CFG->dirroot.'/blocks/courseaward_medal/libmedal.php');
 
         // show the medal awarded, if there is one.
@@ -59,19 +58,14 @@ class block_courseaward_medal extends block_base {
         }
 
         if (has_capability('block/courseaward_medal:admin', get_context_instance(CONTEXT_COURSE, $COURSE->id))) {
-            /**
-             * user has the 'admin' capability and can assign/remove medals
-             */
+
+            // user has the 'admin' capability and can assign/remove medals
             if (has_medal($COURSE->id)) {
-                /**
-                 * if the course has a medal, provide options to delete it
-                 */
+                // if the course has a medal, provide options to delete it
                 $build .= "\n".'<div class="center smaller cleartop"><a href="'.$pathtoblock.'admin_unmedal.php?cid='.
                     $COURSE->id.'">'.get_string('admin-medaldel', 'block_courseaward_medal').'</a></div>';
             } else {
-                /**
-                 * if the course doesn't have a medal, provide options to set one
-                 */
+                // if the course doesn't have a medal, provide options to set one
                 $build .= "\n".'<div class="center smaller">';
                 $build .= '<a href="'.$pathtoblock.'admin_medal.php?cid='.$COURSE->id.'&medal=gold">'.
                     get_string('admin-medaladdgold', 'block_courseaward_medal').'</a><br />'."\n";

@@ -23,14 +23,20 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once('../../config.php');
+require_once(dirname(__FILE__).'/../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 
-//admin_externalpage_setup('reportcourseawards');
+defined('MOODLE_INTERNAL') || die;
+
+require_login();
+
+require_capability('moodle/site:viewreports', get_context_instance(CONTEXT_SYSTEM));
+
 admin_externalpage_setup('reportcourseawards', '', null, '', array('pagelayout'=>'report'));
 
-// check for an appropriate capability
-//require_capability('moodle/site:viewreports', get_context_instance(CONTEXT_SYSTEM));
+// do some logging?
+//add_to_log($course->id, "course", "report stats", "report/stats/index.php?course=$course->id", $course->id);
+//stats_check_uptodate($course->id);
 
 $output = '<h3>'.get_string('coursewith', 'report_courseawards').'</h3>'."\n";
 
@@ -153,7 +159,7 @@ $output .= '<ul>'."\n";
 if ($res = $DB->get_record('block', array('name'=>'courseaward_vote'))) {
     $vid =  $res->id;
 } else {
-    //throw new moodle_exception('nosite', 'error');
+    // TODO: throw new moodle_exception('nosite', 'error');
     die("Sorry, couldn't get the block ID for the 'courseawards_vote' block. Have you installed it? ".
         "If so, please report this error to the developer.");
 }
@@ -172,9 +178,8 @@ echo $OUTPUT->box_start('generalbox boxwidthwide boxaligncenter');
 echo $output;
 echo $OUTPUT->box_end();
 
-/**
- * a new section for a few minor admin operations
- */
+
+// a section for a few minor admin operations
 if ($CFG->dbtype == 'mysqli') {
     $output_admin = '<h3>'.get_string('admin_backuptitle', 'report_courseawards').'</h3>'."\n";
     $output_admin .= "<ul>\n";
@@ -202,9 +207,7 @@ $output_admin .= '    <li><a href="admin.php?q=votedelete">'.
     get_string('admin_deleteallvotehistory', 'report_courseawards')."</a></li>\n";
 $output_admin .= "</ul>\n";
 
-/**
- * drop-down menu options
- */
+// TODO: drop-down menu options
 $output_admin .= '<h3>'.get_string('admin_courseclearingtitle', 'report_courseawards').'</h3>'."\n";
 $output_admin .= 'Remove all votes from: ';
 $output_admin .= '<select>';
@@ -213,17 +216,17 @@ if ($res) {
     foreach ($res as $row) {
         $res2 = $DB->get_record_select('course', 'id = '.$row->id, array('fullname'));
         if ($res2) {
-            //$output_admin .= 'Row: '.$row->id.'; Course: '.$res2->fullname."<br />\n";
             $output_admin .= '<option value="'.$row->id.'">'.$res2->fullname.'</option>'."<br />\n";
         }
     }
+    $output_admin .= '</select>';
+    $output_admin .= '<input type="button" type="submit" value="Clear this course" />';
+} else {
+    $output_admin .= '<option disabled="disabled">No courses with votes.</option>'."<br />\n";
+    $output_admin .= '</select>';
 }
-$output_admin .= '</select>';
-$output_admin .= '<input type="button" type="submit" value="Clear this course" />';
 
-/**
- * statistics
- */
+// statistics
 $output_admin .= '<h3>'.get_string('stats', 'report_courseawards').'</h3>'."\n";
 $output_admin .= '<ul>'."\n";
 

@@ -56,11 +56,13 @@ function get_course_score_average($course) {
         }
         $build .= $votes_avg.get_string('scoreavg3', 'block_courseaward_vote');
         $build .= number_format(($votes_avg/3)*100).get_string('scoreavg4', 'block_courseaward_vote');
+
     } else {
-        if (!has_capability('block/courseaward_vote:vote', get_context_instance(CONTEXT_COURSE, $COURSE->id))) {
-            $build = get_string('scoreavgalt', 'block_courseaward_vote');
-        } else {
+        if (!has_capability('block/courseaward_vote:vote', get_context_instance(CONTEXT_COURSE, $COURSE->id))
+            || has_capability('block/courseaward_vote:admin', get_context_instance(CONTEXT_COURSE, $COURSE->id)) ) {
             $build = get_string('scoreavgaltnonstudent', 'block_courseaward_vote');
+        } else {
+            $build = get_string('scoreavgalt', 'block_courseaward_vote');
         }
     }
 
@@ -145,14 +147,16 @@ function get_notes($cid, $deleted = false) {
             get_string('note_get', 'block_courseaward_vote').'</a>
         </div>
         <script type="text/javascript">
+        //<![CDATA[
             function hideshow(which){
-            if (!document.getElementById)
-                return
-            if (which.style.display=="block")
-                which.style.display="none"
-            else
-                which.style.display="block"
-        }
+                if (!document.getElementById)
+                    return
+                if (which.style.display=="block")
+                    which.style.display="none"
+                else
+                    which.style.display="block"
+            }
+        //]]>
         </script>
         <div id="courseaward_vote_feedback" class="clear" style="display: none;"><ul>'."\n";
 
@@ -171,8 +175,10 @@ function get_notes($cid, $deleted = false) {
         return $build;
     } else {
         // print 'no notes' (or whatever's in the language pack) if there are no notes to show
+        // switch the below returns to show no block at all in the event of there being no notes.
         return '<div class="center smaller clear">'.get_string('note_none', 'block_courseaward_vote').'</div>';
-        // NOTE: comment out the above line to show no block at all in the event of there being no notes.
+        //return false;
+
     }
 }
 

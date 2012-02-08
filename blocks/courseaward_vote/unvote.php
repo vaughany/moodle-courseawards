@@ -23,43 +23,36 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once('../../config.php');
+require_once(dirname(__FILE__).'/../../config.php');
 
 defined('MOODLE_INTERNAL') || die;
+
+require_login($course);
 
 if (!$course = $DB->get_record('course', array('id'=>required_param('cid', PARAM_INT)))) {
     print_error(get_string('error-courseidnotset', 'block_courseaward_vote'));
 }
 
-// require a login AND a course login, all the better to prevent fraud.
-require_login($course);
-require_course_login($course);
-
 require_once($CFG->dirroot.'/blocks/courseaward_vote/libvote.php');
 
-// validate the user id.
 if (!$USER->id) {
     print_error(get_string('error-useridnotset', 'block_courseaward_vote'));
 }
 
-// check to see if enough time has passed
 if (!can_change_vote($USER->id, $course->id)) {
     print_error(get_string('error-cantunvoteyet', 'block_courseaward_vote'));
 }
 
-// get the id of the vote we're deleting
 if (!$vote_id = get_vote_id($USER->id, $course->id)) {
     print_error(get_string('error-novoteid', 'block_courseaward_vote'));
 }
 
-// create the data object
 $dbupdate = new object();
 $dbupdate->id               = $vote_id;
 $dbupdate->date_modified    = time();
 $dbupdate->deleted          = 1;
 $dbupdate->deleted_user_id  = $USER->id;
 
-// update it
 if (!$DB->update_record('block_courseaward_vote', $dbupdate)) {
     print_error(get_string('error-dbupdate', 'block_courseaward_vote'));
 } else {

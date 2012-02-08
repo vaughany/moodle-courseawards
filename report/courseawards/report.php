@@ -23,25 +23,28 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once('../../config.php');
+require_once(dirname(__FILE__).'/../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
+require_once($CFG->dirroot.'/blocks/courseaward_medal/libmedal.php');
 
-//admin_externalpage_setup('reportcourseawards');
+defined('MOODLE_INTERNAL') || die;
+
+require_login();
+
 admin_externalpage_setup('reportcourseawards', '', null, '', array('pagelayout'=>'report'));
 
-// check for an appropriate capability
-//require_capability('moodle/site:viewreports', get_context_instance(CONTEXT_SYSTEM));
+require_capability('moodle/site:viewreports', get_context_instance(CONTEXT_SYSTEM));
 
-$qid    = required_param('q', PARAM_ALPHA);
+// TODO: do some logging?
+//add_to_log($course->id, "course", "report stats", "report/stats/index.php?course=$course->id", $course->id);
+//stats_check_uptodate($course->id);
 
-// nice date format
+$qid = required_param('q', PARAM_ALPHA);
+
 $now_fmt = 'F jS Y, g:i a';
 $now = date($now_fmt, time());
 
-// variable holding the item's position in the list.
 $position = 0;
-
-// initially false, set to true to save the csv to disk and print the 'save as csv' link
 $save_csv = false;
 
 define('PREFIX', $CFG->prefix);
@@ -49,7 +52,7 @@ define('TBL_VOTE', 'block_courseaward_vote');
 define('TBL_MEDAL', 'block_courseaward_medal');
 define('PATH_COURSE', $CFG->wwwroot.'/course/view.php?id=');
 define('PATH_USER', $CFG->wwwroot.'/user/view.php?id=');
-define('PATH_REPORT', $CFG->wwwroot.'/admin/report/courseawards');
+define('PATH_REPORT', $CFG->wwwroot.'/report/courseawards');
 define('PATH_VOTE', $CFG->wwwroot.'/blocks/courseaward_vote/');
 define('PATH_MEDAL', $CFG->wwwroot.'/blocks/courseaward_medal/');
 // define the image here so we can change it across the report
@@ -58,80 +61,96 @@ define('DEL_IMG', PATH_REPORT.'/img/cross.png');
 // define the location and name of the saved CSV file - do this in get_csv.php too.
 define('FILE_CSV', $CFG->dataroot.'/temp/courseawards-report.csv');
 
-// this is nice
-require_once($CFG->dirroot.'/blocks/courseaward_medal/libmedal.php');
-
-/**
- * functions to do stuff
- */
 function get_course_shortname($id) {
     global $DB;
     $res = $DB->get_record('course', array('id'=>$id));
     return '<a href="'.PATH_COURSE.$id.'">'.$res->shortname.'</a>';
 }
-function get_chart($chart, $votes, $title='Graphical breakdown of votes', $big=false) {
-    $title = str_replace(' ', '+', $title);
+function get_chart2($chart, $votes, $title='Graphical breakdown of votes', $big=false) {
     if ($big == true) {
-        $size = '650x450&chts=000000,24';
+        $sizew = '800';
+        $sizeh = '500';
     } else {
-        $size = '400x175';
+        $sizew = '400';
+        $sizeh = '250';
     }
 
+    // number of decimal places
     $nfdec = 1;
 
+    $build      = '';
     $data       = '';
     $colours    = '';
-    $labels     = '';
-    $legend     = '';
     if (isset($chart[3])) {
-        $data       .= $chart[3].',';   // data separated by commas
-        $colours    .= '00cc00|';       // colours separated by pipes
-        $labels     .= get_string('outstanding', 'report_courseawards').'|';  // labels separated by pipes
-        $legend     .= $chart[3].' ('.number_format(($chart[3]/$votes)*100, $nfdec).'%)|';   // legend separated by pipes
+        $data       .= "['".get_string('outstanding', 'report_courseawards')."', ".$chart[3]."], ";
+        $colours    .= "{color: '#00cc00'}, ";
     }
     if (isset($chart[2])) {
-        $data       .= $chart[2].',';
-        $colours    .= 'eeee00|';
-        $labels     .= get_string('good', 'report_courseawards').'|';
-        $legend     .= $chart[2].' ('.number_format(($chart[2]/$votes)*100, $nfdec).'%)|';
+        $data       .= "['".get_string('good', 'report_courseawards')."', ".$chart[2]."], ";
+        $colours    .= "{color: '#eeee00'}, ";
     }
     if (isset($chart[1])) {
-        $data       .= $chart[1].',';
-        $colours    .= 'ff9600|';
-        $labels     .= get_string('satisfactory', 'report_courseawards').'|';
-        $legend     .= $chart[1].' ('.number_format(($chart[1]/$votes)*100, $nfdec).'%)|';
+        $data       .= "['".get_string('satisfactory', 'report_courseawards')."', ".$chart[1]."], ";
+        $colours    .= "{color: '#ff9600'}, ";
     }
     if (isset($chart[0])) {
-        $data       .= $chart[0];
-        $colours    .= 'dd0000';
-        $labels     .= get_string('inadequate', 'report_courseawards');
-        $legend     .= $chart[0].' ('.number_format(($chart[0]/$votes)*100, $nfdec).'%)';
+        $data       .= "['".get_string('inadequate', 'report_courseawards')."', ".$chart[0]."]";
+        $colours    .= "{color: '#dd0000'}";
     }
-    if (substr($data, -1) == ',') {
-        $data = substr($data, 0, strlen($data)-1);
+    if (substr($data, -2) == ', ') {
+        $data = substr($data, 0, strlen($data)-2);
     }
-    if (substr($colours, -1) == '|') {
-        $colours = substr($colours, 0, strlen($colours)-1);
-    }
-    if (substr($labels, -1) == '|') {
-        $labels = substr($labels, 0, strlen($labels)-1);
-    }
-    if (substr($legend, -1) == '|') {
-        $legend = substr($legend, 0, strlen($legend)-1);
+    if (substr($colours, -2) == ', ') {
+        $colours = substr($colours, 0, strlen($colours)-2);
     }
 
-    $url = 'http://chart.apis.google.com/chart?cht=p&chs='.$size.'&chco='.$colours.'&chl='.$labels.'&chd=t:'.
-        $data.'&chtt='.$title.'&chdl='.$legend.'&chp=4.71&chf=bg,lg,270,ffffff,0,eeeeee,1&chma=10,10,10,10|90,0&chof=png';
-    return $url;
+    // debugging
+    //$build .= '<p>'.$data.'<br />'.$colours.'</p>';
+
+    /**
+     * Google Chart Tools pie chart docs:
+     * http://code.google.com/apis/chart/interactive/docs/gallery/piechart.html
+     */
+
+    $build .= "<script type=\"text/javascript\">
+    //<![CDATA[
+        google.load(\"visualization\", \"1\", {packages:[\"corechart\"]});
+        google.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Vote');
+            data.addColumn('number', 'Number of Votes');
+            data.addRows([
+                $data
+            ]);
+
+            var options = {
+                width: $sizew, height: $sizeh,
+                title: '$title',
+                is3D: false,
+                backgroundColor: '#f00',
+                backgroundColor: {stroke: '#bbb', strokeWidth: 2},
+                slices: [$colours]
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+    //]]>
+    </script>";
+
+    return $build;
 }
-
 // set up the variables in which we will slowly create either the for-screen data or data for the file.
 $build          = '';
 $build_heading  = '';
 $csv            = '';
 
-// ...whereas this does:
+// adding the Google Chart Tools JS
+$build .= '<script type="text/javascript" src="https://www.google.com/jsapi"></script>'."\n";
+
 $build .= '<link rel="stylesheet" type="text/css" href="styles.css" />'."\n";
+
 // wrap everything in a id'd div tag
 $build .= "\n".'<div id="courseawards">'."\n";
 
@@ -295,9 +314,8 @@ if (strtolower($qid) == 'c') {
 
     // cyclicly get the results
     foreach ($res as $row) {
-        /**
-         * CSV data first
-         */
+        // CSV data first
+
         // course
         $csv .= '"'.$row->shortname.'",';
         // score
@@ -335,9 +353,8 @@ if (strtolower($qid) == 'c') {
         // medal
         $csv .= '"'.ucfirst($row->medal).'"'."\n";
 
-        /**
-         * data for screen next
-         */
+        // data for screen next
+
         $build .= '    <tr>'."\n";
         if (SCV == false) {
             $build .= '        <td>'.++$position.'</td>'."\n";
@@ -443,7 +460,6 @@ if (strtolower($qid) == 'c') {
     if (SCV) {
         $query .= "AND ".PREFIX."user.id = '".$user."' ";
     }
-    //$query .= "GROUP BY ".PREFIX."user.id, user_id, firstname, lastname ";
     $query .= "GROUP BY ".PREFIX."user.id, firstname, lastname ";
     if (SCV) {
         // no sorting if only one course specified
@@ -534,9 +550,8 @@ if (strtolower($qid) == 'c') {
 
     // cyclicly get the results
     foreach ($res as $row) {
-        /**
-         * CSV data first
-         */
+        // CSV data first
+
         // user
         $csv .= '"'.$row->firstname.' '.$row->lastname.'",';
         // score
@@ -572,9 +587,8 @@ if (strtolower($qid) == 'c') {
             $csv .= '"'.$row->notecountdeleted.'"'."\n";
         }
 
-        /**
-         * data for screen next
-         */
+        // data for screen next
+
         $build .= '    <tr>'."\n";
         if (SCV == false) {
             $build .= '        <td>'.++$position.'</td>'."\n";
@@ -637,9 +651,8 @@ if (strtolower($qid) == 'c') {
         error(get_string('vnreport_errortype', 'report_courseawards'));
     }
 
-    /**
-     * New summary section, simply votes against the coloured star
-     */
+    // New summary section, simply votes against the coloured star
+
     // build the query
     $query =   "SELECT vote, COUNT(vote) AS votecount, (
                     SELECT COUNT(vote)
@@ -685,15 +698,14 @@ if (strtolower($qid) == 'c') {
             get_string('vnreport_orpercentage', 'report_courseawards').number_format(($score/3)*100, 1).
             get_string('vnreport_percent', 'report_courseawards').'</p>'."\n";
 
+        //GETCHART2!!
         if (TYPE == 'user') {
-            $url_sm = get_chart($chart, $votes, $data->firstname.' '.$data->lastname, false);
-            $url_lg = get_chart($chart, $votes, $data->firstname.' '.$data->lastname, true);
+            $build .= get_chart2($chart, $votes, $data->firstname.' '.$data->lastname, false);
         } else if (TYPE == 'course') {
-            $url_sm = get_chart($chart, $votes, $data->fullname.'|('.$data->shortname.')', false);
-            $url_lg = get_chart($chart, $votes, $data->fullname.'|('.$data->shortname.')', true);
+            $build .= get_chart2($chart, $votes, $data->fullname.' ('.$data->shortname.')', false);
         }
-        $build .= '<p><a href="'.$url_lg.'"><img style="border: 1px solid #bbb" src="'.$url_sm.'" title="'.
-            get_string('vnreport_bigchart', 'report_courseawards').'" /></a></p>'."\n";
+
+        $build .= '<div id="chart_div"></div>'."\n";
     }
 
     // put the medal on-screen if one exists
@@ -709,9 +721,7 @@ if (strtolower($qid) == 'c') {
 
     // end of summary section
 
-    /**
-     * original section :)
-     */
+    // original section
 
     // build the query
     $query =   "SELECT ".PREFIX.TBL_VOTE.".id AS vote_id, firstname, lastname, shortname, fullname, user_id,
@@ -928,9 +938,8 @@ if (strtolower($qid) == 'c') {
 
     // cyclicly put the results on the screen
     foreach ($res as $row) {
-        /**
-         * CSV data first
-         */
+        // CSV data first
+
         // course
         $csv .= '"'.$row->fullname.' ('.$row->shortname.')",';
         // date
@@ -946,9 +955,7 @@ if (strtolower($qid) == 'c') {
             $csv .= '"'.get_string('yes', 'report_courseawards').'"'."\n";
         }
 
-        /**
-         * data for screen next
-         */
+        // data for screen next
         if ($row->deleted == 1) {
             $build .= '    <tr class="deleted">'."\n";
         } else {
@@ -981,9 +988,7 @@ if (strtolower($qid) == 'c') {
     $build .= get_string('error_noquery', 'report_courseawards')."\n";
 }
 
-/**
- * sort out the output, whatever that's going to be
- */
+// sort out the output, whatever that's going to be
 
 if ($save_csv) {
     // write the csv file to disk

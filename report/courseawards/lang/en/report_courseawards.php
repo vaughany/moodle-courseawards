@@ -18,22 +18,13 @@
  * Language strings for the Course Awards admin report
  *
  * @package    report
- * @package    courseawards
+ * @subpackage courseawards
  * @copyright  2011 onwards Paul Vaughan, paulvaughan@southdevon.ac.uk
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Course Awards';
-
-
-
-/**
- * older strings below this point
- * move above when guaranteed needed
- */
-
 // admin panel string
-$string['courseawards'] = 'Course Awards';
+$string['pluginname'] = 'Course Awards';
 $string['courseawardstoctitle'] = 'Course Awards - Various Reports';
 
 // report ToC strings
@@ -84,7 +75,7 @@ $string['inadequate'] = 'Inadequate';
 $string['noresults'] = 'No results found. <a href="index.php">Go back</a> to try another report.';
 $string['novotesnotes'] = 'No votes or notes found.';
 $string['asof'] = 'as of ';
-$string['backtolisting'] = 'Back to Course Awards report listing';
+$string['backtolisting'] = 'Report Index';
 
 $string['position'] = 'Pos';
 $string['course'] = 'Course';
@@ -177,7 +168,7 @@ $string['debugusers'] = ' distinct users have voted on ';
 $string['debugcourses'] = ' distinct courses';
 
 // administration section
-$string['admin_toc'] = 'Administrative Options';
+$string['admin_toc'] = 'Administrative Options (Destructive!)';
 $string['admin_backuptitle'] = 'Backup Options';
 $string['admin_backupdatabase'] = '<strong>EXPERIMENTAL:</strong> Backup the votes, notes and medals. (MySQL databases only.)';
 $string['admin_medalstitle'] = 'Medals Options';

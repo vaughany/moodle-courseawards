@@ -23,31 +23,33 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once('../../config.php');
+require_once(dirname(__FILE__).'/../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 
-//admin_externalpage_setup('reportcourseawards');
+defined('MOODLE_INTERNAL') || die;
+
+require_login();
+
 admin_externalpage_setup('reportcourseawards', '', null, '', array('pagelayout'=>'report'));
 
-// check for an appropriate capability
-//require_capability('moodle/site:viewreports', get_context_instance(CONTEXT_SYSTEM));
+require_capability('moodle/site:viewreports', get_context_instance(CONTEXT_SYSTEM));
 
-// we need this to decide what we're going to do
-$qid    = required_param('q', PARAM_ALPHA);
+// TODO: do some logging?
+//add_to_log($course->id, "course", "report stats", "report/stats/index.php?course=$course->id", $course->id);
+//stats_check_uptodate($course->id);
+
+$qid = required_param('q', PARAM_ALPHA);
 
 /**
  * Run code based on the $qid received from index.php
  */
 if (strtolower($qid) == 'delvote') {
-    /**
-     * Deletes votes from the admin interface.
-     */
 
+    // deletes votes from the admin interface
     $vid    = required_param('v', PARAM_INT);
     $course = optional_param('c', '', PARAM_INT);
     $user   = optional_param('u', '', PARAM_INT);
 
-    // create the data object
     $dbupdate = new object();
     $dbupdate->id               = $vid;
     $dbupdate->date_modified    = time();
@@ -58,39 +60,30 @@ if (strtolower($qid) == 'delvote') {
         print_error(get_string('error-dbupdate', 'block_courseaward_vote'));
     } else {
         if (isset($user) && !empty($user)) {
-            redirect($CFG->wwwroot.'/admin/report/courseawards/report.php?q=v&u='.$user);
+            redirect($CFG->wwwroot.'/report/courseawards/report.php?q=v&u='.$user);
         } else if (isset($course) && !empty($course)) {
-            redirect($CFG->wwwroot.'/admin/report/courseawards/report.php?q=v&c='.$course);
+            redirect($CFG->wwwroot.'/report/courseawards/report.php?q=v&c='.$course);
         } else {
-            redirect($CFG->wwwroot.'/admin/report/courseawards/');
+            redirect($CFG->wwwroot.'/report/courseawards/');
         }
     }
 
 } else if (strtolower($qid) == 'backup') {
-    /**
-     * Backs up the course awards tables.
-     */
 
-    // check for mysqli, die if not.
+    // backs up the course awards tables
     if ($CFG->dbtype != 'mysqli') {
         print_error(get_string('error_notmysql', 'report_courseawards'));
     }
 
-    // send plain text headers
     header('Content-type: text/plain');
 
-    //$command = 'mysqldump --opt -h '.$CFG->dbhost.' -u '.$CFG->dbuser.' -p '.
-        $CFG->dbpass.' '.$CFG->dbname.' | gzip > $backupFile';
     $command = 'mysqldump -h '.$CFG->dbhost.' -u '.$CFG->dbuser.' --password='.$CFG->dbpass.' --skip-opt --no-create-info '.
         $CFG->dbname.' --tables '.$CFG->prefix.'block_courseaward_medal '.$CFG->prefix.'block_courseaward_vote';
-    //echo 'cmd: '.$command."<br />\n";
     system($command, $ret);
 
 } else if (strtolower($qid) == 'medalremove') {
-    /**
-     * Removes all live medals, adds to medal history
-     */
 
+    // removes all live medals, adds to medal history
     if ($res = $DB->get_records('block_courseaward_medal', array('deleted'=>0), '', 'id', '', '')) {
         foreach ($res as $row) {
             $now = time();
@@ -104,27 +97,23 @@ if (strtolower($qid) == 'delvote') {
                 print_error(get_string('error-dbupdate', 'block_courseaward_vote'));
             }
         }
-        redirect($CFG->wwwroot.'/admin/report/courseawards/');
+        redirect($CFG->wwwroot.'/report/courseawards/');
     } else {
         print_error(get_string('error_nomedals', 'report_courseawards'));
     }
 
 } else if (strtolower($qid) == 'medaldelete') {
-    /**
-     * Deletes all removed medals, forever
-     */
 
+    // deletes all removed medals, forever
     if (!$DB->delete_records('block_courseaward_medal', array('deleted'=>1))) {
         print_error(get_string('error_noremovedmedals', 'block_courseaward_vote'));
     } else {
-        redirect($CFG->wwwroot.'/admin/report/courseawards/');
+        redirect($CFG->wwwroot.'/report/courseawards/');
     }
 
 } else if (strtolower($qid) == 'noteswipe') {
-    /**
-     * Wipes out all notes
-     */
 
+    // wipes out all notes
     if ($res = $DB->get_records_select('block_courseaward_vote', 'deleted = 0 AND note <> \'\'', array(''), '', 'id', '', '')) {
         foreach ($res as $row) {
             $now = time();
@@ -137,15 +126,13 @@ if (strtolower($qid) == 'delvote') {
                 print_error(get_string('error-dbupdate', 'block_courseaward_vote'));
             }
         }
-        redirect($CFG->wwwroot.'/admin/report/courseawards/');
+        redirect($CFG->wwwroot.'/report/courseawards/');
     } else {
         print_error(get_string('error_nonotes', 'report_courseawards'));
     }
 } else if (strtolower($qid) == 'voteremove') {
-    /**
-     * Removes all live votes (and assoc. notes), adds to vote history
-     */
 
+    // removes all live votes (and assoc. notes), adds to vote history
     if ($res = $DB->get_records('block_courseaward_vote', array('deleted'=>0), '', 'id', '', '')) {
         foreach ($res as $row) {
             $now = time();
@@ -159,19 +146,17 @@ if (strtolower($qid) == 'delvote') {
                 print_error(get_string('error-dbupdate', 'block_courseaward_vote'));
             }
         }
-        redirect($CFG->wwwroot.'/admin/report/courseawards/');
+        redirect($CFG->wwwroot.'/report/courseawards/');
     } else {
         print_error(get_string('error_novotes', 'report_courseawards'));
     }
 
 } else if (strtolower($qid) == 'votedelete') {
-    /**
-     * Deletes all votes and notes, forever
-     */
 
+    // Deletes all votes and notes, forever
     if (!$DB->delete_records('block_courseaward_vote', array('deleted'=>1))) {
         print_error(get_string('error_noremovedmedals', 'block_courseaward_vote'));
     } else {
-        redirect($CFG->wwwroot.'/admin/report/courseawards/');
+        redirect($CFG->wwwroot.'/report/courseawards/');
     }
 }

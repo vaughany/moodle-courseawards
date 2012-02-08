@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die;
 
 /**
- * Checks to see if a record exists for this course.
+ * Checks to see if a medal exists for this course.
  */
 function has_medal($course) {
     if (empty($course)) {
@@ -40,6 +40,9 @@ function has_medal($course) {
     ));
 }
 
+/**
+ * gets the medal for this course.
+ */
 function get_medal($course) {
     if (empty($course)) {
         return false;
@@ -78,7 +81,9 @@ function get_medal_img($medal) {
     return $ret;
 }
 
-// get the medal ID
+/**
+ * get the medal ID
+ */
 function get_medal_id($course) {
     global $DB;
     $res = $DB->get_record('block_courseaward_medal', array(
@@ -88,7 +93,9 @@ function get_medal_id($course) {
     return $res->id;
 }
 
-// get the history of awards
+/**
+ * get the history of awards
+ */
 function get_course_medal_history($cid) {
     global $DB;
     $res = $DB->get_records_select('block_courseaward_medal', 'course_id = \''.$cid.'\'', array(
@@ -112,6 +119,7 @@ function get_course_medal_history($cid) {
         }
         </script>
         <div id="courseaward_medal_history" class="cleartop" style="display: none;"><ul>'."\n";
+
         foreach ($res as $row) {
             if (!empty($row->medal)) {
                 $build .= '<li><strong>'.date('M jS Y', $row->date_added).':</strong><br />'.
@@ -122,7 +130,8 @@ function get_course_medal_history($cid) {
 
         return $build;
     } else {
-        // comment out the line below if you want nothing at all returned.
+        // swap the commented out lines, below, if you want nothing at all returned
         return '<div class="center smaller cleartop">'.get_string('admin-nohistory', 'block_courseaward_medal').'</div>';
+        //return false;
     }
 }

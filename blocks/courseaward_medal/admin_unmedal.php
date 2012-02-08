@@ -23,35 +23,30 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once('../../config.php');
+require_once(dirname(__FILE__).'/../../config.php');
 
 defined('MOODLE_INTERNAL') || die;
+
+require_login();
 
 if (!$course = $DB->get_record('course', array('id'=>required_param('cid', PARAM_INT)))) {
     error(get_string('error-courseidnotset', 'block_courseaward_vote'));
 }
 
-// require a login, all the better to prevent fraud.
-require_login($course);
-
-// validate the user id.
 if (!$USER->id) {
     error(get_string('error-useridnotset', 'block_courseaward_vote'));
 }
 
-// check to see if this user has the 'admin' capability
 if (!has_capability('block/courseaward_medal:admin', get_context_instance(CONTEXT_COURSE, $COURSE->id))) {
     error(get_string('error-notadmin', 'block_courseaward_medal'));
 }
 
 require_once($CFG->dirroot.'/blocks/courseaward_medal/libmedal.php');
 
-// get the id of the medal we're deleting
 if (!$medal_id = get_medal_id($COURSE->id)) {
     error(get_string('error-nomedalid', 'block_courseaward_medal'));
 }
 
-// create the data object
 $dbupdate = new object();
 $dbupdate->id = $medal_id;
 $dbupdate->course_id        = $COURSE->id;
@@ -59,7 +54,6 @@ $dbupdate->deleted          = 1;
 $dbinsert->date_modified    = time();
 $dbupdate->deleted_user_id  = $USER->id;
 
-// update it
 if (!$DB->update_record('block_courseaward_medal', $dbupdate)) {
     error(get_string('error-dbupdate', 'block_courseaward_medal'));
 } else {

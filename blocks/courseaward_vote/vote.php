@@ -23,15 +23,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once('../../config.php');
+require_once(dirname(__FILE__).'/../../config.php');
+
+require_login($course);
 
 if (!$course = $DB->get_record('course', array('id'=>required_param('cid', PARAM_INT)))) {
     print_error(get_string('error-courseidnotset', 'block_courseaward_vote'));
 }
-
-// require a login AND a course login, all the better to prevent fraud.
-require_login($course);
-require_course_login($course);
 
 /**
  * logging goodness
@@ -63,20 +61,16 @@ if (get_config('courseaward_vote', 'note') == true) {
     $vote = required_param('vote', PARAM_INT);
 }
 
-// we still need to check for a note
 $note = optional_param('note', '', PARAM_NOTAGS);
 
-// validate the $vote variable
 if ($vote < 0 || $vote > 3) {
     print_error(get_string('error-voteoutofrange', 'block_courseaward_vote'));
 }
 
-// validate the user id.
 if (!$USER->id) {
     print_error(get_string('error-useridnotset', 'block_courseaward_vote'));
 }
 
-// create the data object;
 $now = time();
 $dbinsert = new object();
 $dbinsert->user_id          = $USER->id;
@@ -86,7 +80,6 @@ $dbinsert->date_added       = $now;
 $dbinsert->date_modified    = $now;
 $dbinsert->note             = $note;
 
-// insert it
 if (!$DB->insert_record('block_courseaward_vote', $dbinsert)) {
     print_error(get_string('error-dbinsert', 'block_courseaward_vote'));
 } else {

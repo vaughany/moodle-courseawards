@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-//$block_courseaward_medal_capabilities = array(
 $capabilities = array(
     // 'admin' capability is assigned to the admin role as default
     'block/courseaward_medal:admin' => array(

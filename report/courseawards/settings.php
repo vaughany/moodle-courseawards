@@ -25,10 +25,15 @@
 
 defined('MOODLE_INTERNAL') || die;
 
+// just a link to course report
 $ADMIN->add('reports',
-    new admin_externalpage('reportcourseawards',
-        get_string('courseawards', 'report_courseawards'),
-        $CFG->wwwroot.'/'.$CFG->admin.'/report/courseawards/index.php',
+    new admin_externalpage(
+        'reportcourseawards',
+        get_string('pluginname', 'report_courseawards'),
+        $CFG->wwwroot.'/report/courseawards/index.php',
         'moodle/site:viewreports'
     )
 );
+
+// no report settings
+$settings = null;
