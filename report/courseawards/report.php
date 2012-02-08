@@ -648,7 +648,7 @@ if (strtolower($qid) == 'c') {
         $csv .= '"'.get_string('vnreport_title', 'report_courseawards').$data->fullname.' ('.$data->shortname.') ('.
             get_string('asof', 'report_courseawards').$now.')"'."\n";
     } else {
-        error(get_string('vnreport_errortype', 'report_courseawards'));
+        print_error(get_string('vnreport_errortype', 'report_courseawards'));
     }
 
     // New summary section, simply votes against the coloured star
@@ -734,7 +734,7 @@ if (strtolower($qid) == 'c') {
     } else if (TYPE == 'course') {
         $query .= "AND ".PREFIX.TBL_VOTE.".course_id = '".$course."' ";
     } else {
-        error(get_string('error_query', 'report_courseawards'));
+        print_error(get_string('error_query', 'report_courseawards'));
     }
     $query .= "ORDER BY date_added DESC;";
 

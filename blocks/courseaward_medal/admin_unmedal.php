@@ -30,21 +30,21 @@ defined('MOODLE_INTERNAL') || die;
 require_login();
 
 if (!$course = $DB->get_record('course', array('id'=>required_param('cid', PARAM_INT)))) {
-    error(get_string('error-courseidnotset', 'block_courseaward_vote'));
+    print_error(get_string('error-courseidnotset', 'block_courseaward_vote'));
 }
 
 if (!$USER->id) {
-    error(get_string('error-useridnotset', 'block_courseaward_vote'));
+    print_error(get_string('error-useridnotset', 'block_courseaward_vote'));
 }
 
 if (!has_capability('block/courseaward_medal:admin', get_context_instance(CONTEXT_COURSE, $COURSE->id))) {
-    error(get_string('error-notadmin', 'block_courseaward_medal'));
+    print_error(get_string('error-notadmin', 'block_courseaward_medal'));
 }
 
 require_once($CFG->dirroot.'/blocks/courseaward_medal/libmedal.php');
 
 if (!$medal_id = get_medal_id($COURSE->id)) {
-    error(get_string('error-nomedalid', 'block_courseaward_medal'));
+    print_error(get_string('error-nomedalid', 'block_courseaward_medal'));
 }
 
 $dbupdate = new object();
@@ -55,7 +55,7 @@ $dbinsert->date_modified    = time();
 $dbupdate->deleted_user_id  = $USER->id;
 
 if (!$DB->update_record('block_courseaward_medal', $dbupdate)) {
-    error(get_string('error-dbupdate', 'block_courseaward_medal'));
+    print_error(get_string('error-dbupdate', 'block_courseaward_medal'));
 } else {
     redirect($CFG->wwwroot.'/course/view.php?id='.$COURSE->id);
 }

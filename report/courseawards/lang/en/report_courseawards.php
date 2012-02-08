@@ -155,6 +155,7 @@ $string['saveascsv'] = 'Click here to save this table as a CSV (comma separated 
 $string['error_admin'] = 'Sorry, you need to be a site Admin to see the Course Reports.';
 $string['error_query'] = 'Sorry, the query could not be composed properly and cannot be run.';
 $string['error_noquery'] = 'Sorry, the URL is malformed and an appropriate report could not be generated.';
+$string['error_noblock'] = '"Sorry, couldn\'t get the block ID for the \'courseawards_vote\' block. Have you installed it? If so, please report this error to the developer.';
 
 // debugging section
 $string['debugvotes'] = 'Votes: ';

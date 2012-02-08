@@ -159,11 +159,9 @@ $output .= '<ul>'."\n";
 if ($res = $DB->get_record('block', array('name'=>'courseaward_vote'))) {
     $vid =  $res->id;
 } else {
-    // TODO: throw new moodle_exception('nosite', 'error');
-    die("Sorry, couldn't get the block ID for the 'courseawards_vote' block. Have you installed it? ".
-        "If so, please report this error to the developer.");
+    print_error(get_string('error_noblock', 'block_courseaward_medal'));
 }
-$res = $DB->get_record('block', array('name'=>'courseaward_medal'));
+$res = $DB->get_record('block', array('name'=>'report_courseawards'));
 $mid =  $res->id;
 
 $output .= '    <li><a href="'.$CFG->wwwroot.'/course/search.php?blocklist='.$vid.'&sesskey='.$USER->sesskey.'">'.
