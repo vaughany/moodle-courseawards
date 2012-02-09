@@ -188,3 +188,4 @@ $string['error_nomedals'] = 'There are no medals to remove.';
 $string['error_noremovedmedals'] = 'There are no removed medals to delete.';
 $string['error_nonotes'] = 'There are no live notes to remove.';
 $string['error_novotes'] = 'There are no live votes to remove.';
+$string['error_noanyvotes'] = 'There are no votes to remove.';

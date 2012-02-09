@@ -159,4 +159,15 @@ if (strtolower($qid) == 'delvote') {
     } else {
         redirect($CFG->wwwroot.'/report/courseawards/');
     }
+
+} else if (strtolower($qid) == 'wipecoursevotes') {
+
+    // Deletes all votes and notes, forever
+    $wid    = required_param('w', PARAM_INT);
+
+    if (!$DB->delete_records('block_courseaward_vote', array('course_id'=>$wid))) {
+        print_error(get_string('error_noanyvotes', 'report_courseawards'));
+    } else {
+        redirect($CFG->wwwroot.'/report/courseawards/');
+    }
 }

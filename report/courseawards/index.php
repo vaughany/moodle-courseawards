@@ -206,23 +206,25 @@ $output_admin .= '    <li><a href="admin.php?q=votedelete">'.
     get_string('admin_deleteallvotehistory', 'report_courseawards')."</a></li>\n";
 $output_admin .= "</ul>\n";
 
-// TODO: drop-down menu options
 $output_admin .= '<h3>'.get_string('admin_courseclearingtitle', 'report_courseawards').'</h3>'."\n";
 $output_admin .= 'Remove all votes from: ';
-$output_admin .= '<select>';
-$res = $DB->get_records_select('block_courseaward_vote', 'deleted = \'0\'', array('id'));
+$output_admin .= '<form name="wipecourse" method="get" action="admin.php"><select name="w">';
+$res = $DB->get_records_select('block_courseaward_vote', 'deleted = \'0\'', array('course_id'), 'course_id ASC');
 if ($res) {
     foreach ($res as $row) {
-        $res2 = $DB->get_record_select('course', 'id = '.$row->id, array('fullname'));
+        $res2 = $DB->get_record_select('course', 'id = '.$row->course_id, array('fullname'));
         if ($res2) {
-            $output_admin .= '<option value="'.$row->id.'">'.$res2->fullname.'</option>'."<br />\n";
+            $output_admin .= '<option value="'.$row->course_id.'">['.$row->course_id.'] '.$res2->fullname.'</option>'."<br />\n";
         }
     }
     $output_admin .= '</select>';
-    $output_admin .= '<input type="button" type="submit" value="Clear this course" />';
+    $output_admin .= '<input type="hidden" name="q" value="wipecoursevotes" />';
+    $output_admin .= '<input type="submit" value="Clear this course" />';
+    $output_admin .= '</form>';
 } else {
-    $output_admin .= '<option disabled="disabled">No courses with votes.</option>'."<br />\n";
-    $output_admin .= '</select>';
+    $output_admin .= '<option disabled="disabled">No courses with votes.</option>';
+    $output_admin .= '<input disabled="disabled" type="submit" value="Clear this course" />';
+    $output_admin .= '</select></form>';
 }
 
 // statistics
