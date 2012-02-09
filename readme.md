@@ -274,9 +274,10 @@ There are no known bugs at this time, but it doesn't mean they're not lurking. S
 ## To Do
 
 * Currently the reports are available to Admins only. Moodle now differentiates between site reports and course reports, so a teacher-accessible course report is on the agenda for the next version.
+* Some of the larger language string references use underscores (`admin_error`) and others use dashes (`admin-error`). For less future headaches, this should be changed. Preference is underscores.
 * Logging of use of the admin reports was around in the 1.9 version, so I should probably add it back in again. For completeness' sake, if nothing else.
 
-Suggestions for features or submissions of non-en language packs are most welcome.
+Suggestions for features or submissions of non-en_uk language packs are most welcome.
 
 ## History
 
