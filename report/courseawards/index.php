@@ -222,7 +222,7 @@ if ($res) {
     $output_admin .= '<input type="submit" value="Clear this course" />';
     $output_admin .= '</form>';
 } else {
-    $output_admin .= '<option disabled="disabled">No courses with votes.</option>';
+    $output_admin .= '<option disabled="disabled" selected="selected">No courses with votes.</option>';
     $output_admin .= '<input disabled="disabled" type="submit" value="Clear this course" />';
     $output_admin .= '</select></form>';
 }
