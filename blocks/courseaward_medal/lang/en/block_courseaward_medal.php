@@ -51,6 +51,8 @@ $string['error-dbupdate'] = 'Medal not updated in the database for some reason.'
 $string['error-badmedaltype'] = 'Sorry, incorrect medal type.';
 $string['error-dbinsert'] = 'Medal not added into the database for some reason.';
 $string['error-nomedalid'] = 'No medal ID.';
+$string['error-courseidnotset'] = 'Course ID not set, for some reason.';
+$string['error-useridnotset'] = 'User ID not set, for some reason.';
 
 // capabilities strings
 $string['courseaward_medal:admin'] = 'Administrate the Course Awards - Medal block';

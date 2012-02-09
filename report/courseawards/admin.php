@@ -57,7 +57,7 @@ if (strtolower($qid) == 'delvote') {
     $dbupdate->deleted_user_id  = $USER->id;
 
     if (!$DB->update_record('block_courseaward_vote', $dbupdate)) {
-        print_error(get_string('error-dbupdate', 'block_courseaward_vote'));
+        print_error(get_string('error_dbupdate', 'report_courseawards'));
     } else {
         if (isset($user) && !empty($user)) {
             redirect($CFG->wwwroot.'/report/courseawards/report.php?q=v&u='.$user);
@@ -94,7 +94,7 @@ if (strtolower($qid) == 'delvote') {
             $dbupdate->deleted_user_id  = $USER->id;
 
             if (!$DB->update_record('block_courseaward_medal', $dbupdate)) {
-                print_error(get_string('error-dbupdate', 'block_courseaward_vote'));
+                print_error(get_string('error_dbupdate', 'report_courseawards'));
             }
         }
         redirect($CFG->wwwroot.'/report/courseawards/');
@@ -106,7 +106,7 @@ if (strtolower($qid) == 'delvote') {
 
     // deletes all removed medals, forever
     if (!$DB->delete_records('block_courseaward_medal', array('deleted'=>1))) {
-        print_error(get_string('error_noremovedmedals', 'block_courseaward_vote'));
+        print_error(get_string('error_noremovedmedals', 'report_courseawards'));
     } else {
         redirect($CFG->wwwroot.'/report/courseawards/');
     }
@@ -123,7 +123,7 @@ if (strtolower($qid) == 'delvote') {
             $dbupdate->note             = '';
 
             if (!$DB->update_record('block_courseaward_vote', $dbupdate)) {
-                print_error(get_string('error-dbupdate', 'block_courseaward_vote'));
+                print_error(get_string('error_dbupdate', 'report_courseawards'));
             }
         }
         redirect($CFG->wwwroot.'/report/courseawards/');
@@ -143,7 +143,7 @@ if (strtolower($qid) == 'delvote') {
             $dbupdate->deleted_user_id  = $USER->id;
 
             if (!$DB->update_record('block_courseaward_vote', $dbupdate)) {
-                print_error(get_string('error-dbupdate', 'block_courseaward_vote'));
+                print_error(get_string('error_dbupdate', 'report_courseawards'));
             }
         }
         redirect($CFG->wwwroot.'/report/courseawards/');
@@ -155,7 +155,7 @@ if (strtolower($qid) == 'delvote') {
 
     // Deletes all votes and notes, forever
     if (!$DB->delete_records('block_courseaward_vote', array('deleted'=>1))) {
-        print_error(get_string('error_noremovedmedals', 'block_courseaward_vote'));
+        print_error(get_string('error_noremovedmedals', 'report_courseawards'));
     } else {
         redirect($CFG->wwwroot.'/report/courseawards/');
     }

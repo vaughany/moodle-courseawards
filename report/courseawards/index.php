@@ -159,7 +159,7 @@ $output .= '<ul>'."\n";
 if ($res = $DB->get_record('block', array('name'=>'courseaward_vote'))) {
     $vid =  $res->id;
 } else {
-    print_error(get_string('error_noblock', 'block_courseaward_medal'));
+    print_error(get_string('error_noblock', 'report_courseawards'));
     die();
 }
 $res = $DB->get_record('block', array('name'=>'courseaward_medal'));

@@ -155,7 +155,14 @@ $string['saveascsv'] = 'Click here to save this table as a CSV (comma separated 
 $string['error_admin'] = 'Sorry, you need to be a site Admin to see the Course Reports.';
 $string['error_query'] = 'Sorry, the query could not be composed properly and cannot be run.';
 $string['error_noquery'] = 'Sorry, the URL is malformed and an appropriate report could not be generated.';
+$string['error_notmysql'] = 'Sorry, you need to be using MySQL for this to work.';
+$string['error_nomedals'] = 'There are no medals to remove.';
+$string['error_noremovedmedals'] = 'There are no removed medals to delete.';
+$string['error_nonotes'] = 'There are no live notes to remove.';
+$string['error_novotes'] = 'There are no live votes to remove.';
+$string['error_noanyvotes'] = 'There are no votes to remove.';
 $string['error_noblock'] = '"Sorry, couldn\'t get the block ID for the \'courseawards_vote\' block. Have you installed it? If so, please report this error to the developer.';
+$string['error_dbupdate'] = 'Database not updated for some reason.';
 
 // debugging section
 $string['debugvotes'] = 'Votes: ';
@@ -181,11 +188,3 @@ $string['admin_votestitle'] = 'Votes Options';
 $string['admin_removeallvotes'] = 'Remove all votes from all courses, keeping the history of votes and notes.';
 $string['admin_deleteallvotehistory'] = 'Delete all votes (and notes) <em>history</em> (what has previously been awarded and removed).';
 $string['admin_courseclearingtitle'] = 'Course Clearing Options';
-
-// admin.php
-$string['error_notmysql'] = 'Sorry, you need to be using MySQL for this to work.';
-$string['error_nomedals'] = 'There are no medals to remove.';
-$string['error_noremovedmedals'] = 'There are no removed medals to delete.';
-$string['error_nonotes'] = 'There are no live notes to remove.';
-$string['error_novotes'] = 'There are no live votes to remove.';
-$string['error_noanyvotes'] = 'There are no votes to remove.';

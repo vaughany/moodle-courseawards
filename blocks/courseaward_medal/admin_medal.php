@@ -30,13 +30,13 @@ defined('MOODLE_INTERNAL') || die;
 require_login();
 
 if (!$course = $DB->get_record('course', array('id'=>required_param('cid', PARAM_INT)))) {
-    print_error(get_string('error-courseidnotset', 'block_courseaward_vote'));
+    print_error(get_string('error-courseidnotset', 'block_courseaward_medal'));
 }
 
 $medal = required_param('medal', PARAM_NOTAGS);
 
 if (!$USER->id) {
-    print_error(get_string('error-useridnotset', 'block_courseaward_vote'));
+    print_error(get_string('error-useridnotset', 'block_courseaward_medal'));
 }
 
 if (!has_capability('block/courseaward_medal:admin', get_context_instance(CONTEXT_COURSE, $COURSE->id))) {
