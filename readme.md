@@ -14,15 +14,19 @@ The Course Awards blocks and report form part of a much larger Moodle course rat
 
 Irrespective of this, the blocks and report can still be used to gain useful feedback from students about Moodle courses.
 
----
-
 ## The Vote Block
+
+![Student's view of the Vote block](http://commoodle.southdevon.ac.uk/file.php/2/course_awards_images/vote-student.png "Student's view of the Vote block") ![Student's view of the Vote block in the standard Moodle theme](http://commoodle.southdevon.ac.uk/file.php/2/course_awards_images/vote-student-basetheme.png "Student's view of the Vote block in the standard Moodle theme") ![Student's view of the Vote block once they have voted](http://commoodle.southdevon.ac.uk/file.php/2/course_awards_images/vote-student-voted.png "Student's view of the Vote block once they have voted")
 
 **Students** get to vote by clicking on a coloured star (with tool-tip explanation of what each star means). As default, the student can also add in a brief note (this can be turned off if required).
 
 Once a student has voted, the block changes to show them their vote and, if they left one, their note, as well as average score so far and number of votes. As default they are prevented from removing their vote and voting again for a period of one day, but this is configurable from 'immediately' to 'never', depending on preference.
 
+![Teacher's view of the Vote block](http://commoodle.southdevon.ac.uk/file.php/2/course_awards_images/vote-teacher.png "Teacher's view of the Vote block")
+
 **Teachers** see a summary of votes cast and notes left, but not who voted and what notes they left. Teachers cannot vote, or manage votes or notes in any way. (Note that if a person has the Teacher role in one course and the Student role in another, they can vote for the course for which they have the Student role.)
+
+![Admin view of the Vote block](http://commoodle.southdevon.ac.uk/file.php/2/course_awards_images/vote-admin.png "Admin view of the Vote block") ![Admin view of the Vote block, expanded to show all information](http://commoodle.southdevon.ac.uk/file.php/2/course_awards_images/vote-admin-live.png "Admin view of the Vote block, expanded to show all information")
 
 **Administrators** cannot vote, but can see and manage all votes and notes for all courses, including the history of deleted votes and notes in summary. Admins also get a direct link to the report for that course, as well as a link to the report's index page.
 
@@ -34,18 +38,18 @@ Once the Vote block is added to a course (by anyone with permission to do so), a
 
 Remember that one person can have different roles (e.g. student, teacher, non-editing teacher) in different courses. Simon Student may have the role of Student on course 1 but may be a Teacher on course 2, therefore will be allowed to vote on course 1 only.  This is customisable using Moodle's roles and capabilities: see the section on *Changing who can Vote* for more information.
 
----
-
 ## The Medal Block
+
+![Admin view of the Medal block, when a medal has been awarded](http://commoodle.southdevon.ac.uk/file.php/2/course_awards_images/medal-gold.png "Admin view of the Medal block, when a medal has been awarded") ![Admin view of the Medal block](http://commoodle.southdevon.ac.uk/file.php/2/course_awards_images/medal-none.png "Admin view of the Medal block")
 
 The medal block is for use by administrators only. When added to a course, it presents options to add one of the three medals or single achievement ribbon available, or remove one if it has already been awarded. It also shows a history of previously awarded/removed medals. If no medal has been awarded, the block is hidden from students and teachers.
 
 The Medal block allows Admins *only* to award the course with a gold, silver or bronze medal, or an 'achievement' ribbon. This is a manual process as the awarding of the medals is based on the score from the Vote block **as well as a number of other factors about the course determined externally to Moodle**.
 Anyone can see the medal once it has been awarded, as long as the Medal block is visible on the course.
 
----
-
 ## The Admin Report
+
+![The main page of the Admin Reports](http://commoodle.southdevon.ac.uk/file.php/2/course_awards_images/report-main.png "The main page of the Admin Reports") ![Admin Report showing course detail](http://commoodle.southdevon.ac.uk/file.php/2/course_awards_images/report-detail.png "Admin Report showing course detail")
 
 For administrators only, there is a comprehensive report detailing the courses with most/least votes, all notes, students who voted the most/highest/lowest, etc. Each report can be sorted by different criteria and can be saved as a CSV file if desired.
 
@@ -55,9 +59,9 @@ Admins can jump directly from a course to the admin report using the vote block,
 
 *Here be dragons. Consider yourself warned.*
 
-A more recent addition is the destructive administrative options section further down. As the title suggests, they are operations to clear out part or all of the live and/or deleted votes and notes. They perform actions on the database tables used by the blocks, and any data removed is gone for good: a student deleting a vote simply flags that vote as deleted, but removing all votes via this report will permanently remove them from the database for good.
+A more recent addition is the destructive administrative options section further down. As the title suggests, they are operations to clear out part or all of the live and/or deleted votes, notes and medals. They perform actions on the database tables used by the blocks, and any data removed is gone for good: a student deleting a vote simply flags that vote as deleted, but removing all votes via this report will permanently remove them from the database for good.
 
----
+At the bottom are some statistics about how many votes, notes and medals currently exist in the system, as well as number of active voters.
 
 ## Installation
 
@@ -144,9 +148,6 @@ The CSV file, created when a report is run, is saved to the following location:
 
 This location is part of Moodle and should already be writable by the web server. If you experience problems, ensure the path is writable, touch the file and give it full read/write permissions, or change to a different location (remember to change both the above DEFINE statements and ensure they are identical).
 
-
----
-
 ## Use
 
 ### Vote Block
@@ -186,8 +187,6 @@ This option appears on all pages where there is a table of data relating to cour
 
 > **Note:** If two admins are generating reports concurrently, the CSV file will be overwritten by the most recently generated report.
 
----
-
 ## Configuration of the Vote block
 
 The Vote block is the only block which has configuration options. These options can only be changed by a site Admin, and affect the block throughout the whole site.
@@ -209,8 +208,6 @@ This drop-down menu specifies how much time should pass before the voter can rem
 As default, the block presents a small text box through which the user may write a note or comment about the course being voted on. (In reality, this will store several pages of text but the box is presented small to try to keep notes brief and concise.)
 
 It can be turned off if notes are not required (although any already collected will be saved): simply un-tick the checkbox. Students will be presented with the same block but without the textbox.
-
----
 
 ## Changing who can Vote and Administrate
 
@@ -254,8 +251,6 @@ You should now find that anyone with the role you modified can now vote. Remembe
 
 Moodle's reports (Admin block, click Reports) can be viewed only by site administrators. As such, the Course Awards reports are available only to site administrators, not Course Awards block admins.
 
----
-
 ## Code and Image Changes
 
 Some aspects of the blocks/report can be changed but this cannot be achieved though configuration, and will require changes to the code. A good code management and versioning system, such as Git, is highly recommended.
@@ -272,13 +267,9 @@ It is quite possible to replace the default images with those of your own choosi
 
 > **Caution:** The code does not specify any widths or heights for images, so that you can use your own and they do not have to be the same size as the default images. However, it is not recommended to go too much wider than the default images as you may start experiencing layout problems with your columns. Experiment.
 
----
-
 ## Known Issues
 
 There are no known bugs at this time, but it doesn't mean they're not lurking. Should you find a bug, please [log an issue in the tracker](https://github.com/vaughany/moodle-courseawards/issues) or fork the repo, fix the problem and submit a pull request.
-
----
 
 ## To Do
 
@@ -286,8 +277,6 @@ There are no known bugs at this time, but it doesn't mean they're not lurking. S
 * Logging of use of the admin reports was around in the 1.9 version, so I should probably add it back in again. For completeness' sake, if nothing else.
 
 Suggestions for features or submissions of non-en language packs are most welcome.
-
----
 
 ## History
 
