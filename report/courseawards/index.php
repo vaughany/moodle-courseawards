@@ -209,7 +209,7 @@ $output_admin .= "</ul>\n";
 $output_admin .= '<h3>'.get_string('admin_courseclearingtitle', 'report_courseawards').'</h3>'."\n";
 $output_admin .= 'Remove all votes from: ';
 $output_admin .= '<form name="wipecourse" method="get" action="admin.php"><select name="w">';
-$res = $DB->get_records_select('block_courseaward_vote', 'deleted = \'0\'', array('course_id'), 'course_id ASC');
+$res = $DB->get_records_sql('SELECT DISTINCT course_id FROM '.$CFG->prefix.'block_courseaward_vote ORDER BY course_id ASC');
 if ($res) {
     foreach ($res as $row) {
         $res2 = $DB->get_record_select('course', 'id = '.$row->course_id, array('fullname'));
