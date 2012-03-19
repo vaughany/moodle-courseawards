@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Course Award Medal block version details
+ * Configuration page for the medal block
  *
  * @package    block
  * @subpackage courseaward_medal
@@ -23,12 +23,20 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$plugin->version        = 2012031900;                   // The current plugin version (Date: YYYYMMDDXX)
-$plugin->requires       = 2010112400;                   // Moodle 2.0+
-$plugin->component      = 'block_courseaward_medal';    // Full name of the plugin (used for diagnostics)
-$plugin->cron           = 0;                            // Period for cron to check this plugin (secs)
-$plugin->maturity       = MATURITY_STABLE;
-$plugin->release        = '2.0.1';
-$plugin->dependencies   = array (                       // Plugin dependencies
-    'block_courseaward_vote'    => 2012020800,          // Needs the vote block, really.
-);
+defined('MOODLE_INTERNAL') || die;
+
+if ($ADMIN->fulltree) {
+
+    $sizes = array(
+        'regular'   => 'Regular (100px high)',
+        'small'     => 'Small (50px high)',
+    );
+
+    $settings->add(new admin_setting_configselect(
+        'courseaward_medal/size',
+        get_string('config_size', 'block_courseaward_medal'),
+        get_string('config_size_long', 'block_courseaward_medal'),
+        'regular',
+        $sizes)
+    );
+}

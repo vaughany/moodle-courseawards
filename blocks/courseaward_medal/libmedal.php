@@ -35,8 +35,8 @@ function has_medal($course) {
 
     global $DB;
     return $DB->record_exists('block_courseaward_medal', array(
-        'course_id'=>$course,
-        'deleted'=>0
+        'course_id' => $course,
+        'deleted'   => 0,
     ));
 }
 
@@ -50,8 +50,8 @@ function get_medal($course) {
 
     global $DB;
     $res = $DB->get_record('block_courseaward_medal', array(
-        'course_id'=>$course,
-        'deleted'=>0
+        'course_id' => $course,
+        'deleted'   => 0,
     ));
     return $res->medal;
 }
@@ -67,14 +67,19 @@ function get_medal_img($medal) {
         return false;
     }
 
+    $imgmod = '';
+    if (get_config('courseaward_medal', 'size') == 'small') {
+        $imgmod = '_sm';
+    }
+
     if ($medal == 'gold' || $medal == 'g') {
-        $ret = $imgpath.'medal_gold.png';
+        $ret = $imgpath.'medal_gold'.$imgmod.'.png';
     } else if ($medal == 'silver' || $medal == 's') {
-        $ret = $imgpath.'medal_silver.png';
+        $ret = $imgpath.'medal_silver'.$imgmod.'.png';
     } else if ($medal == 'bronze' || $medal == 'b') {
-        $ret = $imgpath.'medal_bronze.png';
+        $ret = $imgpath.'medal_bronze'.$imgmod.'.png';
     } else if ($medal == 'achievement' || $medal == 'a') {
-        $ret = $imgpath.'medal_achievement.png';
+        $ret = $imgpath.'medal_achievement'.$imgmod.'.png';
     } else {
         return 'image error';
     }
@@ -87,10 +92,22 @@ function get_medal_img($medal) {
 function get_medal_id($course) {
     global $DB;
     $res = $DB->get_record('block_courseaward_medal', array(
-        'course_id'=>$course,
-        'deleted'=>0
+        'course_id' => $course,
+        'deleted'   => 0,
     ));
     return $res->id;
+}
+
+/**
+ * get the medal date awarded
+ */
+function get_medal_date($course) {
+    global $DB;
+    $res = $DB->get_record('block_courseaward_medal', array(
+        'course_id' => $course,
+        'deleted'   => 0,
+    ));
+    return $res->date_added;
 }
 
 /**

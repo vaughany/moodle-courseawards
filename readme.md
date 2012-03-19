@@ -8,6 +8,16 @@ The Course Awards plug-in system consists of two blocks ('Vote' and 'Medal') and
 
 It is probably a good idea to fully read through this readme before embarking on any installation or bug reporting.
 
+## Licence
+
+Copyright (C) 2009-2012  Paul Vaughan
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 ## Purpose
 
 The Course Awards blocks and report form part of a much larger Moodle course rating system (called Moodle Medals) which is used to recognise good practice on Moodle courses and also provide targets for course development. Learner feedback is used to inform medals awarded, however a course must also meet or exceed other criteria to gain a medal. The Bronze medal has basic criteria which must be met, the Silver medal has moderate criteria and the Gold medal has quite strict criteria.  The criteria themselves and how they are judged is performed by staff manually: this plugin is used to inform one aspect of that process.
@@ -65,7 +75,7 @@ At the bottom are some statistics about how many votes, notes and medals current
 
 ## Installation
 
-Installation is a matter of copying files to the correct locations within your Moodle installation, but it is always wise to test new plugins in a sandbox environment first, and have the ability to roll back changes
+Installation is a matter of copying files to the correct locations within your Moodle installation, but it is always wise to test new plugins in a sandbox environment first, and have the ability to roll back changes.
 
 Download the archive(s) and extract the files, or [clone the repository from GitHub](https://github.com/vaughany/moodle-courseawards/). You should see the following files and structure:
 
@@ -80,13 +90,18 @@ Download the archive(s) and extract the files, or [clone the repository from Git
     |   |   |   `-- install.xml
     |   |   |-- img
     |   |   |   |-- medal_achievement.png
+    |   |   |   |-- medal_achievement_sm.png
     |   |   |   |-- medal_bronze.png
+    |   |   |   |-- medal_bronze_sm.png
     |   |   |   |-- medal_gold.png
-    |   |   |   `-- medal_silver.png
+    |   |   |   |-- medal_gold_sm.png
+    |   |   |   |-- medal_silver.png
+    |   |   |   `-- medal_silver_sm.png
     |   |   |-- lang
     |   |   |   `-- en
     |   |   |       `-- block_courseaward_medal.php
     |   |   |-- libmedal.php
+    |   |   |-- settings.php
     |   |   |-- styles.css
     |   |   `-- version.php
     |   `-- courseaward_vote
@@ -189,7 +204,7 @@ This option appears on all pages where there is a table of data relating to cour
 
 ## Configuration of the Vote block
 
-The Vote block is the only block which has configuration options. These options can only be changed by a site Admin, and affect the block throughout the whole site.
+The Vote block configuration options can only be changed by a site Admin, and affect the block throughout the whole site.
 
 Either:
 
@@ -208,6 +223,16 @@ This drop-down menu specifies how much time should pass before the voter can rem
 As default, the block presents a small text box through which the user may write a note or comment about the course being voted on. (In reality, this will store several pages of text but the box is presented small to try to keep notes brief and concise.)
 
 It can be turned off if notes are not required (although any already collected will be saved): simply un-tick the checkbox. Students will be presented with the same block but without the textbox.
+
+## Configuration of the Medal block
+
+The Medal block configuration options can only be changed by a site Admin, and affect the block throughout the whole site.
+
+### Medal image size
+
+The only configuration option is the size of the images. The default setting is *regular* and the default images are 100px (pixels) high. The only other option (currently) is *small*, where the images are 50px high, half the size of the regular images.
+
+> **Note:** You do not have to stick to these sizes: any correctly named image will work, regardless of it's width or height.
 
 ## Changing who can Vote and Administrate
 
@@ -282,7 +307,19 @@ Suggestions for features or submissions of non-en_uk language packs are most wel
 
 ## History
 
-**February 8th, 2012**
+**March 19th 2012 - Medal Block**
+
+* Version 2.0.1 for Moodle 2.x
+* Build 2012031900
+
+Fixed some errors with the Medal block, added two new features:
+
+* Fixed a redirect bug when awarding a medal (it would redirect to the main page)
+* Added 'Awarded on' and date when a medal is awarded
+* Added admin option to change size of pictures between regular (the default at 100px high) and small (50px high)
+    * ...which necessitated adding smaller versions of the default images and an admin config page
+
+**February 8th 2012 - Whole System**
 
 * Version 2.0 for Moodle 2.x
 * Build 2012020800

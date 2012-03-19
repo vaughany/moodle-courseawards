@@ -51,10 +51,11 @@ class block_courseaward_medal extends block_base {
 
         // show the medal awarded, if there is one.
         if (has_medal($COURSE->id)) {
-            $build .= '<div class="center bgborder"><img src="'.get_medal_img(get_medal($COURSE->id)).
-                '" /></div>'."\n";
-            $build .= '<div class="center awardtitle">'.get_string('medal-'.get_medal($COURSE->id),
-                'block_courseaward_medal').'</div>'."\n";
+            $build .= '<div class="center bgborder"><img src="'.get_medal_img(get_medal($COURSE->id)).'" /></div>'."\n";
+            $build .= '<div class="center"><span class="awardtitle">'.get_string('medal-'.get_medal($COURSE->id),
+                'block_courseaward_medal').'</span>';
+            $build .= '<br /><span class="smaller">'.get_string('user-awardedon', 'block_courseaward_medal').' '.
+                date('jS F Y', get_medal_date($COURSE->id)).'</span></div>'."\n";
         }
 
         if (has_capability('block/courseaward_medal:admin', get_context_instance(CONTEXT_COURSE, $COURSE->id))) {

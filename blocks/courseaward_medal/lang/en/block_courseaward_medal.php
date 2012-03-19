@@ -34,6 +34,7 @@ $string['medal-achievement'] = 'Notable Achievement Ribbon';
 
 // user strings
 $string['user-nomedals'] = 'This course has not been awarded any medals yet.';
+$string['user-awardedon'] = 'Awarded on';
 
 // admin strings
 $string['admin-nomedals'] = 'No medals have been awarded yet.';
@@ -44,6 +45,10 @@ $string['admin-medaladdbronze'] = 'Add a bronze medal?';
 $string['admin-medaladdachievement'] = 'Add an \'achievement\' ribbon?';
 $string['admin-history'] = '(Show/hide history)';
 $string['admin-nohistory'] = '(No history to show)';
+
+// config strings
+$string['config_size']      = 'Medal image size';
+$string['config_size_long'] = 'Choose from regular or small images.';
 
 // error strings
 $string['error-notadmin'] = 'You are not a Moodle admin so you can\'t do this.';

@@ -29,7 +29,7 @@ defined('MOODLE_INTERNAL') || die;
 
 require_login();
 
-if (!$course = $DB->get_record('course', array('id'=>required_param('cid', PARAM_INT)))) {
+if (!$COURSE = $DB->get_record('course', array('id' => required_param('cid', PARAM_INT)))) {
     print_error(get_string('error-courseidnotset', 'block_courseaward_medal'));
 }
 
