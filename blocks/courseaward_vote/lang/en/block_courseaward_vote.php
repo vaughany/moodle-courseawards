@@ -75,6 +75,7 @@ $string['config_time_long'] = 'The amount of time, after voting, before a user c
 //notes strings
 $string['note_none'] = '(There are no notes)';
 $string['note_get'] = '(Show/hide notes)';
+$string['note_noted'] = 'You noted:';
 
 // capabilities strings
 $string['courseaward_vote:vote'] = 'Vote in the Course Awards - Vote block';

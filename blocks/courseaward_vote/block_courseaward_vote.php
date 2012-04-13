@@ -101,7 +101,7 @@ class block_courseaward_vote extends block_base {
 
                 // additionally, if the user left a note
                 if ($got_note = get_vote_note($USER->id, $COURSE->id)) {
-                    $build .= '<div class="clear">You noted: &ldquo;'.$got_note.'&rdquo;</div>'."\n";
+                    $build .= '<div class="clear">'.get_string('note_noted', 'block_courseaward_vote').' &ldquo;'.$got_note.'&rdquo;</div>'."\n";
                 }
 
                 // if the user has waited (the agreed delay)...
