@@ -7,7 +7,7 @@ A quick and easy way of getting a course's rating from students, awarding course
 The Course Awards blocks and report have been highlighted in a May 2012 OFSTED Good Practice report into South Devon College, alongside Moodle itself. (Look out for 'Moodle 'Medals' as it's known locally.)
 
 * [OFSTED web page](http://www.ofsted.gov.uk/resources/good-practice-resource-making-most-of-information-and-communication-technology-south-devon-college)
-* [PDF](http://www.ofsted.gov.uk/sites/default/files/documents/surveys-and-good-practice/s/South%20Devon%20College%20-%20Good%20practice%20example.pdf)).
+* [PDF](http://www.ofsted.gov.uk/sites/default/files/documents/surveys-and-good-practice/s/South%20Devon%20College%20-%20Good%20practice%20example.pdf)
 
 ## Introduction
 
