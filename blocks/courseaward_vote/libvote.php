@@ -135,7 +135,7 @@ function get_notes($cid, $deleted = false) {
     global $DB;
 
     if ($deleted == false) {
-        $del = 'deleted = "0" and ';
+        $del = "deleted = '0' AND ";
     } else {
         $del = '';
     }
