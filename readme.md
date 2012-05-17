@@ -314,6 +314,15 @@ Suggestions for features or submissions of non-en_uk language packs are most wel
 
 ## History
 
+**May 17th 2012 - Vote Block**
+
+* Version 2.0.2 for Moodle 2.x
+* Build 2012051700
+
+Fixed an issue whereby a variable double-quoted in a SQL snippet failed in MS SQL and was considered a column name.
+
+Also, changed code where required to meet Moodle's coding guidelines (using the local Codechecker) but no changes to how the code works.
+
 **March 19th 2012 - Medal Block**
 
 * Version 2.0.1 for Moodle 2.x
