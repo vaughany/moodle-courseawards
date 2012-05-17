@@ -23,11 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// admin panel string
+// Admin panel string.
 $string['pluginname'] = 'Course Awards';
 $string['courseawardstoctitle'] = 'Course Awards - Various Reports';
 
-// report ToC strings
+// Report ToC strings.
 $string['coursewith'] = 'Course with...';
 $string['usershave'] = 'Users who have...';
 $string['medalsawarded'] = 'Medals Awarded...';
@@ -65,7 +65,7 @@ $string['listby'] = '...list by:';
 $string['listvote'] = 'A list of courses with the Vote block added';
 $string['listmedal'] = 'A list of courses with the Medal block added';
 
-// report strings
+// Report strings.
 $string['sortimg1'] = 'This image: ';
 $string['sortimg2'] = ' indicates the column which is sorted.';
 $string['outstanding'] = 'Outstanding';
@@ -88,7 +88,7 @@ $string['date'] = 'Date';
 $string['name'] = 'Name';
 $string['deleted'] = ' deleted';
 
-// course report strings
+// Course report strings.
 $string['coursereport_single'] = 'Single Course Report';
 $string['coursereport_highscore'] = 'Highest Scoring Courses';
 $string['coursereport_mostvoted'] = 'Most Voted-For Courses';
@@ -96,7 +96,7 @@ $string['coursereport_mostdeleted'] = 'Courses with Most Deleted Votes';
 $string['coursereport_mostnoted'] = 'Most Noted Courses';
 $string['coursereport_list'] = 'Simple List of all courses with votes';
 
-// user report strings
+// User report strings.
 $string['userreport_single'] = 'Single User Report';
 $string['userreport_votedmost'] = 'Users who Voted the Most';
 $string['userreport_votedhighest'] = 'Users who Voted the Highest';
@@ -105,7 +105,7 @@ $string['userreport_notedmost'] = 'Users who Added the most Notes';
 $string['userreport_mostdeleted'] = 'Users who Deleted the most Votes';
 $string['userreport_list'] = 'Simple List of all courses with votes';
 
-// votes notes report
+// Votes notes report.
 $string['vnreport_title'] = 'Votes and Notes for ';
 $string['vnreport_errortype'] = 'Type could not be determined as either a course or a user.';
 $string['vnreport_summary'] = 'Summary (Live votes only)';
@@ -126,7 +126,7 @@ $string['vnreport_added'] = 'Added: ';
 $string['vnreport_deleted'] = 'Deleted: ';
 $string['vnreport_delvotenote'] = 'Delete this vote (and note)?';
 
-// medals report
+// Medals report.
 $string['medalsreport_gold'] = 'Gold Medals';
 $string['medalsreport_silver'] = 'Silver Medals';
 $string['medalsreport_bronze'] = 'Bronze Medals';
@@ -137,7 +137,7 @@ $string['medalsreport_dateachieved'] = 'Date Achieved ';
 $string['medalsreport_del'] = 'Del: ';
 
 
-// CSV strings
+// CSV strings.
 $string['score_csv'] = 'Score (out of 3)';
 $string['percentage_csv'] = 'Percentage';
 $string['votes_csv'] = 'Votes';
@@ -151,7 +151,7 @@ $string['yes'] = 'yes';
 $string['no'] = 'no';
 $string['saveascsv'] = 'Click here to save this table as a CSV (comma separated values) file';
 
-// error strings
+// Error strings.
 $string['error_admin'] = 'Sorry, you need to be a site Admin to see the Course Reports.';
 $string['error_query'] = 'Sorry, the query could not be composed properly and cannot be run.';
 $string['error_noquery'] = 'Sorry, the URL is malformed and an appropriate report could not be generated.';
@@ -164,7 +164,7 @@ $string['error_noanyvotes'] = 'There are no votes to remove.';
 $string['error_noblock'] = '"Sorry, couldn\'t get the block ID for the \'courseawards_vote\' block. Have you installed it? If so, please report this error to the developer.';
 $string['error_dbupdate'] = 'Database not updated for some reason.';
 
-// debugging section
+// Debugging section.
 $string['debugvotes'] = 'Votes: ';
 $string['debugnotes'] = 'Notes: ';
 $string['debugmedals'] = 'Medals: ';
@@ -175,7 +175,7 @@ $string['debugtotal'] = 'Total: ';
 $string['debugusers'] = ' distinct users have voted on ';
 $string['debugcourses'] = ' distinct courses';
 
-// administration section
+// Administration section.
 $string['admin_toc'] = 'Administrative Options (Destructive!)';
 $string['admin_backuptitle'] = 'Backup Options';
 $string['admin_backupdatabase'] = '<strong>EXPERIMENTAL:</strong> Backup the votes, notes and medals. (MySQL databases only.)';

@@ -34,18 +34,12 @@ admin_externalpage_setup('reportcourseawards', '', null, '', array('pagelayout'=
 
 require_capability('moodle/site:viewreports', get_context_instance(CONTEXT_SYSTEM));
 
-// TODO: do some logging?
-//add_to_log($course->id, "course", "report stats", "report/stats/index.php?course=$course->id", $course->id);
-//stats_check_uptodate($course->id);
-
 $qid = required_param('q', PARAM_ALPHA);
 
-/**
- * Run code based on the $qid received from index.php
- */
+// Run code based on the $qid received from index.php.
 if (strtolower($qid) == 'delvote') {
 
-    // deletes votes from the admin interface
+    // Deletes votes from the admin interface.
     $vid    = required_param('v', PARAM_INT);
     $course = optional_param('c', '', PARAM_INT);
     $user   = optional_param('u', '', PARAM_INT);
@@ -70,7 +64,7 @@ if (strtolower($qid) == 'delvote') {
 
 } else if (strtolower($qid) == 'backup') {
 
-    // backs up the course awards tables
+    // Backs up the course awards tables.
     if ($CFG->dbtype != 'mysqli') {
         print_error(get_string('error_notmysql', 'report_courseawards'));
     }
@@ -83,7 +77,7 @@ if (strtolower($qid) == 'delvote') {
 
 } else if (strtolower($qid) == 'medalremove') {
 
-    // removes all live medals, adds to medal history
+    // Removes all live medals, adds to medal history.
     if ($res = $DB->get_records('block_courseaward_medal', array('deleted'=>0), '', 'id', '', '')) {
         foreach ($res as $row) {
             $now = time();
@@ -104,7 +98,7 @@ if (strtolower($qid) == 'delvote') {
 
 } else if (strtolower($qid) == 'medaldelete') {
 
-    // deletes all removed medals, forever
+    // Deletes all removed medals, forever.
     if (!$DB->delete_records('block_courseaward_medal', array('deleted'=>1))) {
         print_error(get_string('error_noremovedmedals', 'report_courseawards'));
     } else {
@@ -113,7 +107,7 @@ if (strtolower($qid) == 'delvote') {
 
 } else if (strtolower($qid) == 'noteswipe') {
 
-    // wipes out all notes
+    // Wipes out all notes.
     if ($res = $DB->get_records_select('block_courseaward_vote', 'deleted = 0 AND note <> \'\'', array(''), '', 'id', '', '')) {
         foreach ($res as $row) {
             $now = time();
@@ -132,7 +126,7 @@ if (strtolower($qid) == 'delvote') {
     }
 } else if (strtolower($qid) == 'voteremove') {
 
-    // removes all live votes (and assoc. notes), adds to vote history
+    // Removes all live votes (and assoc. notes), adds to vote history.
     if ($res = $DB->get_records('block_courseaward_vote', array('deleted'=>0), '', 'id', '', '')) {
         foreach ($res as $row) {
             $now = time();
@@ -153,7 +147,7 @@ if (strtolower($qid) == 'delvote') {
 
 } else if (strtolower($qid) == 'votedelete') {
 
-    // Deletes all votes and notes, forever
+    // Deletes all votes and notes, forever.
     if (!$DB->delete_records('block_courseaward_vote', array('deleted'=>1))) {
         print_error(get_string('error_noremovedmedals', 'report_courseawards'));
     } else {
@@ -162,7 +156,7 @@ if (strtolower($qid) == 'delvote') {
 
 } else if (strtolower($qid) == 'wipecoursevotes') {
 
-    // Deletes all votes and notes, forever
+    // Deletes all votes and notes, forever.
     $wid    = required_param('w', PARAM_INT);
 
     if (!$DB->delete_records('block_courseaward_vote', array('course_id'=>$wid))) {

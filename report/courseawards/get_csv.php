@@ -30,12 +30,12 @@ admin_externalpage_setup('reportcourseawards', '', null, '', array('pagelayout'=
 
 require_capability('moodle/site:viewreports', get_context_instance(CONTEXT_SYSTEM));
 
-// define the location and name of the saved CSV file - do this in report.php too.
+// Define the location and name of the saved CSV file - do this in report.php too.
 define('FILE_CSV', $CFG->dataroot.'/temp/courseawards-report.csv');
 
 header('Content-Description: File Transfer');
-header('Content-Type: application/octet-stream');       // open or download
-//header("Content-Type: application/force-download");     // download ONLY
+header('Content-Type: application/octet-stream');       // Open or download.
+// Header("Content-Type: application/force-download");     // Download ONLY.
 header('Content-Disposition: attachment; filename='.basename(FILE_CSV));
 header('Content-Transfer-Encoding: binary');
 header('Expires: 0');

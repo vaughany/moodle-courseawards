@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-// just a link to course report
+// Just a link to course report.
 $ADMIN->add('reports',
     new admin_externalpage(
         'reportcourseawards',
@@ -35,5 +35,5 @@ $ADMIN->add('reports',
     )
 );
 
-// no report settings
+// No report settings.
 $settings = null;

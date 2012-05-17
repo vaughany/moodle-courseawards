@@ -35,10 +35,6 @@ admin_externalpage_setup('reportcourseawards', '', null, '', array('pagelayout'=
 
 require_capability('moodle/site:viewreports', get_context_instance(CONTEXT_SYSTEM));
 
-// TODO: do some logging?
-//add_to_log($course->id, "course", "report stats", "report/stats/index.php?course=$course->id", $course->id);
-//stats_check_uptodate($course->id);
-
 $qid = required_param('q', PARAM_ALPHA);
 
 $now_fmt = 'F jS Y, g:i a';
@@ -55,10 +51,10 @@ define('PATH_USER', $CFG->wwwroot.'/user/view.php?id=');
 define('PATH_REPORT', $CFG->wwwroot.'/report/courseawards');
 define('PATH_VOTE', $CFG->wwwroot.'/blocks/courseaward_vote/');
 define('PATH_MEDAL', $CFG->wwwroot.'/blocks/courseaward_medal/');
-// define the image here so we can change it across the report
+// Define the image here so we can change it across the report.
 define('SORT_IMG', PATH_REPORT.'/img/arrow_down.png');
 define('DEL_IMG', PATH_REPORT.'/img/cross.png');
-// define the location and name of the saved CSV file - do this in get_csv.php too.
+// Define the location and name of the saved CSV file - do this in get_csv.php too.
 define('FILE_CSV', $CFG->dataroot.'/temp/courseawards-report.csv');
 
 function get_course_shortname($id) {
@@ -75,7 +71,7 @@ function get_chart2($chart, $votes, $title='Graphical breakdown of votes', $big=
         $sizeh = '250';
     }
 
-    // number of decimal places
+    // Number of decimal places.
     $nfdec = 1;
 
     $build      = '';
@@ -104,13 +100,8 @@ function get_chart2($chart, $votes, $title='Graphical breakdown of votes', $big=
         $colours = substr($colours, 0, strlen($colours)-2);
     }
 
-    // debugging
-    //$build .= '<p>'.$data.'<br />'.$colours.'</p>';
-
-    /**
-     * Google Chart Tools pie chart docs:
-     * http://code.google.com/apis/chart/interactive/docs/gallery/piechart.html
-     */
+    /* Google Chart Tools pie chart docs                                        */
+    /* http://code.google.com/apis/chart/interactive/docs/gallery/piechart.html */
 
     $build .= "<script type=\"text/javascript\">
     //<![CDATA[
@@ -141,39 +132,35 @@ function get_chart2($chart, $votes, $title='Graphical breakdown of votes', $big=
 
     return $build;
 }
-// set up the variables in which we will slowly create either the for-screen data or data for the file.
+// Set up the variables in which we will slowly create either the for-screen data or data for the file.
 $build          = '';
 $build_heading  = '';
 $csv            = '';
 
-// adding the Google Chart Tools JS
+// Adding the Google Chart Tools JS.
 $build .= '<script type="text/javascript" src="https://www.google.com/jsapi"></script>'."\n";
 
 $build .= '<link rel="stylesheet" type="text/css" href="styles.css" />'."\n";
 
-// wrap everything in a id'd div tag
+// Wrap everything in a id'd div tag.
 $build .= "\n".'<div id="courseawards">'."\n";
 
-/**
- * Define the SQL query per character fed into this script
- */
+// Define the SQL query per character fed into this script.
 if (strtolower($qid) == 'c') {
-    /**
-     * This query does all per-course queries: score, votes, notes and even a basic list.
-     */
+    // This query does all per-course queries: score, votes, notes and even a basic list.
 
-    // we needs the 's' (sort) setting for this query.
+    // We needs the 's' (sort) setting for this query.
     $sort = required_param('s', PARAM_ALPHA);
     $limit  = required_param('l', PARAM_INT);
     $course = optional_param('c', '', PARAM_INT);
     if (is_numeric($course) && $course > 0) {
-        // SCV meaning 'single course view'
+        // SCV meaning 'single course view'.
         define('SCV', true);
     } else {
         define('SCV', false);
     }
 
-    // build the query
+    // Build the query.
     $query =   "SELECT course_id, shortname, fullname, (
 
                     SELECT COUNT(vote)
@@ -221,13 +208,12 @@ if (strtolower($qid) == 'c') {
 
                 FROM ".PREFIX.TBL_VOTE.", ".PREFIX."course
                 WHERE ".PREFIX.TBL_VOTE.".course_id = ".PREFIX."course.id ";
-                //, ".PREFIX."user
     if (SCV) {
         $query .= "AND ".PREFIX."course.id = '".$course."' ";
     }
     $query .= "GROUP BY ".PREFIX."course.id, course_id, shortname, fullname ";
     if (SCV) {
-        // no sorting if only one course specified
+        // No sorting if only one course specified.
         $title = get_string('coursereport_single', 'report_courseawards');
     } else if ($sort == 's') {
         $query .= "ORDER BY voteavg DESC, votecount DESC";
@@ -251,7 +237,7 @@ if (strtolower($qid) == 'c') {
         $query .= ";";
     }
 
-    // run the query, stop everything if no rows returned...
+    // Run the query, stop everything if no rows returned.
     $res = $DB->get_records_sql($query);
     if (!$res) {
         $build .= '<p>'.get_string('noresults', 'report_courseawards').'</p>'."\n";
@@ -260,15 +246,15 @@ if (strtolower($qid) == 'c') {
 
     $save_csv = true;
 
-    // do the heading
+    // Do the heading.
     $csv .= '"'.$title.' ('.get_string('asof', 'report_courseawards').$now.')"'."\n";
     $build_heading = $OUTPUT->heading($title.' ('.get_string('asof', 'report_courseawards').$now.')');
 
-    // brief note about what the sort arrow means
+    // Brief note about what the sort arrow means.
     $build .= '<p>'.get_string('sortimg1', 'report_courseawards').'<img src="'.SORT_IMG.'" />'.
         get_string('sortimg2', 'report_courseawards').'</p>'."\n";
 
-    //start building the data
+    // Start building the data.
     $csv .= '"'.get_string('course', 'report_courseawards').'","'.get_string('score_csv', 'report_courseawards').'","'.
         get_string('percentage_csv', 'report_courseawards').'","'.get_string('votes_csv', 'report_courseawards').'","'.
         get_string('deleted_csv', 'report_courseawards').get_string('votes_csv', 'report_courseawards').'","'.
@@ -280,31 +266,31 @@ if (strtolower($qid) == 'c') {
         $build .= '        <th>'.get_string('position', 'report_courseawards').'</th>'."\n";
     }
 
-    // sort out the 'course' column
+    // Sort out the 'course' column.
     if ($sort == 'a') {
         $build .= '        <th>'.get_string('course', 'report_courseawards').'<img src="'.SORT_IMG.'" /></th>'."\n";
     } else {
         $build .= '        <th><a href="report.php?q=c&l='.$limit.'&s=a">'.get_string('course', 'report_courseawards').'</a></th>'."\n";
     }
-    // sort out the 'score' column
+    // Sort out the 'score' column.
     if ($sort == 's') {
         $build .= '        <th>'.get_string('score', 'report_courseawards').'<img src="'.SORT_IMG.'" /></th>'."\n";
     } else {
         $build .= '        <th><a href="report.php?q=c&l='.$limit.'&s=s">'.get_string('score', 'report_courseawards').'</a></th>'."\n";
     }
-    // sort out the 'votes' column
+    // Sort out the 'votes' column.
     if ($sort == 'v' || $sort == 'd') {
         $build .= '        <th>'.get_string('votes', 'report_courseawards').'<img src="'.SORT_IMG.'" /></th>'."\n";
     } else {
         $build .= '        <th><a href="report.php?q=c&l='.$limit.'&s=v">'.get_string('votes', 'report_courseawards').'</a></th>'."\n";
     }
-    // sort out the 'notes' column
+    // Sort out the 'notes' column.
     if ($sort == 'n') {
         $build .= '        <th>'.get_string('notes', 'report_courseawards').'<img src="'.SORT_IMG.'" /></th>'."\n";
     } else {
         $build .= '        <th><a href="report.php?q=c&l='.$limit.'&s=n">'.get_string('notes', 'report_courseawards').'</a></th>'."\n";
     }
-    // sort out the 'medals' column
+    // Sort out the 'medals' column.
     if ($sort == 'n') {
         $build .= '        <th>'.get_string('medals', 'report_courseawards').'<img src="'.SORT_IMG.'" /></th>'."\n";
     } else {
@@ -312,48 +298,48 @@ if (strtolower($qid) == 'c') {
     }
     $build .= '    </tr>'."\n";
 
-    // cyclicly get the results
+    // Cyclicly get the results.
     foreach ($res as $row) {
-        // CSV data first
+        // CSV data first.
 
-        // course
+        // Course.
         $csv .= '"'.$row->shortname.'",';
-        // score
+        // Score.
         $csv .= '"'.number_format($row->voteavg, 2).'",';
-        // %age
+        // Percentage.
         if ($row->voteavg <> 0) {
             $csv .= '"'.number_format(($row->voteavg/3)*100).'",';
         } else {
             $csv .= '"0",';
         }
-        // votes
+        // Votes.
         if (!$row->votecount > 0) {
             $csv .= '"0",';
         } else {
             $csv .= '"'.$row->votecount.'",';
         }
-        // deleted votes
+        // Deleted votes.
         if (!$row->votecountdeleted > 0) {
             $csv .= '"0",';
         } else {
             $csv .= '"'.$row->votecountdeleted.'",';
         }
-        // notes
+        // Notes.
         if (!$row->notecount > 0) {
             $csv .= '"0",';
         } else {
             $csv .= '"'.$row->notecount.'",';
         }
-        // deleted notes
+        // Deleted notes.
         if (!$row->notecountdeleted > 0) {
             $csv .= '"0",';
         } else {
             $csv .= '"'.$row->notecountdeleted.'",';
         }
-        // medal
+        // Medal.
         $csv .= '"'.ucfirst($row->medal).'"'."\n";
 
-        // data for screen next
+        // Data for screen next.
 
         $build .= '    <tr>'."\n";
         if (SCV == false) {
@@ -361,7 +347,7 @@ if (strtolower($qid) == 'c') {
         }
         $build .= '        <td><a href="'.PATH_COURSE.$row->course_id.'">'.$row->shortname.'</a></td>'."\n";
         if ($row->voteavg <> 0) {
-            // catching division by zero errors
+            // Catching division by zero errors.
             $build .= '        <td>'.number_format($row->voteavg, 2).' ('.number_format(($row->voteavg/3)*100).'%)</td>'."\n";
         } else {
             $build .= '        <td>'.number_format($row->voteavg, 2).' (0%)</td>'."\n";
@@ -383,7 +369,7 @@ if (strtolower($qid) == 'c') {
             $build .= $row->notecount;
         }
         if ($row->notecountdeleted <> 0) {
-            // don't bother showing 'deleted' if there are none
+            // Don't bother showing 'deleted' if there are none.
             $build .= ' ('.$row->notecountdeleted.get_string('deleted', 'report_courseawards').')';
         }
         $build .= '</a></td>'."\n";
@@ -395,27 +381,25 @@ if (strtolower($qid) == 'c') {
         $build .= '    </tr>'."\n";
     }
 
-    // end table and print 'get csv file' link
+    // End table and print 'get csv file' link.
     $build .= '</table>'."\n";
 
 } else if (strtolower($qid) == 'u') {
-    /**
-     * This section does all user queries: most votes, highest votes, lowest votes, most notes, deleted the most...
-     * sort can be most [v]otes, [h]ighest votes, [l]owest votes, most [n]otes, most [d]eleted or [a]lphabetical list
-     */
+    /* This section does all user queries: most votes, highest votes, lowest votes, most notes, deleted the most...     */
+    /* Sort can be most [v]otes, [h]ighest votes, [l]owest votes, most [n]otes, most [d]eleted or [a]lphabetical list   */
 
-    // we needs the 's' (sort) setting for this query.
+    // We needs the 's' (sort) setting for this query.
     $sort = required_param('s', PARAM_ALPHA);
     $user = optional_param('u', '', PARAM_INT);
     if (is_numeric($user) && $user > 0) {
-        // SCV meaning 'single course view'
+        // SCV meaning 'single course view'.
         define('SCV', true);
     } else {
         define('SCV', false);
     }
     $limit  = required_param('l', PARAM_INT);
 
-    // build the query
+    // Build the query.
     $query =   "SELECT ".PREFIX."user.id AS user_id, firstname, lastname, (
 
                     SELECT COUNT(vote)
@@ -462,26 +446,26 @@ if (strtolower($qid) == 'c') {
     }
     $query .= "GROUP BY ".PREFIX."user.id, firstname, lastname ";
     if (SCV) {
-        // no sorting if only one course specified
+        // No sorting if only one course specified.
         $title = get_string('userreport_single', 'report_courseawards');
     } else if ($sort == 'v') {
-        // most votes
+        // Most votes.
         $query .= "ORDER BY votecount DESC";
         $title = get_string('userreport_votedmost', 'report_courseawards');
     } else if ($sort == 'h') {
-        // users who voted the highest
+        // Users who voted the highest.
         $query .= "ORDER BY voteavg DESC";
         $title = get_string('userreport_votedhighest', 'report_courseawards');
     } else if ($sort == 'l') {
-        // users who voted the lowest
+        // Users who voted the lowest.
         $query .= "ORDER BY voteavg ASC";
         $title = get_string('userreport_votedlowest', 'report_courseawards');
     } else if ($sort == 'n') {
-        // users who wrote the most notes
+        // Users who wrote the most notes.
         $query .= "ORDER BY notecount DESC";
         $title = get_string('userreport_notedmost', 'report_courseawards');
     } else if ($sort == 'd') {
-        // users who deleted the most votes
+        // Users who deleted the most votes.
         $query .= "ORDER BY votecountdeleted DESC";
         $title = get_string('userreport_mostdeleted', 'report_courseawards');
     } else if ($sort == 'a') {
@@ -494,7 +478,7 @@ if (strtolower($qid) == 'c') {
         $query .= ";";
     }
 
-    // run the query, stop everything if no rows returned...
+    // Run the query, stop everything if no rows returned.
     $res = $DB->get_records_sql($query);
     if (!$res) {
         $build .= '<p>'.get_string('noresults', 'report_courseawards').'</p>'."\n";
@@ -508,7 +492,7 @@ if (strtolower($qid) == 'c') {
     $build .= '<p>'.get_string('sortimg1', 'report_courseawards').'<img src="'.SORT_IMG.'" />'.
         get_string('sortimg2', 'report_courseawards').'</p>'."\n";
 
-    //start building the data
+    // Start building the data.
     $csv .= '"'.get_string('user', 'report_courseawards').'","'.get_string('score_csv', 'report_courseawards').'","'.
         get_string('percentage_csv', 'report_courseawards').'","'.get_string('votes_csv', 'report_courseawards').'","'.
         get_string('deleted_csv', 'report_courseawards').get_string('votes_csv', 'report_courseawards').'","'.
@@ -518,28 +502,28 @@ if (strtolower($qid) == 'c') {
     if (SCV == false) {
         $build .= '        <th>'.get_string('position', 'report_courseawards').'</th>'."\n";
     }
-    // sort out the 'user' column
+    // Sort out the 'user' column.
     if ($sort == 'a') {
         $build .= '        <th>'.get_string('user', 'report_courseawards').'<img src="'.SORT_IMG.'" /></th>'."\n";
     } else {
         $build .= '        <th><a href="report.php?q=u&l='.$limit.'&s=a">'.
             get_string('user', 'report_courseawards').'</a></th>'."\n";
     }
-    // sort out the 'highest/lowest score' column
+    // Sort out the 'highest/lowest score' column.
     if ($sort == 'h' || $sort == 'l') {
         $build .= '        <th>'.get_string('score', 'report_courseawards').'<img src="'.SORT_IMG.'" /></th>'."\n";
     } else {
         $build .= '        <th><a href="report.php?q=u&l='.$limit.'&s=h">'.
             get_string('score', 'report_courseawards').'</a></th>'."\n";
     }
-    // sort out the 'votes/deleted votes' column
+    // Sort out the 'votes/deleted votes' column.
     if ($sort == 'v' || $sort == 'd') {
         $build .= '        <th>'.get_string('votes', 'report_courseawards').'<img src="'.SORT_IMG.'" /></th>'."\n";
     } else {
         $build .= '        <th><a href="report.php?q=u&l='.$limit.'&s=v">'.
             get_string('votes', 'report_courseawards').'</a></th>'."\n";
     }
-    // sort out the 'notes' column
+    // Sort out the 'notes' column.
     if ($sort == 'n') {
         $build .= '        <th>'.get_string('notes', 'report_courseawards').'<img src="'.SORT_IMG.'" /></th>'."\n";
     } else {
@@ -548,46 +532,46 @@ if (strtolower($qid) == 'c') {
     }
     $build .= '    </tr>'."\n";
 
-    // cyclicly get the results
+    // Cyclicly get the results.
     foreach ($res as $row) {
-        // CSV data first
+        // CSV data first.
 
-        // user
+        // User.
         $csv .= '"'.$row->firstname.' '.$row->lastname.'",';
-        // score
+        // Score.
         $csv .= '"'.number_format($row->voteavg, 2).'",';
-        // %age
+        // Percentage.
         if ($row->voteavg <> 0) {
             $csv .= '"'.number_format(($row->voteavg/3)*100).'",';
         } else {
             $csv .= '"0",';
         }
-        // votes
+        // Votes.
         if (!$row->votecount > 0) {
             $csv .= '"0",';
         } else {
             $csv .= '"'.$row->votecount.'",';
         }
-        // deleted votes
+        // Deleted votes.
         if (!$row->votecountdeleted > 0) {
             $csv .= '"0",';
         } else {
             $csv .= '"'.$row->votecountdeleted.'",';
         }
-        // notes
+        // Notes.
         if (!$row->notecount > 0) {
             $csv .= '"0",';
         } else {
             $csv .= '"'.$row->notecount.'",';
         }
-        // deleted notes
+        // Deleted notes.
         if (!$row->notecountdeleted > 0) {
             $csv .= '"0"'."\n";
         } else {
             $csv .= '"'.$row->notecountdeleted.'"'."\n";
         }
 
-        // data for screen next
+        // Data for screen next.
 
         $build .= '    <tr>'."\n";
         if (SCV == false) {
@@ -595,7 +579,7 @@ if (strtolower($qid) == 'c') {
         }
         $build .= '        <td><a href="'.PATH_USER.$row->user_id.'">'.$row->firstname.' '.$row->lastname.'</a></td>'."\n";
         if ($row->voteavg <> 0) {
-            // catching division by zero errors
+            // Catching division by zero errors.
             $build .= '        <td>'.number_format($row->voteavg, 2).' ('.number_format(($row->voteavg/3)*100).'%)</td>'."\n";
         } else {
             $build .= '        <td>'.number_format($row->voteavg, 2).' (0%)</td>'."\n";
@@ -617,22 +601,20 @@ if (strtolower($qid) == 'c') {
             $build .= $row->notecount;
         }
         if ($row->notecountdeleted <> 0) {
-            // don't bother showing 'deleted' if there are none
+            // Don't bother showing 'deleted' if there are none.
             $build .= ' ('.$row->notecountdeleted.get_string('deleted', 'report_courseawards').')';
         }
         $build .= '</a></td>'."\n".'    </tr>'."\n";
     }
 
-    // end table
+    // End table.
     $build .= '</table>'."\n";
 
 } else if (strtolower($qid) == 'v') {
-    /**
-     * This section shows detail about all the votes and notes, as well as deleted votes and notes,
-     * attributed to a course or an individual.
-     */
+    /* This section shows detail about all the votes and notes, as well as deleted votes and notes, */
+    /* attributed to a course or an individual.                                                     */
 
-    // figure out what type of report this is
+    // Figure out what type of report this is.
     if ($user = optional_param('u', '', PARAM_INT)) {
         define('TYPE', 'user');
         $data = $DB->get_record('user', array('id'=>$user));
@@ -651,9 +633,9 @@ if (strtolower($qid) == 'c') {
         print_error(get_string('vnreport_errortype', 'report_courseawards'));
     }
 
-    // New summary section, simply votes against the coloured star
+    // New summary section, simply votes against the coloured star.
 
-    // build the query
+    // Build the query.
     $query =   "SELECT vote, COUNT(vote) AS votecount, (
                     SELECT COUNT(vote)
                     FROM ".PREFIX.TBL_VOTE." ";
@@ -690,7 +672,7 @@ if (strtolower($qid) == 'c') {
                 '</td><td>'.number_format(($row->votecount/$row->total)*100, 1).'%</td></tr>'."\n";
             $score += ($row->vote * $row->votecount)/$row->total;
             $chart[$row->vote] = $row->votecount;
-            $votes += $row->votecount; // for use by the chart function
+            $votes += $row->votecount; // For use by the chart function.
         }
         $build .= '</table>'."\n";
 
@@ -698,7 +680,7 @@ if (strtolower($qid) == 'c') {
             get_string('vnreport_orpercentage', 'report_courseawards').number_format(($score/3)*100, 1).
             get_string('vnreport_percent', 'report_courseawards').'</p>'."\n";
 
-        //GETCHART2!!
+        // GETCHART2.
         if (TYPE == 'user') {
             $build .= get_chart2($chart, $votes, $data->firstname.' '.$data->lastname, false);
         } else if (TYPE == 'course') {
@@ -708,9 +690,9 @@ if (strtolower($qid) == 'c') {
         $build .= '<div id="chart_div"></div>'."\n";
     }
 
-    // put the medal on-screen if one exists
+    // Put the medal on-screen if one exists.
     if (TYPE == 'course' && has_medal($course)) {
-        // course has a medal.
+        // Course has a medal.
         $awarded = get_medal($course);
         $build .= '<h3>'.get_string('vnreport_medalawarded', 'report_courseawards').'</h3>'."\n";
         $build .= '<p>'.get_string('vnreport_courseawarded', 'report_courseawards').'&ldquo;<strong>'.
@@ -719,11 +701,11 @@ if (strtolower($qid) == 'c') {
             ucfirst($awarded).'" /></p>'."\n";
     }
 
-    // end of summary section
+    // End of summary section.
 
-    // original section
+    // Original section.
 
-    // build the query
+    // Build the query.
     $query =   "SELECT ".PREFIX.TBL_VOTE.".id AS vote_id, firstname, lastname, shortname, fullname, user_id,
                     course_id, vote, date_added, date_modified, note, ".PREFIX.TBL_VOTE.".deleted
                 FROM ".PREFIX.TBL_VOTE.", ".PREFIX."course, ".PREFIX."user
@@ -738,7 +720,7 @@ if (strtolower($qid) == 'c') {
     }
     $query .= "ORDER BY date_added DESC;";
 
-    // run the query, stop everything if no rows returned...
+    // Run the query, stop everything if no rows returned.
     $res = $DB->get_records_sql($query);
     if (!$res) {
         $build .= '<p>'.get_string('novotesnotes', 'report_courseawards').'</p>'."\n";
@@ -749,11 +731,11 @@ if (strtolower($qid) == 'c') {
         $build .= '<h3>'.get_string('vnreport_detail', 'report_courseawards').'</h3>'."\n";
         $build .= '<p>'.get_string('vnreport_greytext', 'report_courseawards').'</p>'."\n";
 
-        //start building the data
+        // Start building the data.
         $csv .= '"'.get_string('date', 'report_courseawards').'","'.get_string('name', 'report_courseawards').'","'.
             get_string('vote_csv', 'report_courseawards').'","'.get_string('note_csv', 'report_courseawards').'","'.
             get_string('deleted_csv', 'report_courseawards').'"'."\n";
-        //start building the table
+        // Start building the table.
         $build .= '<table>'."\n".'    <tr>'."\n";
         $build .= '        <th>'.get_string('position', 'report_courseawards').'</th>'."\n";
         $build .= '        <th>'.get_string('date', 'report_courseawards').' <img src="'.SORT_IMG.'" /></th>'."\n";
@@ -763,37 +745,34 @@ if (strtolower($qid) == 'c') {
         $build .= '        <th class="delete">'.get_string('vnreport_del', 'report_courseawards').'</th>'."\n";
         $build .= '    </tr>'."\n";
 
-        // cyclicly put the results on the screen
+        // Cyclicly put the results on the screen.
         foreach ($res as $row) {
-            /**
-             * CSV data first
-             */
-            // date
+            // CSV data first.
+
+            // Date.
             $csv .= '"'.date($now_fmt, $row->date_added).'",';
-            // name: course / user
+            // Name: course / user.
             if (TYPE == 'course') {
                 $csv .= '"'.$row->firstname.' '.$row->lastname.'",';
             } else if (TYPE == 'user') {
                 $csv .= '"'.$row->fullname.' ('.$row->shortname.')",';
             }
-            // votes
+            // Votes.
                 $csv .= '"'.$row->vote.'",';
-            // notes
+            // Notes.
             if (!$row->note > 0) {
                 $csv .= '"",';
             } else {
                 $csv .= '"'.$row->note.'",';
             }
-            // deleted notes
+            // Deleted notes.
             if (!$row->deleted > 0) {
                 $csv .= '"'.get_string('no', 'report_courseawards').'"'."\n";
             } else {
                 $csv .= '"'.get_string('yes', 'report_courseawards').'"'."\n";
             }
 
-            /**
-             * data for screen next
-             */
+            // Data for screen next.
             if ($row->deleted == 1) {
                 $build .= '    <tr class="deleted">'."\n";
             } else {
@@ -834,21 +813,18 @@ if (strtolower($qid) == 'c') {
         }
     }
 
-    // end table
+    // End table.
     $build .= '</table>'."\n";
 
 } else if (strtolower($qid) == 'm') {
-    /**
-     * This section shows the medals which have been awarded
-     */
+    // This section shows the medals which have been awarded.
 
-    // we needs the 's' (sort) setting for this query.
-    // [d]ate and [c]ourse
+    // We needs the 's' (sort) setting for this query. ([d]ate and [c]ourse).
     $sort   = required_param('s', PARAM_ALPHA);
     $limit  = required_param('l', PARAM_INT);
     $medal  = optional_param('m', '', PARAM_ALPHA);
 
-    // build the query
+    // Build the query.
     $query =   "SELECT ".PREFIX.TBL_MEDAL.".id AS mid, user_id, course_id, medal, date_added, date_modified, ".
                 PREFIX.TBL_MEDAL.".deleted AS deleted, shortname, fullname, firstname, lastname
                 FROM ".PREFIX.TBL_MEDAL.", ".PREFIX."course, ".PREFIX."user
@@ -875,7 +851,7 @@ if (strtolower($qid) == 'c') {
         $query .= ";";
     }
 
-    // run the query, stop everything if no rows returned...
+    // Run the query, stop everything if no rows returned.
     $res = $DB->get_records_sql($query);
     if (!$res) {
         $build .= '<p>'.get_string('noresults', 'report_courseawards').'</p>'."\n";
@@ -914,17 +890,17 @@ if (strtolower($qid) == 'c') {
         get_string('medalawardedby_csv', 'report_courseawards').'","'.
         get_string('deleted_csv', 'report_courseawards').'"'."\n";
 
-    //start building the table
+    // Start building the table.
     $build .= '<table>'."\n".'    <tr>'."\n";
     $build .= '        <th>'.get_string('position', 'report_courseawards').'</th>'."\n";
-    // sort out the 'course' column
+    // Sort out the 'course' column.
     if ($sort == 'c') {
         $build .= '        <th>'.get_string('course', 'report_courseawards').'<img src="'.SORT_IMG.'" /></th>'."\n";
     } else {
         $build .= '        <th><a href="report.php?q=m&l='.$limit.'&s=c&m='.$medal.'">'.
             get_string('course', 'report_courseawards').'</a></th>'."\n";
     }
-    // sort out the 'date ' column
+    // Sort out the 'date' column.
     if ($sort == 'd') {
         $build .= '        <th>'.get_string('medalsreport_dateachieved', 'report_courseawards').'<img src="'.
             SORT_IMG.'" /></th>'."\n";
@@ -936,26 +912,26 @@ if (strtolower($qid) == 'c') {
     $build .= '        <th>'.get_string('medalawardedby_csv', 'report_courseawards').'</th>'."\n";
     $build .= '    </tr>'."\n";
 
-    // cyclicly put the results on the screen
+    // Cyclicly put the results on the screen.
     foreach ($res as $row) {
-        // CSV data first
+        // CSV data first.
 
-        // course
+        // Course.
         $csv .= '"'.$row->fullname.' ('.$row->shortname.')",';
-        // date
+        // Date.
         $csv .= '"'.date($now_fmt, $row->date_added).'",';
-        // medal
+        // Medal.
         $csv .= '"'.ucfirst($row->medal).'",';
-        // awarded by
+        // Awarded by.
         $csv .= '"'.$row->firstname.' '.$row->lastname.'",';
-        // deleted notes
+        // Deleted notes.
         if (!$row->deleted > 0) {
             $csv .= '"'.get_string('no', 'report_courseawards').'"'."\n";
         } else {
             $csv .= '"'.get_string('yes', 'report_courseawards').'"'."\n";
         }
 
-        // data for screen next
+        // Data for screen next.
         if ($row->deleted == 1) {
             $build .= '    <tr class="deleted">'."\n";
         } else {
@@ -980,18 +956,18 @@ if (strtolower($qid) == 'c') {
         $build .= '    </tr>'."\n";
     }
 
-    // end table
+    // End table.
     $build .= '</table>'."\n";
 
 } else {
-    // what to do if the query ID doesn't match any query.
+    // What to do if the query ID doesn't match any query.
     $build .= get_string('error_noquery', 'report_courseawards')."\n";
 }
 
-// sort out the output, whatever that's going to be
+// Sort out the output, whatever that's going to be.
 
 if ($save_csv) {
-    // write the csv file to disk
+    // Write the csv file to disk.
     $fh = fopen(FILE_CSV, 'w');
     if (!$fh) {
         die('File error: could not open file '.FILE_CSV.' for writing.');

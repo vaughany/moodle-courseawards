@@ -34,10 +34,6 @@ require_capability('moodle/site:viewreports', get_context_instance(CONTEXT_SYSTE
 
 admin_externalpage_setup('reportcourseawards', '', null, '', array('pagelayout'=>'report'));
 
-// do some logging?
-//add_to_log($course->id, "course", "report stats", "report/stats/index.php?course=$course->id", $course->id);
-//stats_check_uptodate($course->id);
-
 $output = '<h3>'.get_string('coursewith', 'report_courseawards').'</h3>'."\n";
 
 $output .= '<ul>'."\n";
@@ -155,7 +151,7 @@ $output .= '<h3>'.get_string('blocklist', 'report_courseawards').'</h3>'."\n";
 
 $output .= '<ul>'."\n";
 
-// get the block id of the courseaward_* blocks so we can link to the list of where they're installed.
+// Get the block id of the courseaward_* blocks so we can link to the list of where they're installed.
 if ($res = $DB->get_record('block', array('name'=>'courseaward_vote'))) {
     $vid =  $res->id;
 } else {
@@ -178,7 +174,7 @@ echo $output;
 echo $OUTPUT->box_end();
 
 
-// a section for a few minor admin operations
+// A section for a few minor admin operations.
 if ($CFG->dbtype == 'mysqli') {
     $output_admin = '<h3>'.get_string('admin_backuptitle', 'report_courseawards').'</h3>'."\n";
     $output_admin .= "<ul>\n";
@@ -227,11 +223,11 @@ if ($res) {
     $output_admin .= '</select></form>';
 }
 
-// statistics
+// Statistics.
 $output_admin .= '<h3>'.get_string('stats', 'report_courseawards').'</h3>'."\n";
 $output_admin .= '<ul>'."\n";
 
-// votes
+// Votes.
 $vlive = $DB->get_record_sql("SELECT COUNT(id) AS cid FROM ".
     $CFG->prefix."block_courseaward_vote WHERE deleted = '0'");
 $output_admin .= '    <li>'.get_string('debugvotes', 'report_courseawards').
@@ -241,7 +237,7 @@ $vdel = $DB->get_record_sql("SELECT COUNT(id) AS cid FROM ".
 $output_admin .= '; '.get_string('debugdeleted', 'report_courseawards').$vdel->cid;
 $output_admin .= '; '.get_string('debugtotal', 'report_courseawards').($vlive->cid + $vdel->cid).';</li>'."\n";
 
-// notes
+// Notes.
 $nlive = $DB->get_record_sql("SELECT COUNT(id) AS cid FROM ".
     $CFG->prefix."block_courseaward_vote WHERE deleted = '0' AND note <> ''");
 $output_admin .= '    <li>'.get_string('debugnotes', 'report_courseawards').
@@ -251,13 +247,13 @@ $ndel = $DB->get_record_sql("SELECT COUNT(id) AS cid FROM ".
 $output_admin .= '; '.get_string('debugdeleted', 'report_courseawards').$ndel->cid;
 $output_admin .= '; '.get_string('debugtotal', 'report_courseawards').($nlive->cid + $ndel->cid).';</li>'."\n";
 
-// users & courses
+// Users and courses.
 $uno = $DB->get_record_sql("SELECT COUNT(DISTINCT user_id) AS cid FROM ".$CFG->prefix."block_courseaward_vote");
 $cno = $DB->get_record_sql("SELECT COUNT(DISTINCT course_id) AS cid FROM ".$CFG->prefix."block_courseaward_vote");
 $output_admin .= '    <li>'.$uno->cid.get_string('debugusers', 'report_courseawards').$cno->cid.
     get_string('debugcourses', 'report_courseawards').'</li>'."\n";
 
-// medals
+// Medals.
 $mlive = $DB->get_record_sql("SELECT COUNT(id) AS cid FROM ".
     $CFG->prefix."block_courseaward_medal WHERE deleted = '0'");
 $output_admin .= '    <li>'.get_string('debugmedals', 'report_courseawards').
