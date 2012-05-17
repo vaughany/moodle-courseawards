@@ -25,9 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-/**
- * Checks to see if a medal exists for this course.
- */
+// Checks to see if a medal exists for this course.
 function has_medal($course) {
     if (empty($course)) {
         return false;
@@ -40,9 +38,7 @@ function has_medal($course) {
     ));
 }
 
-/**
- * gets the medal for this course.
- */
+// Gets the medal for this course.
 function get_medal($course) {
     if (empty($course)) {
         return false;
@@ -56,9 +52,7 @@ function get_medal($course) {
     return $res->medal;
 }
 
-/**
- * returns the path to the image based on a specific input or returns false on fail.
- */
+// Returns the path to the image based on a specific input or returns false on fail.
 function get_medal_img($medal) {
     global $CFG;
     $imgpath = $CFG->wwwroot.'/blocks/courseaward_medal/img/';
@@ -86,9 +80,7 @@ function get_medal_img($medal) {
     return $ret;
 }
 
-/**
- * get the medal ID
- */
+// Get the medal ID.
 function get_medal_id($course) {
     global $DB;
     $res = $DB->get_record('block_courseaward_medal', array(
@@ -98,9 +90,7 @@ function get_medal_id($course) {
     return $res->id;
 }
 
-/**
- * get the medal date awarded
- */
+// Get the medal date awarded.
 function get_medal_date($course) {
     global $DB;
     $res = $DB->get_record('block_courseaward_medal', array(
@@ -110,9 +100,7 @@ function get_medal_date($course) {
     return $res->date_added;
 }
 
-/**
- * get the history of awards
- */
+// Get the history of awards.
 function get_course_medal_history($cid) {
     global $DB;
     $res = $DB->get_records_select('block_courseaward_medal', 'course_id = \''.$cid.'\'', array(
@@ -147,8 +135,6 @@ function get_course_medal_history($cid) {
 
         return $build;
     } else {
-        // swap the commented out lines, below, if you want nothing at all returned
         return '<div class="center smaller cleartop">'.get_string('admin-nohistory', 'block_courseaward_medal').'</div>';
-        //return false;
     }
 }

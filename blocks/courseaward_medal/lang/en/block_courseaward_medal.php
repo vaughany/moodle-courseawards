@@ -23,20 +23,20 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// general strings
+// General strings.
 $string['pluginname'] = 'Course Awards - Medal';
 
-//medal strings
+// Medal strings.
 $string['medal-gold'] = 'Gold Medal';
 $string['medal-silver'] = 'Silver Medal';
 $string['medal-bronze'] = 'Bronze Medal';
 $string['medal-achievement'] = 'Notable Achievement Ribbon';
 
-// user strings
+// User strings.
 $string['user-nomedals'] = 'This course has not been awarded any medals yet.';
 $string['user-awardedon'] = 'Awarded on';
 
-// admin strings
+// Admin strings.
 $string['admin-nomedals'] = 'No medals have been awarded yet.';
 $string['admin-medaldel'] = '(Delete this medal?)';
 $string['admin-medaladdgold'] = 'Add a gold medal?';
@@ -46,11 +46,11 @@ $string['admin-medaladdachievement'] = 'Add an \'achievement\' ribbon?';
 $string['admin-history'] = '(Show/hide history)';
 $string['admin-nohistory'] = '(No history to show)';
 
-// config strings
+// Config strings.
 $string['config_size']      = 'Medal image size';
 $string['config_size_long'] = 'Choose from regular or small images.';
 
-// error strings
+// Error strings.
 $string['error-notadmin'] = 'You are not a Moodle admin so you can\'t do this.';
 $string['error-dbupdate'] = 'Medal not updated in the database for some reason.';
 $string['error-badmedaltype'] = 'Sorry, incorrect medal type.';
@@ -59,5 +59,5 @@ $string['error-nomedalid'] = 'No medal ID.';
 $string['error-courseidnotset'] = 'Course ID not set, for some reason.';
 $string['error-useridnotset'] = 'User ID not set, for some reason.';
 
-// capabilities strings
+// Capabilities strings.
 $string['courseaward_medal:admin'] = 'Administrate the Course Awards - Medal block';

@@ -24,7 +24,7 @@
  */
 
 $capabilities = array(
-    // 'admin' capability is assigned to the admin role as default
+    // Admin capability is assigned to the admin role as default.
     'block/courseaward_medal:admin' => array(
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'write',
