@@ -29,4 +29,3 @@ $plugin->component      = 'block_courseaward_vote';     // Full name of the plug
 $plugin->cron           = 0;                            // Period for cron to check this plugin (secs).
 $plugin->maturity       = MATURITY_STABLE;
 $plugin->release        = '2.0.1';
-// $plugin->dependencies   = array ();                     // Plugin dependencies (none at this time).
