@@ -2,6 +2,13 @@
 
 A quick and easy way of getting a course's rating from students, awarding courses medals based on score and reporting on courses Moodle-wide.
 
+## News: Highlighted in May 2012 OFSTED Good Practice report
+
+The Course Awards blocks and report have been highlighted in a May 2012 OFSTED Good Practice report into South Devon College, alongside Moodle itself. (Look out for 'Moodle 'Medals' as it's known locally.)
+
+* [OFSTED web page](http://www.ofsted.gov.uk/resources/good-practice-resource-making-most-of-information-and-communication-technology-south-devon-college)
+* [PDF](http://www.ofsted.gov.uk/sites/default/files/documents/surveys-and-good-practice/s/South%20Devon%20College%20-%20Good%20practice%20example.pdf)).
+
 ## Introduction
 
 The Course Awards plug-in system consists of two blocks ('Vote' and 'Medal') and a report. Its purpose is to easily collect user feedback about a course with appropriate back-end reporting.
