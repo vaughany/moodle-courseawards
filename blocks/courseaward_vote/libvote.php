@@ -45,10 +45,10 @@ function get_course_score_average($course) {
 
     if ($votes_no) {
         $votes_avg = $votes_tot / $votes_no;
-        $votes_avg = substr($votes_avg, 0, 4); // change the 4 for a 5 for more sig figs!
+        $votes_avg = substr($votes_avg, 0, 4); // Change the 4 for a 5 for more sig figs!
 
         $build = get_string('scoreavg1', 'block_courseaward_vote');
-        // get the right string for the plurality
+        // Get the right string for the plurality.
         if ($votes_no == 1) {
             $build .= $votes_no.get_string('scoreavg2sing', 'block_courseaward_vote');
         } else {
@@ -174,10 +174,7 @@ function get_notes($cid, $deleted = false) {
 
         return $build;
     } else {
-        // print 'no notes' (or whatever's in the language pack) if there are no notes to show
-        // switch the below returns to show no block at all in the event of there being no notes.
         return '<div class="center smaller clear">'.get_string('note_none', 'block_courseaward_vote').'</div>';
-        //return false;
 
     }
 }
@@ -212,7 +209,7 @@ function get_votes_summary($cid, $deleted = false) {
 
         return $build;
     } else {
-        // print 'no notes' (or whatever's in the language pack) if there are no notes to show
+        // Print 'no notes' (or whatever's in the language pack) if there are no notes to show.
         return '<div class="center smaller clear">'.get_string('admin-novotesummary', 'block_courseaward_vote').'</div>';
         // NOTE: comment out the above line to show no block at all in the event of there being no notes.
     }

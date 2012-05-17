@@ -24,28 +24,28 @@
  */
 
 $capabilities = array(
-    // 'vote' capability is assigned to the student role as default
+    // Vote capability is assigned to the student role as default.
     'block/courseaward_vote:vote' => array(
         'riskbitmask' => '',
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
         'legacy' => array(
             'student'           => CAP_ALLOW
-            //'teacher'           => CAP_PREVENT,
-            //'editingteacher'    => CAP_PREVENT,
-            //'admin'             => CAP_PREVENT
+            // 'teacher'           => CAP_PREVENT,
+            // 'editingteacher'    => CAP_PREVENT,
+            // 'admin'             => CAP_PREVENT
         )
     ),
 
-    // 'admin' capability is assigned to the admin role as default
+    // Admin capability is assigned to the admin role as default.
     'block/courseaward_vote:admin' => array(
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
         'legacy' => array(
-            //'student'           => CAP_PREVENT,
-            //'teacher'           => CAP_PREVENT,
-            //'editingteacher'    => CAP_PREVENT,
+            // 'student'           => CAP_PREVENT,
+            // 'teacher'           => CAP_PREVENT,
+            // 'editingteacher'    => CAP_PREVENT,
             'manager'             => CAP_ALLOW
         )
     )

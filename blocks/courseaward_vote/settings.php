@@ -52,7 +52,7 @@ if ($ADMIN->fulltree) {
         '7776000'     => '3 months',
         '15552000'    => '6 months',
         '31536000'    => '1 year',
-        '99999999999' => 'Never'    // ...actually 3,170.9 years
+        '99999999999' => 'Never'    // Actually 3,170.9 years.
     );
 
     $settings->add(new admin_setting_configselect(

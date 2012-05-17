@@ -31,20 +31,11 @@ if (!$course = $DB->get_record('course', array('id'=>required_param('cid', PARAM
 
 require_login($course);
 
-/**
- * logging goodness
- * logging removed due to it not really fitting in with the way Moodle expects
- * log info to be passed - not from a block, apparently.
- */
-//add_to_log($course->id, 'courseaward', 'add vote', '', 'Voted using the Course Award block', 0, $USER->id);
-
-/**
- * If we're collecting notes, the image submits a form rather than being just a hyperlink, so to get around IE being a
- * righteous pain in the bum, we have to look for the image's name field with _x and _y on the end (click coordinates)
- * instead of just the image's name on it's own (which is how firefox works).
- */
+/* If we're collecting notes, the image submits a form rather than being just a hyperlink, so to get around IE being a */
+/* righteous pain in the bum, we have to look for the image's name field with _x and _y on the end (click coordinates) */
+/* instead of just the image's name on it's own (which is how firefox works).                                          */
 if (get_config('courseaward_vote', 'note') == true) {
-    // we're collecting notes so we need to optionally check some things
+    // We're collecting notes so we need to optionally check some things.
     if (optional_param('vote0_x', '', PARAM_INT) && optional_param('vote0_y', '', PARAM_INT)) {
         $vote = 0;
     } else if (optional_param('vote1_x', '', PARAM_INT) && optional_param('vote1_y', '', PARAM_INT)) {
@@ -57,7 +48,7 @@ if (get_config('courseaward_vote', 'note') == true) {
         print_error(get_string('error-iefixfail', 'block_courseaward_vote'));
     }
 } else {
-    // we're not collecting notes
+    // We're not collecting notes.
     $vote = required_param('vote', PARAM_INT);
 }
 

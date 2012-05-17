@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// set to true to get some extra debugging info relating to capabilities/roles.
+// Set to true to get some extra debugging info relating to capabilities/roles.
 define('DEBUG', false);
 
 class block_courseaward_vote extends block_base {
@@ -47,7 +47,7 @@ class block_courseaward_vote extends block_base {
     public function get_content() {
         global $CFG, $COURSE, $USER;
 
-        $build = "\n"; // build the output into this variable
+        $build = "\n"; // Build the output into this variable.
         $imgw = 30;
         $imgh = 30;
         $alttxt = array(
@@ -61,10 +61,10 @@ class block_courseaward_vote extends block_base {
         require_once($CFG->dirroot.'/blocks/courseaward_vote/libvote.php');
 
         if (has_capability('block/courseaward_vote:admin', get_context_instance(CONTEXT_COURSE, $COURSE->id))) {
-            // user has the 'admin' capability and can do pretty much anything
-            // note that this is 'block/courseaward_vote:admin' and not 'moodle/site:doanything'
+            // User has the 'admin' capability and can do pretty much anything.
+            // Note that this is 'block/courseaward_vote:admin' and not 'moodle/site:doanything'.
 
-            // debugging
+            // Debugging.
             if (DEBUG) {
                 $build .= '<p style="color:#f00;font-weight:bold;text-align:center;">CAPABILITY IS ADMIN</p>'."\n";
             }
@@ -76,22 +76,22 @@ class block_courseaward_vote extends block_base {
                 get_string('admin-reportall', 'block_courseaward_vote').'</a>'."\n";
             $build .='</div>';
 
-            // 'true' means show deleted (different colour)
+            // True means show deleted (different colour).
             $build .= get_notes($COURSE->id, true);
 
-            // show the stars in summary
+            // Show the stars in summary.
             $build .= get_votes_summary($COURSE->id, true);
 
         } else if (has_capability('block/courseaward_vote:vote', get_context_instance(CONTEXT_COURSE, $COURSE->id))) {
-            // user has the 'vote' capability so can vote on the block
+            // User has the 'vote' capability so can vote on the block.
 
-            // debugging
+            // Debugging.
             if (DEBUG) {
                 $build .= '<p style="color:#f00;font-weight:bold;text-align:center;">CAPABILITY IS VOTE</p>'."\n";
             }
 
             if (has_voted($USER->id, $COURSE->id)) {
-                // if the user has already voted
+                // If the user has already voted.
                 $voted = get_vote($USER->id, $COURSE->id);
                 $build .= '<div class="center">'.get_string('user-alreadyvoted', 'block_courseaward_vote').'</div>'."\n";
                 $build .= '<div class="center bgborder">'."\n";
@@ -99,12 +99,12 @@ class block_courseaward_vote extends block_base {
                     $imgw.'" height="'.$imgh.'" alt="'.$alttxt[$voted].'" />'."\n";
                 $build .= '<br />&ldquo;'.$alttxt[$voted].'&rdquo;</div>'."\n";
 
-                // additionally, if the user left a note
+                // Additionally, if the user left a note.
                 if ($got_note = get_vote_note($USER->id, $COURSE->id)) {
                     $build .= '<div class="clear">'.get_string('note_noted', 'block_courseaward_vote').' &ldquo;'.$got_note.'&rdquo;</div>'."\n";
                 }
 
-                // if the user has waited (the agreed delay)...
+                // If the user has waited (the agreed delay).
                 if (can_change_vote($USER->id, $COURSE->id)) {
                     $build .= '<span class="smaller">(<a href="'.$pathtoblock.'unvote.php?cid='.$COURSE->id.'">'.
                         get_string('user-clicktounvote', 'block_courseaward_vote').'</a>)</span>'."\n";
@@ -114,10 +114,10 @@ class block_courseaward_vote extends block_base {
                 $build .= '</div>'."\n";
 
             } else {
-                // user has not voted before (or has voted, then deleted it after the delay) so present the voting options
+                // User has not voted before (or has voted, then deleted it after the delay) so present the voting options.
                 if (get_config('courseaward_vote', 'note') == false) {
 
-                    // voting style 1: no text box, clicky stars only.
+                    // Voting style 1: no text box, clicky stars only.
                     $build .= "\n".'<div class="center clear">'.get_string('user-clicktovote', 'block_courseaward_vote').'</div>';
                     $build .= "\n".'<div class="center clear">';
                     for ($j=0; $j<>4; $j++) {
@@ -130,7 +130,7 @@ class block_courseaward_vote extends block_base {
 
                 } else if (get_config('courseaward_vote', 'note') == true) {
 
-                    // voting style 2: text box and clicky stars
+                    // Voting style 2: text box and clicky stars.
                     $build .= '<div class="center votetitle clear">'.get_string('user-title', 'block_courseaward_vote').'</div>'."\n";
                     $build .= '<div class="center">'.get_string('user-clicktovotetextbox', 'block_courseaward_vote').'</div>'."\n";
                     $build .= '<form method="post" action="'.$pathtoblock.'vote.php">'."\n";
@@ -147,9 +147,9 @@ class block_courseaward_vote extends block_base {
             }
 
         } else {
-            // the user does not have a 'vote' or an 'admin' capability so we just show results.
+            // The user does not have a 'vote' or an 'admin' capability so we just show results.
 
-            // debugging
+            // Debugging.
             if (DEBUG) {
                 $build .= '<p style="color:#f00;font-weight:bold;text-align:center;">NO CAPABILITIES (DEFAULT)</p>'."\n";
             }
@@ -165,7 +165,7 @@ class block_courseaward_vote extends block_base {
 
             $build .= get_votes_summary($COURSE->id, true);
 
-        } // END function get_content()
+        } // End function get_content().
 
         $build .= '<div class="center">'.get_course_score_average($COURSE->id).'</div>';
 

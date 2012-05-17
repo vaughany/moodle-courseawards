@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// general strings
+// General strings.
 $string['pluginname'] = 'Course Awards - Vote';
 
 $string['vote0'] = 'Inadequate: I do not use the course at all.';
@@ -39,24 +39,24 @@ $string['scoreavg4'] = '%)</span>';
 $string['scoreavgalt'] = 'No votes yet, be the first!';
 $string['scoreavgaltnonstudent'] = 'No votes yet.';
 
-// user strings
+// User strings.
 $string['user-title'] = 'Vote for this course!';
 $string['user-clicktovotetextbox'] = 'Type a brief note about your course (optional):';
 $string['user-clicktovote'] = 'Click on a <strong>star</strong> to vote for this course. Choose from: <br /><span class="smaller">(hover over each star for an explanation)</span>:';
 $string['user-alreadyvoted'] = 'You have already voted for this course. Your vote was:';
 $string['user-clicktounvote'] = 'Remove vote?';
 
-// novote strings
+// Novote strings.
 $string['novote-header'] = 'Sorry, you can\'t vote for this course.';
 
-// admin strings
+// Admin strings.
 $string['admin-reportcourse'] = 'Click here for this course\'s report.';
 $string['admin-reportall'] = 'Click here for all reports.';
 $string['admin-reportmenu'] = 'Course Awards';
 $string['admin-votesummary'] = '(Show/hide vote summary)';
 $string['admin-novotesummary'] = '(No summary to show)';
 
-// error strings
+// Error strings.
 $string['error-voteoutofrange'] = 'Vote cast is out of range. Stop trying to hack the voting system!';
 $string['error-courseidnotset'] = 'Course ID not set, for some reason.';
 $string['error-useridnotset'] = 'User ID not set, for some reason.';
@@ -66,17 +66,17 @@ $string['error-novoteid'] = 'Could not get ID for the vote for some reason.';
 $string['error-cantunvoteyet'] = 'Can\'t change your vote yet.';
 $string['error-iefixfail'] = 'The code which fixes IE being rubbish has failed. Please use a better web browser to continue.';
 
-//config strings
+// Config strings.
 $string['config_collect_notes'] = 'Collect notes?';
 $string['config_note_true'] = 'If checked, collect notes. A text box will appear on-screen for brief texual feedback.<br />If not checked, do not collect notes. To vote, users click on a star only.';
 $string['config_time'] = 'Vote timeout:';
 $string['config_time_long'] = 'The amount of time, after voting, before a user can remove and their vote and (optionally) vote again.';
 
-//notes strings
+// Notes strings.
 $string['note_none'] = '(There are no notes)';
 $string['note_get'] = '(Show/hide notes)';
 $string['note_noted'] = 'You noted:';
 
-// capabilities strings
+// Capabilities strings.
 $string['courseaward_vote:vote'] = 'Vote in the Course Awards - Vote block';
 $string['courseaward_vote:admin'] = 'Administrate the Course Awards - Vote block';
