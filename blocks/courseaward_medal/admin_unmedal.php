@@ -48,10 +48,10 @@ if (!$medal_id = get_medal_id($COURSE->id)) {
 }
 
 $dbupdate = new object();
-$dbupdate->id = $medal_id;
+$dbupdate->id               = $medal_id;
 $dbupdate->course_id        = $COURSE->id;
 $dbupdate->deleted          = 1;
-$dbinsert->date_modified    = time();
+$dbupdate->date_modified    = time();
 $dbupdate->deleted_user_id  = $USER->id;
 
 if (!$DB->update_record('block_courseaward_medal', $dbupdate)) {
