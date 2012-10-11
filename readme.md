@@ -1,6 +1,6 @@
-# Course Awards Plug-in for Moodle 2.0
+# Course Awards Plug-in for Moodle 2.0 to 2.3
 
-A quick and easy way of getting a course's rating from students, awarding courses medals based on score and reporting on courses Moodle-wide.
+A quick and easy way of getting a course's rating from students, awarding courses medals based on score, and reporting on courses Moodle-wide.
 
 ## News: Highlighted in May 2012 OFSTED Good Practice report
 
@@ -87,67 +87,75 @@ Installation is a matter of copying files to the correct locations within your M
 Download the archive(s) and extract the files, or [clone the repository from GitHub](https://github.com/vaughany/moodle-courseawards/). You should see the following files and structure:
 
     courseawards/
-    |-- blocks
-    |   |-- courseaward_medal
-    |   |   |-- admin_medal.php
-    |   |   |-- admin_unmedal.php
-    |   |   |-- block_courseaward_medal.php
-    |   |   |-- db
-    |   |   |   |-- access.php
-    |   |   |   `-- install.xml
-    |   |   |-- img
-    |   |   |   |-- medal_achievement.png
-    |   |   |   |-- medal_achievement_sm.png
-    |   |   |   |-- medal_bronze.png
-    |   |   |   |-- medal_bronze_sm.png
-    |   |   |   |-- medal_gold.png
-    |   |   |   |-- medal_gold_sm.png
-    |   |   |   |-- medal_silver.png
-    |   |   |   `-- medal_silver_sm.png
-    |   |   |-- lang
-    |   |   |   `-- en
-    |   |   |       `-- block_courseaward_medal.php
-    |   |   |-- libmedal.php
-    |   |   |-- settings.php
-    |   |   |-- styles.css
-    |   |   `-- version.php
-    |   `-- courseaward_vote
-    |       |-- block_courseaward_vote.php
-    |       |-- db
-    |       |   |-- access.php
-    |       |   `-- install.xml
-    |       |-- img
-    |       |   |-- 0.png
-    |       |   |-- 1.png
-    |       |   |-- 2.png
-    |       |   |-- 3.png
-    |       |   |-- d.png
-    |       |   `-- p.png
-    |       |-- lang
-    |       |   `-- en
-    |       |       `-- block_courseaward_vote.php
-    |       |-- libvote.php
-    |       |-- settings.php
-    |       |-- styles.css
-    |       |-- unvote.php
-    |       |-- version.php
-    |       `-- vote.php
-    `-- report
-        `-- courseawards
-            |-- admin.php
-            |-- get_csv.php
-            |-- img
-            |   |-- arrow_down.png
-            |   |-- cross.png
-            |   `-- tick.png
-            |-- index.php
-            |-- lang
-            |   `-- en
-            |       `-- report_courseawards.php
-            |-- report.php
-            |-- settings.php
-            |-- styles.css
-            `-- version.php
+    ├── blocks
+    │   ├── courseaward_medal
+    │   │   ├── admin_medal.php
+    │   │   ├── admin_unmedal.php
+    │   │   ├── block_courseaward_medal.php
+    │   │   ├── db
+    │   │   │   ├── access.php
+    │   │   │   └── install.xml
+    │   │   ├── img
+    │   │   │   ├── medal_achievement.png
+    │   │   │   ├── medal_achievement_sm.png
+    │   │   │   ├── medal_bronze.png
+    │   │   │   ├── medal_bronze_sm.png
+    │   │   │   ├── medal_gold.png
+    │   │   │   ├── medal_gold_sm.png
+    │   │   │   ├── medal_silver.png
+    │   │   │   └── medal_silver_sm.png
+    │   │   ├── lang
+    │   │   │   └── en
+    │   │   │       └── block_courseaward_medal.php
+    │   │   ├── libmedal.php
+    │   │   ├── pix
+    │   │   │   └── icon.png
+    │   │   ├── settings.php
+    │   │   ├── styles.css
+    │   │   └── version.php
+    │   └── courseaward_vote
+    │       ├── block_courseaward_vote.php
+    │       ├── db
+    │       │   ├── access.php
+    │       │   └── install.xml
+    │       ├── img
+    │       │   ├── 0.png
+    │       │   ├── 1.png
+    │       │   ├── 2.png
+    │       │   ├── 3.png
+    │       │   ├── d.png
+    │       │   └── p.png
+    │       ├── lang
+    │       │   └── en
+    │       │       └── block_courseaward_vote.php
+    │       ├── libvote.php
+    │       ├── pix
+    │       │   └── icon.png
+    │       ├── settings.php
+    │       ├── styles.css
+    │       ├── unvote.php
+    │       ├── version.php
+    │       └── vote.php
+    ├── gpl-3.0.txt
+    ├── readme.md
+    └── report
+        └── courseawards
+            ├── admin.php
+            ├── get_csv.php
+            ├── img
+            │   ├── arrow_down.png
+            │   ├── cross.png
+            │   └── tick.png
+            ├── index.php
+            ├── lang
+            │   └── en
+            │       └── report_courseawards.php
+            ├── pix
+            │   └── icon.png
+            ├── report.php
+            ├── settings.php
+            ├── styles.css
+            └── version.php
 
 Copy the extracted 'blocks' and 'report' folders into the root of your Moodle installation and all the files will automatically go into the correct places. Note that nothing else will be overwritten.
 
@@ -301,7 +309,10 @@ It is quite possible to replace the default images with those of your own choosi
 
 ## Known Issues
 
-There are no known bugs at this time, but it doesn't mean they're not lurking. Should you find a bug, please [log an issue in the tracker](https://github.com/vaughany/moodle-courseawards/issues) or fork the repo, fix the problem and submit a pull request.
+* Report:
+  * Issue with [MSSQL not having a 'LIMIT' clause](https://github.com/vaughany/moodle-courseawards/issues/2).
+
+Should you find a bug, please [log an issue in the tracker](https://github.com/vaughany/moodle-courseawards/issues) or fork the repo, fix the problem and submit a pull request.
 
 ## To Do
 
@@ -313,6 +324,13 @@ There are no known bugs at this time, but it doesn't mean they're not lurking. S
 Suggestions for features or submissions of non-en_uk language packs are most welcome.
 
 ## History
+
+**October 11th 2012**
+
+* Version bump for Moodle 2.x
+* Build 2012101100
+
+No major changes, just added icons and a copy of the GPL 3.0, and version bump.
 
 **May 17th 2012 - Vote Block**
 
