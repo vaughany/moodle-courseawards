@@ -29,7 +29,7 @@ $capabilities = array(
 
     // 'New' standard capability 'addinstance'.
     'block/courseaward_medal:addinstance' => array(
-        //'riskbitmask'   => RISK_XSS,
+        // 'riskbitmask'   => RISK_XSS,
         'captype'       => 'write',
         'contextlevel'  => CONTEXT_COURSE,
         'archetypes'    => array(
@@ -38,7 +38,7 @@ $capabilities = array(
         ),
         'clonepermissionsfrom'  => 'moodle/site:manageblocks'
     ),
-    
+
     // Admin capability is assigned to the admin role as default.
     'block/courseaward_medal:admin' => array(
         'riskbitmask' => RISK_PERSONAL,
