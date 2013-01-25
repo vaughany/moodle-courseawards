@@ -23,12 +23,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$plugin->version        = 2012101100;                   // The current plugin version (Date: YYYYMMDDXX).
+$plugin->version        = 2013012500;                   // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires       = 2010112400;                   // Moodle 2.0+.
 $plugin->component      = 'block_courseaward_medal';    // Full name of the plugin (used for diagnostics).
 $plugin->cron           = 0;                            // Period for cron to check this plugin (secs).
 $plugin->maturity       = MATURITY_STABLE;
-$plugin->release        = '2.0.2';
+$plugin->release        = '2.0.3';
 $plugin->dependencies   = array (                       // Plugin dependencies.
-    'block_courseaward_vote'    => 2012101100,          // Needs the vote block, really.
+    'block_courseaward_vote'    => 2013012500,          // Needs the vote block, really.
 );

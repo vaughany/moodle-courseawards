@@ -23,7 +23,22 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 $capabilities = array(
+
+    // 'New' standard capability 'addinstance'.
+    'block/courseaward_vote:addinstance' => array(
+        'riskbitmask'   => RISK_XSS,
+        'captype'       => 'write',
+        'contextlevel'  => CONTEXT_COURSE,
+        'archetypes'    => array(
+            'editingteacher'    => CAP_ALLOW,
+            'manager'           => CAP_ALLOW
+        ),
+        'clonepermissionsfrom'  => 'moodle/site:manageblocks'
+    ),
+
     // Vote capability is assigned to the student role as default.
     'block/courseaward_vote:vote' => array(
         'riskbitmask' => '',
